@@ -1,0 +1,9 @@
+.login {
+    width: 100%;
+    height: 100vh;
+    background-color: #f1f1f1 !important;
+}
+.login-input,
+#formGridCheckbox {
+    width: 350px;
+}
