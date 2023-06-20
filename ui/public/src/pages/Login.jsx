@@ -1,5 +1,6 @@
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
 import "../assets/css/login.css";
 
 function Login() {
@@ -30,7 +31,7 @@ function Login() {
       <Form.Label className="mb-3" htmlFor="inputRegister">
         Not a member?
         <Button variant="link" id="inputRegister" className="text-muted">
-          Register
+          <Link to="/register">Register</Link>
         </Button>
       </Form.Label>
     </Form>
