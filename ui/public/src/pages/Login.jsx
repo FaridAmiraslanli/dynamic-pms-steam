@@ -1,12 +1,15 @@
-import "../assets/css/login.css";
-import Heading from "../components/Heading";
+
+
 
 
 function Login() {
   return (
-    <>
-      <Heading text="Create your account" />
-    </>
+   <div>
+     <h1 className="bg-red-500 w-10 text-orange-700">
+     Login
+    </h1>
+    <p className="bg-blue-800">salam</p>
+   </div>
   );
 }
 
