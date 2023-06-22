@@ -1,15 +1,14 @@
-
-
-
+import { Button, IconBtn, LinkBtn } from "../components/Button";
 
 function Login() {
   return (
-   <div>
-     <h1 className="bg-red-500 w-10 text-orange-700">
-     Login
-    </h1>
-    <p className="bg-blue-800">salam</p>
-   </div>
+    <div>
+      <Button text="btn" />
+      <IconBtn icon="google" />
+      <IconBtn icon="facebook" />
+      <IconBtn icon="apple" />
+      <LinkBtn text="link btn" />
+    </div>
   );
 }
 
