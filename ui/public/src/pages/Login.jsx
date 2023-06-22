@@ -1,7 +1,9 @@
 // import { Button, IconBtn, LinkBtn, LongBtn } from "../components/MuiButtons";
 // import {LongBtn} from "../components/buttons/LongBtn";
 
+import { ActionBtn } from "../components/buttons/ActionBtn";
 import { IconBtn } from "../components/buttons/IconBtn";
+import { LinkBtn } from "../components/buttons/LinkBtn";
 import { LongBtn } from "../components/buttons/LongBtn";
 
 
@@ -15,6 +17,8 @@ function Login() {
       <IconBtn icon="facebook" />
       <IconBtn icon="google" />
       <IconBtn icon="apple" />
+      <LinkBtn text="asd" />
+      <ActionBtn w="400" h="40" radius="10" text={"asdsa"} />
       {/* <Button text="btn" className="default-gray" />
       <Button text="btn" className="default-green-1" />
       <Button text="btn" className="default-green-2" />

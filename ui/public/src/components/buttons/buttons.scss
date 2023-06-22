@@ -1,9 +1,9 @@
 button {
   cursor: pointer;
-  line-height:24px;
+  line-height: 24px;
 }
 
-@mixin long-btn(){
+@mixin long-btn() {
   width: 603px;
   height: 56px;
   border: none;
@@ -20,19 +20,19 @@ button {
 
 .long-green-1 {
   @include long-btn;
-  background-color: #34A853;
+  background-color: #34a853;
 }
 
 .long-green-2 {
   @include long-btn;
-  background-color: #62B273
+  background-color: #62b273;
 }
 
 .outlined-green {
   @include long-btn;
   background-color: white;
-  color: #34A853;
-  border: 2px solid #34A853;
+  color: #34a853;
+  border: 2px solid #34a853;
 }
 
 .icon-btn {
@@ -49,18 +49,16 @@ button {
     width: 48px;
     height: 48px;
   }
-
-  
 }
 
 .link-btn {
-    font-size: 24px;
-    color: #62B273;
-    border: none;
-    background-color: transparent;
-    transition: .3s;
+  font-size: 24px;
+  color: #62b273;
+  border: none;
+  background-color: transparent;
+  transition: 0.3s;
 
-    &:hover {
-      color: #36cb56
-    }
+  &:hover {
+    color: #36cb56;
+  }
 }
