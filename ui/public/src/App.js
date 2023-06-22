@@ -1,15 +1,14 @@
 import React from "react";
-// import { Routes, Route, BrowserRouter } from "react-router-dom";
-// import Login from "./pages/Login";
-// import Home from "./pages/Home";
-// import Register from "./pages/Register";
-// import PrivateRoutes from "./utils/PrivateRouter";
-import Title from "./components/title";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import PrivateRoutes from "./utils/PrivateRouter";
 const App = () => {
   return (
     <>
-    <Title text="Create your account"/>
-    {/* <BrowserRouter>
+   
+    <BrowserRouter>
       <Routes>
         <Route element={<PrivateRoutes />}>
           <Route exact path="/" element={<Home />} />
@@ -17,7 +16,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
-    </BrowserRouter> */}
+    </BrowserRouter>
     </>
   );
 };
