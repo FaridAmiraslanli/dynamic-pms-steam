@@ -7,6 +7,7 @@ import SignIn from "../components/signIn/SignIn";
 
 function Login() {
   return (
+
     <>
     <SignIn/>
     </>
@@ -28,6 +29,8 @@ function Login() {
     //   <IconBtn icon="apple" />
     //   <LinkBtn text="link btn" /> */}
     // </div>
+
+
   );
 }
 

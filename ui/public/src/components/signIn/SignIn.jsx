@@ -1,10 +1,7 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -14,13 +11,14 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import FormLabel from "@mui/material/FormLabel";
 import './siginin.css'
+import { LongBtn } from "../buttons/longBtn/LongBtn";
 // import { LongBtn } from "../buttons/LongBtn";
 // import Login from "../../pages/Login";
 import Or from "../or/Or";
 import { Stack } from "@mui/material";
 import { IconBtn } from "../buttons/IconBtn";
 import Password from "../Password";
-import { borders } from '@mui/system';
+import Title from "../title";
 function Copyright(props) {
   return (
     <Typography
@@ -69,7 +67,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+              <Title text={"Create your account"}/>
           </Typography>
           <Box
            
@@ -94,7 +92,7 @@ export default function SignIn() {
 
               <Grid item xs={12}>
                 <FormLabel component="legend">Email</FormLabel>
-                <TextField
+                <TextField 
                   required
                   fullWidth
                   id="email"
@@ -105,7 +103,13 @@ export default function SignIn() {
               </Grid>
               <Grid item xs={12}>
                 <Password  sx={{ mb: 3 }}/>
+               
               </Grid>
+              <Grid item xs={12}>
+              <LongBtn className="long-gray" text="Continue" />
+               
+              </Grid>
+             
             </Grid>
 
             <Or item sx={{ mt: 3 }} />
@@ -132,6 +136,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
             </Grid>
+          
           </Box>
         </Box>
         {/* <Copyright sx={{ mt: 5 }} /> */}
