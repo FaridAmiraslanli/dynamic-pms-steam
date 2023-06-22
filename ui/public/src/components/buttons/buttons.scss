@@ -1,0 +1,66 @@
+button {
+  cursor: pointer;
+  line-height:24px;
+}
+
+@mixin long-btn(){
+  width: 603px;
+  height: 56px;
+  border: none;
+  color: #ffffff;
+  border-radius: 32px;
+  padding: 16px 24px;
+  font-size: 16px;
+}
+
+.long-gray {
+  @include long-btn;
+  background-color: rgba(60, 60, 67, 0.18);
+}
+
+.long-green-1 {
+  @include long-btn;
+  background-color: #34A853;
+}
+
+.long-green-2 {
+  @include long-btn;
+  background-color: #62B273
+}
+
+.outlined-green {
+  @include long-btn;
+  background-color: white;
+  color: #34A853;
+  border: 2px solid #34A853;
+}
+
+.icon-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #f3f5f7;
+  color: #4285f4;
+  border: none;
+  display: grid;
+  place-items: center;
+
+  svg {
+    width: 48px;
+    height: 48px;
+  }
+
+  
+}
+
+.link-btn {
+    font-size: 24px;
+    color: #62B273;
+    border: none;
+    background-color: transparent;
+    transition: .3s;
+
+    &:hover {
+      color: #36cb56
+    }
+}
