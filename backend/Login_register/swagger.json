@@ -195,7 +195,7 @@
                 "password": {
                   "example": "any"
                 },
-                "password2": {
+                "comfirmPassword": {
                   "example": "any"
                 }
               }
@@ -205,6 +205,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"

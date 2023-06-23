@@ -77,7 +77,7 @@ router.put("/user/:id", async (req, res) => {
   const updated = { ...req.body };
   updated.password = hashedPassword;
 
-  const updatedUser = await User.findByIdAndUpdate(req.params.id, updated); 
+  const updatedUser = await User.findByIdAndUpdate(req.params.id, updated);
   res.send(updatedUser);
 });
 
@@ -145,8 +145,13 @@ router.get("/reset-password/:id/:token", async (req, res) => {
 
 router.post("/reset-password/:id/:token", async (req, res) => {
   const { id, token } = req.params;
-  const { password, password2 } = req.body;
+  const { password, comfirmPassword } = req.body;
   const user = await User.findById(id);
+  
+  if (password !== comfirmPassword) {
+    res.status(401).send({ message: "Confirm password is incorrect" });
+    return;
+  }
 
   if (token !== user.passResetToken) {
     res.status(403).send({ message: "Invalid URL" });
@@ -159,7 +164,6 @@ router.post("/reset-password/:id/:token", async (req, res) => {
     "sha512"
   );
   user.password = hashedPassword;
-  console.log(this);
   user.passResetToken = null;
   user.save();
 
