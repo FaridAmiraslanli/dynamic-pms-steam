@@ -6,7 +6,7 @@ import styled from "styled-components";
   /* <SquareBtn 
     w="100"
     h="10"
-    radius="none" sm
+    radius="0"
     color="red"
 /> */
 }

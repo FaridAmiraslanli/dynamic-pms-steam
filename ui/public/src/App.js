@@ -6,6 +6,8 @@ import Register from "./pages/Register";
 import PrivateRoutes from "./utils/PrivateRouter";
 const App = () => {
   return (
+    <>
+   
     <BrowserRouter>
       <Routes>
         <Route element={<PrivateRoutes />}>
@@ -15,6 +17,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
       </Routes>
     </BrowserRouter>
+    </>
   );
 };
 
