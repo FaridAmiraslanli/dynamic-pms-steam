@@ -9,8 +9,6 @@ const Title = ({text}) => {
         <Typography style={{fontSize:"40px", display:"flex", justifyContent:"center", alignItems:"center"}} variant="h1">
            {text}
         </Typography>
-        
-        
         </Box> 
     
     
