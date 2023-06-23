@@ -81,7 +81,7 @@ export default function SignUp() {
                 }}
               >
                 <Link
-                  href="#"
+                  href="/forget"
                   variant="body2"
                   sx={{ color: "#62B273",textDecoration:"none" }}
                 >
