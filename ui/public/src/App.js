@@ -1,8 +1,9 @@
 import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
+
+import Login from "@pages/Login";
+import Home from "@pages/Home";
+import Register from "@pages/Register";
 import PrivateRoutes from "./utils/PrivateRouter";
 
 const App = () => {
