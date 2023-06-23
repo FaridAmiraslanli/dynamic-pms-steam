@@ -9,6 +9,7 @@ import {
   TextField,
   Stack,
   Link,
+  FormHelperText,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -66,10 +67,26 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <Password
-                  sx={{ mb: 3 }}
+                  sx={{ mb: 2 }}
                   helperText="Forgot password"
                   variant="standard"
                 />
+              </Grid>
+              <Grid
+                sx={{
+                  mt: 1,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  width: "100%",
+                }}
+              >
+                <Link
+                  href="#"
+                  variant="body2"
+                  sx={{ color: "#62B273",textDecoration:"none" }}
+                >
+                  Forgot password
+                </Link>
               </Grid>
               <Grid item xs={12}>
                 <LongBtn className="long-gray" text="Continue" />
@@ -90,10 +107,14 @@ export default function SignUp() {
             </Stack>
             <Grid container alignItems="center" justifyContent="center">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="#" variant="body2" sx={{textDecoration:"none", color:"#000"}}>
                   Already have an account?
                 </Link>
-                <Link href="#" variant="body2" sx={{ color: "#62B273" }}>
+                <Link
+                  href="/register"
+                  variant="body2"
+                  sx={{ color: "#62B273", pl: "10px", textDecoration:"none"}}
+                >
                   Sign in
                 </Link>
               </Grid>
