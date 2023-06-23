@@ -1,29 +1,27 @@
 import * as React from "react";
 import {
-  Stack,
-  FormLabel,
-  Container,
-  Typography,
-  Box,
-  Grid,
-  Link,
-  TextField,
   CssBaseline,
-  ThemeProvider,
-  createTheme,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  FormLabel,
+  TextField,
+  Stack,
+  Link,
 } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import Password from "../Password";
-import Title from "../Title";
+import { LongBtn } from "../buttons/LongBtn";
 import Or from "../or/Or";
 import { IconBtn } from "../buttons/IconBtn";
-import { LongBtn } from "../buttons/LongBtn";
-
+import Password from "../Password";
+import Title from "../Title";
 import "../../assets/sass/mui-input-btn.scss";
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -46,7 +44,7 @@ export default function SignIn() {
           }}
         >
           <Typography component="h1" variant="h5">
-            <Title text={"Create your account"} />
+            <Title text={"Welcome"} />
           </Typography>
           <Box
             component="form"
@@ -55,18 +53,6 @@ export default function SignIn() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={12} variant="rounded">
-                <FormLabel component="legend">Full name</FormLabel>
-                <TextField
-                  autoComplete="given-name"
-                  name="fullName"
-                  fullWidth
-                  id="fullName"
-                  placeholder="Full Name"
-                  autoFocus
-                />
-              </Grid>
-
               <Grid item xs={12}>
                 <FormLabel component="legend">Email</FormLabel>
                 <TextField
@@ -79,7 +65,11 @@ export default function SignIn() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Password sx={{ mb: 3 }} />
+                <Password
+                  sx={{ mb: 3 }}
+                  helperText="Forgot password"
+                  variant="standard"
+                />
               </Grid>
               <Grid item xs={12}>
                 <LongBtn className="long-gray" text="Continue" />
@@ -103,11 +93,7 @@ export default function SignIn() {
                 <Link href="#" variant="body2">
                   Already have an account?
                 </Link>
-                <Link
-                  href="#"
-                  variant="body2"
-                  sx={{ color: "#62B273", pl: "10px" }}
-                >
+                <Link href="#" variant="body2" sx={{ color: "#62B273" }}>
                   Sign in
                 </Link>
               </Grid>

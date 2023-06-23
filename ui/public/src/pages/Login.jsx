@@ -1,12 +1,11 @@
-import SignIn from "@components/signIn/SignIn"
+import SignIn from "@components/signIn/SignIn";
 
 function Login() {
   return (
     <>
-    <SignIn/>
+      <SignIn />
     </>
   );
 }
-
 
 export default Login;
