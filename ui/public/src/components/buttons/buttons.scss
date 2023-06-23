@@ -1,15 +1,25 @@
+@import "../../assets/sass/normalize";
+
+$color-main-btn: #34A853;
+$color-secondary-btn: #62B273;
+$color-blue-btn: #4285f4;
+$color-white-btn: #fff;
+$offwhite: #f3f5f7;
+$color-hover-btn: #36cb56;
+
+
 button {
   cursor: pointer;
+  line-height: 24px;
   line-height: 24px;
 }
 
 @mixin long-btn() {
-  width: 603px;
-  height: 56px;
+  width: 100%;
+  height: 48px;
   border: none;
-  color: #ffffff;
+  color: $color-white-btn;
   border-radius: 32px;
-  padding: 16px 24px;
   font-size: 16px;
 }
 
@@ -20,27 +30,27 @@ button {
 
 .long-green-1 {
   @include long-btn;
-  background-color: #34a853;
+  background-color: $color-main-btn;
 }
 
 .long-green-2 {
   @include long-btn;
-  background-color: #62b273;
+  background-color: $color-secondary-btn;
 }
 
 .outlined-green {
   @include long-btn;
-  background-color: white;
-  color: #34a853;
-  border: 2px solid #34a853;
+  background-color: $color-white-btn;
+  color: $color-main-btn;
+  border: 2px solid $color-main-btn;
 }
 
 .icon-btn {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: #f3f5f7;
-  color: #4285f4;
+  background-color: $offwhite;
+  color: $color-blue-btn;
   border: none;
   display: grid;
   place-items: center;
@@ -53,12 +63,12 @@ button {
 
 .link-btn {
   font-size: 24px;
-  color: #62b273;
+  color: $color-secondary-btn;
   border: none;
   background-color: transparent;
-  transition: 0.3s;
+  transition: all .3s;
 
   &:hover {
-    color: #36cb56;
+    color: $color-hover-btn;
   }
 }

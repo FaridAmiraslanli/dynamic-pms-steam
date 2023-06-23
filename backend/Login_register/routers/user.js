@@ -13,6 +13,7 @@ const app = express();
 
 router.post("/registration", async (req, res) => {
   const { username, email, password } = req.body;
+  console.log('registration called', { username, email, password });
   try {
     const existUser = await User.findOne({ email });
     if (existUser) {
@@ -32,7 +33,7 @@ router.post("/registration", async (req, res) => {
       email,
       password: hashedPassword,
     });
-    res.send("Registration successfull");
+    res.json({ status: 200, message: "Registration successfull" });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
@@ -78,7 +79,7 @@ router.put("/user/:id", async (req, res) => {
   updated.password = hashedPassword;
 
   const updatedUser = await User.findByIdAndUpdate(req.params.id, updated); 
-  res.send(updatedUser);
+  res.json(updatedUser);
 });
 
 router.get("/forgot-password", (req, res, next) => {
@@ -90,7 +91,7 @@ router.post("/forgot-password", async (req, res) => {
   try {
     const user = await User.findOne({ email }).select("-password");
     if (!user) {
-      res.send({ message: "User not Exist" });
+      res.json({ message: "User not Exist" });
       return;
     }
     const { ...theRest } = user;

@@ -1,17 +1,12 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Input from "@mui/material/Input";
-import FilledInput from "@mui/material/FilledInput";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormHelperText from "@mui/material/FormHelperText";
-import FormControl from "@mui/material/FormControl";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import {
+  Box,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
+  InputAdornment,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function InputAdornments() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -23,7 +18,7 @@ export default function InputAdornments() {
   };
 
   return (
-    <div>
+    <Box>
       <InputLabel sx={{ width: "100%" }} htmlFor="outlined-adornment-password">
         Password
       </InputLabel>
@@ -45,6 +40,6 @@ export default function InputAdornments() {
         }
         placeholder="Password"
       />
-    </div>
+    </Box>
   );
 }
