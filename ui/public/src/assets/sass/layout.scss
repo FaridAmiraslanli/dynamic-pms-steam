@@ -1,0 +1,46 @@
+@import "fonts";
+@import "mixin";
+
+$container-width: 1440px;
+
+%description {
+  font-family: Montserrat !important;
+  @include typography(48px !important, 56px !important, 400 !important, 0em !important);
+  /* if it add img tag like logo, remove this line */
+}
+
+.logo {
+  height: 56px;
+  background-color: #fff;
+
+  &__description {
+    @extend %description;
+    padding: 10px;
+  }
+}
+
+.side {
+  width: (472px * 100% )/ $container-width;
+  height: 100vh;
+  padding: 0px 103px 0px 104px;
+  background-color: #B0B0B0;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__description {
+    @extend %description;
+    color: #fff
+  }
+}
+
+.layout {
+  display: flex;
+  flex-direction: row;
+
+  &__main {
+    width: 100% - (472px * 100% / $container-width);
+    height: 100vh;
+  }
+}

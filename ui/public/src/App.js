@@ -6,13 +6,10 @@ import Home from "@pages/Home";
 import Register from "@pages/Register";
 import Forget from "@pages/Forget"
 import PrivateRoutes from "./utils/PrivateRouter";
-//import SetNewPassword from "./components/setNewPassword/SetNewPassword";
-import SignIn from "./components/signIn/SignIn";
+
 const App = () => {
   return (
     <>
-    {/* <SignIn/> */}
-    {/* <SetNewPassword/> */}
       <BrowserRouter>
         <Routes>
           <Route element={<PrivateRoutes />}>
