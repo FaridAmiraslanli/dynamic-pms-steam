@@ -10,9 +10,10 @@ const doc = {
 };
 
 const outputFile = "./swagger.json";
-const endpointsFiles = ["routers/user.js", "server.js"];
-
+const endpointsFiles = [
+  "controllers/authController.js",
+  "controllers/userController.js",
+  "server.js",
+];
 
 swaggerAutogen(outputFile, endpointsFiles, doc);
-
-
