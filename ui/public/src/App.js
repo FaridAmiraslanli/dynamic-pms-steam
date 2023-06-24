@@ -5,25 +5,13 @@ import Login from "@pages/Login";
 import Home from "@pages/Home";
 import Register from "@pages/Register";
 import Forget from "@pages/Forget"
+import Error from "@pages/Error"
 import Check from "./pages/Check";
 import PrivateRoutes from "./utils/PrivateRouter";
 
-import Error from "./pages/Error";
-//import SetNewPassword from "./components/setNewPassword/SetNewPassword";
-//import SignIn from "./components/signIn/SignIn";
-//import CheckYourEmail from "./components/checkFolder/CheckYourEmail";
-//import SetNewPassword from "./components/setNewPassword/SetNewPassword";
-//import CreateNewAccount from "./components/createYourAccount/CreateNewAccount";
-//import PasswordReset from "./components/passwordReset/PassworReset";
 const App = () => {
   return (
     <>
-
-    {/* <CreateNewAccount/> */}
-       {/* <PasswordReset/> */}
-    {/* <SetNewPassword/> */}
-    {/* <SignIn/> */}
-    {/* <SetNewPassword/> */}
       <BrowserRouter>
         <Routes>
           <Route element={<PrivateRoutes />}>
