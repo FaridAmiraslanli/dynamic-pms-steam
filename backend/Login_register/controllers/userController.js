@@ -4,7 +4,6 @@ const User = require("../model/userModel");
 const nodemailer = require("nodemailer");
 const cryto = require("crypto");
 const jwt = require("jsonwebtoken");
-const { decode } = require("punycode");
 
 router.get("/forgot-password", (req, res, next) => {
   res.render("forgot-password");
@@ -16,7 +15,8 @@ router.get("/reset-password/:id/:token", async (req, res) => {
   try {
     res.render("reset-password", { email: user.email });
   } catch (error) {
-    res.json(error.message);
+    next(error);
+    // res.json(error.message);
   }
 });
 
@@ -64,7 +64,8 @@ router.post("/forgot-password", async (req, res) => {
     // nodemaile
     res.json("Password resend link has been sen to email...");
   } catch (error) {
-    res.json(error.message);
+    next(error);
+    // res.json(error.message);
   }
 });
 
@@ -74,7 +75,10 @@ router.post("/reset-password/:id/:token", async (req, res) => {
   const user = await User.findById(id);
 
   if (password !== comfirmPassword) {
-    res.status(401).json({ message: "Confirm password is incorrect" });
+    const err = new Error("Confirm password is incorrect");
+    next(err);
+
+    // res.status(401).json({ message: "Confirm password is incorrect" });
     return;
   }
 
@@ -95,14 +99,17 @@ router.post("/reset-password/:id/:token", async (req, res) => {
   res.json("Reset password successfull");
 });
 
-router.put("/user/:id", async (req, res) => {
+router.put("/user/:id", async (req, res, next) => {
   const { username, email, password } = req.body;
   const accessToken = req.headers["authorization"];
   try {
     const decoded = jwt.verify(accessToken, process.env.SALT);
 
     if (decoded._doc.email !== email) {
-      return res.status(403).json({ message: "Not_Authorized" });
+      // return res.status(403).json({ message: "Not_Authorized" });
+      const err = new Error("No authorized, Forbidden!");
+      err.statusCode = 403;
+      throw err;
     }
     const hashedPassword = cryto.pbkdf2Sync(
       password,
@@ -115,13 +122,14 @@ router.put("/user/:id", async (req, res) => {
     const updated = { ...req.body };
     updated.password = hashedPassword;
 
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, updated);
-    const uUser = updatedUser.toObject();
-    delete uUser.password;
+    const updatedUser = (
+      await User.findByIdAndUpdate(req.params.id, updated)
+    ).toObject();
+    delete updatedUser.password;
 
-    res.json(uUser);
+    res.json(updatedUser);
   } catch (error) {
-    res.json(error.message);
+    next(error);
   }
 });
 
