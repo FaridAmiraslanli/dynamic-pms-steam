@@ -6,14 +6,15 @@ import {
   Typography,
   Container,
   FormLabel,
-  Link,
+  Button,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 import { LongBtn } from "../buttons/LongBtn";
 import Title from "../Title";
-//import "../../assets/sass/mui-input-btn";
+import "../../assets/sass/mui-input-btn.scss";
 
+import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 const defaultTheme = createTheme();
 
 export default function CheckYourEmail() {
@@ -27,12 +28,8 @@ export default function CheckYourEmail() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}
-    
-    >
-      <Container component="main" maxWidth="xs"
-     
-      >
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
@@ -40,13 +37,15 @@ export default function CheckYourEmail() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            width:'100%'
           }}
         >
           <Typography component="h1" variant="h5" sx={{ mb: 1 }}>
             <Title text={"Check your email"} />
           </Typography>
-          <FormLabel component="legend">
+          <FormLabel
+            component="legend"
+            sx={{ fontSize: "12px", fontWeight: "24px" }}
+          >
             We sent a password reset link to albinaqarayeva@gmail.com
           </FormLabel>
           <Box
@@ -57,7 +56,13 @@ export default function CheckYourEmail() {
           >
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <LongBtn className="outlined-green" text="Back to login" />
+                <Link to="/login" variant="body2">
+                  <LongBtn
+                    to="/login"
+                    className="outlined-green"
+                    text="Back to login"
+                  />
+                </Link>
               </Grid>
             </Grid>
           </Box>
@@ -66,23 +71,35 @@ export default function CheckYourEmail() {
               mt: 1,
               display: "flex",
               justifyContent: "center",
+              alignItems: "center",
               width: "100%",
             }}
           >
-            <Link
-            disabled
-             variant="disabled"
-              href="/forget"
-              sx={{color: "black", textDecoration: "none" }}
+            <Typography
+              paragraph={true}
+              sx={{
+                color: "black",
+               
+                textDecoration: "none",
+              }}
             >
               Don't receive the email?
-            </Link>
+            </Typography>
             <Link
-              href="/forget"
+              to="/forget"
               variant="body2"
-              sx={{ color: "green", textDecoration: "none" }}
+              style={{textDecoration: 'none'}}
             >
-              Click to resend
+              <Typography
+                paragraph={true}
+                sx={{
+                  color:'green',
+                  textDecoration: "none",
+                  marginLeft:'5px'
+                }}
+              >
+                Click to resend
+              </Typography>
             </Link>
           </Grid>
         </Box>

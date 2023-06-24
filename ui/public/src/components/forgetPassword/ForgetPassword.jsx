@@ -8,7 +8,7 @@ import {
   FormLabel,
   TextField,
 } from "@mui/material";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { LongBtn } from "../buttons/LongBtn";
 import Title from "../Title";
@@ -62,15 +62,11 @@ export default function ForgetPassword() {
                   autoComplete="email"
                 />
               </Grid>
-              <Link 
-              to={"/reset"}
-              variant="body2"
-              >
               <Grid item xs={12}>
-                <LongBtn className="long-green-1" text="Reset password" />
+                <Link to={"/check"} variant="body2">
+                  <LongBtn className="long-green-1" text="Reset password" />
+                </Link>
               </Grid>
-              </Link>
-              
               <Grid item xs={12}>
                 <Link
                   to={"/login"}
