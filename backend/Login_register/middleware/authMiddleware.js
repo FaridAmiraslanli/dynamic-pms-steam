@@ -13,10 +13,10 @@ const verifyToken = (req, res, next) => {
             next();
         } catch (error) {
             console.log(error);
-            res.status(401).send({ message: 'Invalid Signature' });
+            res.status(401).json({ message: "Invalid Signature" });
         }
     } else {
-        res.status(401).send({ message: 'Unauthorized request' });
+        res.status(401).json({ message: "Unauthorized request" });
     }
 };
 
