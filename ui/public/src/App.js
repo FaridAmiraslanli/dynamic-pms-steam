@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import PrivateRoutes from "./utils/PrivateRouter";
+import CreditPacks from "./pages/CreditPacks";
 
 const App = () => {
   const loggedUser = undefined;
@@ -21,6 +22,7 @@ const App = () => {
             <Route exact path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/creditpacks" element={<CreditPacks />} />
           </Routes>
         )}
       </BrowserRouter>
