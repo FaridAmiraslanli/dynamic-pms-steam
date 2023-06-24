@@ -20,10 +20,10 @@ import { IconBtn } from "../buttons/IconBtn";
 import { LongBtn } from "../buttons/LongBtn";
 
 import "../../assets/sass/mui-input-btn.scss";
-
+//import ErrorOutlineIcon from '@mui/icons-material/DeleteOutlined,';
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function CreateNewAccount() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -64,9 +64,27 @@ export default function SignIn() {
                   id="fullName"
                   placeholder="Full Name"
                   autoFocus
+              
+                  color="error"
                 />
+                
               </Grid>
-
+              <Grid
+                sx={{
+                  mt: 1,
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  width: "100%",
+                }}
+              >
+                <Link
+                  href="/check"
+                  variant="body2"
+                  sx={{ color: "#FF3B30",textDecoration:"none" }}
+                >
+                 Please enter full name
+                </Link>
+              </Grid>
               <Grid item xs={12}>
                 <FormLabel component="legend">Email</FormLabel>
                 <TextField
@@ -112,7 +130,7 @@ export default function SignIn() {
                   variant="body2"
                   sx={{ color: "#62B273",pl: "10px", textDecoration: "none" }}
                 >
-                  Sign in
+                  Sign up
                 </Link>
               </Grid>
             </Grid>
