@@ -89,12 +89,14 @@ export default function SignUp() {
                 </Link>
               </Grid>
               <Grid item xs={12}>
-                <LongBtn className="long-gray" text="Continue" />
+              <Link 
+              href="/welcome"
+              >
+              <LongBtn className="long-gray" text="Continue" />
+              </Link>
               </Grid>
             </Grid>
-
             <Or item sx={{ mt: 3 }} />
-
             <Stack
               direction="row"
               spacing={2}
@@ -115,7 +117,7 @@ export default function SignUp() {
                   variant="body2"
                   sx={{ color: "#62B273", pl: "10px", textDecoration:"none"}}
                 >
-                  Sign in
+                  Sign up
                 </Link>
               </Grid>
             </Grid>

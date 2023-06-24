@@ -6,16 +6,16 @@ import {
   Typography,
   Container,
   FormLabel,
+  TextField,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 import { LongBtn } from "../buttons/LongBtn";
 import Title from "../Title";
-import "../../assets/sass/mui-input-btn";
-
+import "../../assets/sass/mui-input-btn.scss";
+import { Password } from "@mui/icons-material";
 const defaultTheme = createTheme();
 
-export default function CheckYourFile() {
+export default function PasswordReset() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -26,8 +26,10 @@ export default function CheckYourFile() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+    <ThemeProvider theme={defaultTheme} >
+      <Container component="main" 
+    //   sx={{width:'603px'}}
+      >
         <CssBaseline />
         <Box
           sx={{
@@ -35,25 +37,25 @@ export default function CheckYourFile() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            
           }}
         >
           <Typography component="h1" variant="h5" sx={{ mb: 1 }}>
-            <Title text={"Check your email"} />
+            <Title text={"Password reset"} />
           </Typography>
           <FormLabel component="legend">
-            We sent a password reset link to albinaqarayeva@gmail.com
+            Your password has been successfully reset.
           </FormLabel>
           <Box
             component="form"
             noValidate
             onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
+            sx={{ mt: 3,minWidth:"600px"}}
+            
           >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <LongBtn className="outlined-green" text="Back to login" />
+              <Grid item xs={20}  sx={{ width: '100%', padding: 1, margin: 2 }}>
+                <LongBtn  className="long-green-1" text="Back to login"/>
               </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>

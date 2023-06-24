@@ -1,8 +1,11 @@
 import React from 'react'
-
+import CreateNewAccount from '../components/createYourAccount/CreateNewAccount'
 const ErrorPage = () => {
   return (
-    <div>404 Not Found</div>
+    <div>
+      <CreateNewAccount/>
+    
+    </div>
   )
 }
 
