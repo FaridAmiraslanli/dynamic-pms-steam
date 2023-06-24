@@ -20,7 +20,8 @@ import Or from "../or/Or";
 import { IconBtn } from "../buttons/IconBtn";
 import { LongBtn } from "../buttons/LongBtn";
 
-import "./signin.scss";
+import "../../assets/sass/mui-input-btn.scss";
+import MuiAlert from "../alerts/MuiAlert";
 
 const defaultTheme = createTheme();
 
@@ -135,15 +136,19 @@ export default function SignIn() {
             </Stack>
             <Grid container alignItems="center" justifyContent="center">
               <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account?
-                </Link>
                 <Link
                   href="#"
                   variant="body2"
-                  sx={{ color: "#62B273", pl: "10px" }}
+                  sx={{ textDecoration: "none", color: "#000" }}
                 >
-                  Sign in
+                  Already have an account?
+                </Link>
+                <Link
+                  href="/login"
+                  variant="body2"
+                  sx={{ color: "#62B273",pl: "10px", textDecoration: "none" }}
+                >
+                  Sign up
                 </Link>
               </Grid>
             </Grid>

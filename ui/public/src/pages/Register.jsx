@@ -1,7 +1,12 @@
 import React from "react";
+import SignIn from "@components/signIn/SignIn";
 
 const Register = () => {
-  return <div>Register</div>;
+  return (
+    <>
+      <SignIn />
+    </>
+  );
 };
 
 export default Register;

@@ -30,13 +30,7 @@ const swaggerOption = {
 const swaggerDocs = require("./swagger.json");
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
-
-app.use("/", require("./routers/user.js"));
-// swagger
-
-app.set("view engine", "ejs");
-
-app.use("/", userRouter);
+app.use(userRouter)
 
 connect();
 app.listen(PORT, () => {
