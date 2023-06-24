@@ -8,6 +8,7 @@ import Forget from "@pages/Forget"
 import Error from "@pages/Error"
 import Check from "./pages/Check";
 import PrivateRoutes from "./utils/PrivateRouter";
+import PasswordReset from "./pages/PassworReset";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/forget" element={<Forget />} />
+          <Route path="/reset" element={<PasswordReset />} />
           <Route path="/check" element={<Check />} />
           <Route path="/error" element={<Error />} />
           <Route path="/register" element={<Register />} />

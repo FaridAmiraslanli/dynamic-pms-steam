@@ -9,10 +9,10 @@ import {
   TextField,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { LongBtn } from "../buttons/LongBtn";
-import Title from "../Title";
-import "../../assets/sass/mui-input-btn.scss";
-import { Password } from "@mui/icons-material";
+import { LongBtn } from "../components/buttons/LongBtn";
+import Title from "../components/Title";
+import '../assets/sass/mui-input-btn.scss'
+import {Link} from 'react-router-dom'
 const defaultTheme = createTheme();
 
 export default function PasswordReset() {
@@ -54,7 +54,9 @@ export default function PasswordReset() {
             
           >
               <Grid item xs={20}  sx={{ width: '100%', padding: 1, margin: 2 }}>
-                <LongBtn  className="long-green-1" text="Back to login"/>
+               <Link to={'/login'}>
+                 <LongBtn  className="long-green-1" text="Back to login"/>
+               </Link>
               </Grid>
           </Box>
         </Box>
