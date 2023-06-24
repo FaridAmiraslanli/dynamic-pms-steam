@@ -27,9 +27,10 @@ export default function SetNewPassword() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme} >
+    <ThemeProvider theme={defaultTheme}  
+     sx={{width:'603px'}}>
       <Container component="main" 
-      sx={{width:'603px'}}
+    
       >
         <CssBaseline />
         <Box
