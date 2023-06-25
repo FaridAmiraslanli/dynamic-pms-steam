@@ -19,18 +19,31 @@ import { IconBtn } from "../buttons/IconBtn";
 import Password from "../Password";
 import Title from "../Title";
 import "../../assets/sass/mui-input-btn.scss";
+import { userStore } from "../../store/userStore";
+import { useEffect } from "react";
+import MuiAlert from "../alerts/MuiAlert";
+import { handleLoginApi } from "../../services/api.service";
+import axios from "axios";
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const { authKey, setAuthKey } = userStore();
+  const [alert, setAlert] = React.useState({
+    show: false,
+    severity: "",
+    message: "",
+    title: "",
+  });
+
+  // React.useEffect(() => {
+  //   console.log("autkeyimiz", authKey);
+  //   if (authKey) {
+  //     console.log("authkey var");
+  //   } else {
+  //     console.log("yoxdu");
+  //   }
+  // }, [authKey]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -50,7 +63,7 @@ export default function SignUp() {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit}
+            onSubmit={(event) => handleLoginApi(event, setAuthKey, setAlert)}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
@@ -83,17 +96,15 @@ export default function SignUp() {
                 <Link
                   href="/forget"
                   variant="body2"
-                  sx={{ color: "#62B273",textDecoration:"none" }}
+                  sx={{ color: "#62B273", textDecoration: "none" }}
                 >
                   Forgot password
                 </Link>
               </Grid>
               <Grid item xs={12}>
-              <Link 
-              href="/welcome"
-              >
-              <LongBtn className="long-gray" text="Continue" />
-              </Link>
+                <Link href="/welcome">
+                  <LongBtn className="long-gray" text="Continue" />
+                </Link>
               </Grid>
             </Grid>
             <Or item sx={{ mt: 3 }} />
@@ -109,13 +120,17 @@ export default function SignUp() {
             </Stack>
             <Grid container alignItems="center" justifyContent="center">
               <Grid item>
-                <Link href="#" variant="body2" sx={{textDecoration:"none", color:"#000"}}>
+                <Link
+                  href="#"
+                  variant="body2"
+                  sx={{ textDecoration: "none", color: "#000" }}
+                >
                   Already have an account?
                 </Link>
                 <Link
                   href="/register"
                   variant="body2"
-                  sx={{ color: "#62B273", pl: "10px", textDecoration:"none"}}
+                  sx={{ color: "#62B273", pl: "10px", textDecoration: "none" }}
                 >
                   Sign up
                 </Link>
@@ -124,6 +139,13 @@ export default function SignUp() {
           </Box>
         </Box>
       </Container>
+      {alert.show && (
+        <MuiAlert
+          severity={alert.severity}
+          message={alert.message}
+          title={alert.title}
+        />
+      )}
     </ThemeProvider>
   );
 }
