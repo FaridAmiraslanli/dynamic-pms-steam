@@ -8,7 +8,7 @@ const router = require("./routers/router");
 
 const app = express();
 app.use(cors());
-app.options("*", cors());
+app.options("*", cors ());
 
 const PORT = process.env.PORT || 8080;
 

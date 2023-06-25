@@ -12,6 +12,7 @@ import {
   ThemeProvider,
   createTheme,
 } from "@mui/material";
+import signUpSchema from "../validations/signUpValidation";
 
 import Password from "../Password";
 import Title from "../Title";
@@ -20,17 +21,52 @@ import { IconBtn } from "../buttons/IconBtn";
 import { LongBtn } from "../buttons/LongBtn";
 
 import "../../assets/sass/mui-input-btn.scss";
+import MuiAlert from "../alerts/MuiAlert";
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  // const [fetchedData, setFetchedData] = React.useState();
+  // React.useEffect(() => {
+  //   fetch("http:///localhost:8080/registration", {
+  //     method: "post",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: {
+  //       username: "sd",
+  //       email: "sd",
+  //       password: "ssdad",
+  //     },
+  //   });
+  // }, []);
+
+  const handleSubmit = async (event) => {
+    try {
+      event.preventDefault();
+      let formData = {
+        username: event.target[0].value,
+        email: event.target[2].value,
+        password: event.target[4].value,
+      };
+
+      const response = await fetch("http://localhost:8080/auth/registration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      console.log("response", response);
+
+      const data = await response.json();
+
+      console.log("data", data);
+
+      const isValid = await signUpSchema.isValid(formData);
+      if (!isValid) {
+        event.target[1].textContent = "error";
+      }
+    } catch (error) {
+      console.log("handleSubmit error", error);
+    }
   };
 
   return (
