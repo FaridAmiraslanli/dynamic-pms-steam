@@ -1,12 +1,11 @@
 @import "../../assets/sass/normalize";
 
-$color-main-btn: #34A853;
-$color-secondary-btn: #62B273;
+$color-main-btn: #34a853;
+$color-secondary-btn: #62b273;
 $color-blue-btn: #4285f4;
 $color-white-btn: #fff;
 $offwhite: #f3f5f7;
 $color-hover-btn: #36cb56;
-
 
 button {
   cursor: pointer;
@@ -31,6 +30,11 @@ button {
 .long-green-1 {
   @include long-btn;
   background-color: $color-main-btn;
+
+  &:disabled {
+    background-color: rgba(60, 60, 67, 0.18);
+    cursor: not-allowed;
+  }
 }
 
 .long-green-2 {
@@ -66,7 +70,7 @@ button {
   color: $color-secondary-btn;
   border: none;
   background-color: transparent;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &:hover {
     color: $color-hover-btn;

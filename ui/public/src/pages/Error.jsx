@@ -3,8 +3,8 @@ import CreateNewAccount from '../components/createYourAccount/CreateNewAccount'
 const ErrorPage = () => {
   return (
     <div>
-      <CreateNewAccount/>
-    
+      {/* <CreateNewAccount/> */}
+      404 not found
     </div>
   )
 }

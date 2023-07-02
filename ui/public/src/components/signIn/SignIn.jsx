@@ -6,14 +6,16 @@ import {
   Typography,
   Box,
   Grid,
-  Link,
+  // Link,
   TextField,
   CssBaseline,
   ThemeProvider,
   createTheme,
 } from "@mui/material";
-import signUpSchema from "../validations/signUpValidation";
+// import signUpSchema from "../validations/signUpValidation";
+// import { handleRegisterApi } from "../../services/api.service";
 
+import { Link } from "react-router-dom";
 import Password from "../Password";
 import Title from "../Title";
 import Or from "../or/Or";
@@ -22,33 +24,24 @@ import { LongBtn } from "../buttons/LongBtn";
 
 import "../../assets/sass/mui-input-btn.scss";
 import MuiAlert from "../alerts/MuiAlert";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  // const [fetchedData, setFetchedData] = React.useState();
-  // React.useEffect(() => {
-  //   fetch("http:///localhost:8080/registration", {
-  //     method: "post",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: {
-  //       username: "sd",
-  //       email: "sd",
-  //       password: "ssdad",
-  //     },
-  //   });
-  // }, []);
+  const formRef = React.useRef(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = async (event) => {
+  const handleRegisterApi = async (formData) => {
+    const url = "http://localhost:8080/auth/register";
+
+    console.log(formData);
     try {
-      event.preventDefault();
-      let formData = {
-        username: event.target[0].value,
-        email: event.target[2].value,
-        password: event.target[4].value,
-      };
-
-      const response = await fetch("http://localhost:8080/auth/registration", {
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -59,11 +52,6 @@ export default function SignIn() {
       const data = await response.json();
 
       console.log("data", data);
-
-      const isValid = await signUpSchema.isValid(formData);
-      if (!isValid) {
-        event.target[1].textContent = "error";
-      }
     } catch (error) {
       console.log("handleSubmit error", error);
     }
@@ -86,8 +74,11 @@ export default function SignIn() {
           </Typography>
           <Box
             component="form"
+            ref={formRef}
             noValidate
-            onSubmit={handleSubmit}
+            // onChange={(event) => handleValidation(event)}
+            onSubmit={handleSubmit(handleRegisterApi)}
+            // onSubmit={handleSubmit(onSubmit)}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
@@ -100,6 +91,15 @@ export default function SignIn() {
                   id="fullName"
                   placeholder="Full Name"
                   autoFocus
+                  error={Boolean(errors.username)}
+                  helperText={
+                    Boolean(errors.username) && (
+                      <Typography>invalid username</Typography>
+                    )
+                  }
+                  {...register("username", {
+                    validate: (val) => /^.{5,}$/.test(val),
+                  })}
                 />
               </Grid>
 
@@ -112,13 +112,23 @@ export default function SignIn() {
                   placeholder="Email Address"
                   name="email"
                   autoComplete="email"
+                  type={"email"}
+                  {...register("email", {
+                    validate: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+                  })}
+                  error={Boolean(errors.email)}
+                  helperText={
+                    Boolean(errors.email) && (
+                      <Typography>invalid email</Typography>
+                    )
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
-                <Password sx={{ mb: 3 }} />
+                <Password sx={{ mb: 3 }} register={register} errors={errors} />
               </Grid>
               <Grid item xs={12}>
-                <LongBtn className="long-gray" text="Continue" />
+                <LongBtn text="Continue" />
               </Grid>
             </Grid>
 
@@ -137,16 +147,20 @@ export default function SignIn() {
             <Grid container alignItems="center" justifyContent="center">
               <Grid item>
                 <Link
-                  href="#"
-                  variant="body2"
+                  to="#"
+                  // variant="body2"
                   sx={{ textDecoration: "none", color: "#000" }}
                 >
                   Already have an account?
                 </Link>
                 <Link
-                  href="/login"
-                  variant="body2"
-                  sx={{ color: "#62B273",pl: "10px", textDecoration: "none" }}
+                  to="/login"
+                  // variant="body2"
+                  sx={{
+                    color: "#62B273",
+                    pl: "10px",
+                    textDecoration: "none",
+                  }}
                 >
                   Sign in
                 </Link>
