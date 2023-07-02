@@ -14,14 +14,14 @@ import CreditPacks from "./pages/CreditPacks";
 import { userStore } from "./store/userStore";
 
 const App = () => {
-  // todo snackbar mui
-  // todo config js
-  // todo localstorage
-  // todo redux toolkit
-  // todo login duymesi yasil olsun
-  const loggedUser = undefined;
+  // TODO .env fayli olmalidi backend islemesi ucun
+  // TODO snackbar mui
+  // TODO config js
+  // TODO redux toolkit
+  // TODO login duymesi yasil olsun
+
   const { authKey, setAuthKey } = userStore();
-  console.log("app authkey", authKey);
+  const location = useLocation();
 
   React.useEffect(() => {
     setAuthKey(JSON.parse(localStorage.getItem("authkey")))
