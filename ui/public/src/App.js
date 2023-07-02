@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import Login from "@pages/Login";
 import Home from "@pages/Home";
@@ -12,40 +12,42 @@ import Check from "./pages/Check";
 import SignIn from "./components/signIn/SignIn";
 import CreditPacks from "./pages/CreditPacks";
 import { userStore } from "./store/userStore";
+// import {AnimatePresence} from "framer-motion/dist/framer-motion";
+import {AnimatePresence} from "framer-motion";
 
 const App = () => {
-  // todo snackbar mui
-  // todo config js
-  // todo localstorage
-  // todo redux toolkit
-  // todo login duymesi yasil olsun
-  const loggedUser = undefined;
+  // TODO .env fayli olmalidi backend islemesi ucun
+  // TODO snackbar mui
+  // TODO config js
+  // TODO redux toolkit
+  // TODO login duymesi yasil olsun
   const { authKey, setAuthKey } = userStore();
-  console.log("app authkey", authKey);
+  const location = useLocation();
+  // console.log("app authkey", authKey);
 
   React.useEffect(() => {
-    setAuthKey(JSON.parse(localStorage.getItem("authkey")))
+    setAuthKey(JSON.parse(localStorage.getItem("authkey")));
   }, []);
 
   return (
-    <>
-      <BrowserRouter>
-        {authKey ? (
-          <Routes>
-            {/* <Route element={<PrivateRoutes />}> */}
-            <Route exact path="/" element={<Home />} />
-            {/* </Route> */}
-          </Routes>
-        ) : (
-          <Routes>
-            <Route exact path="/" element={<Login />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/creditpacks" element={<CreditPacks />} />
-          </Routes>
-        )}
-      </BrowserRouter>
-    </>
+    <AnimatePresence>
+      {authKey ? (
+        <Routes location={location} key={location.pathname}>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="*" element={<Error />} />
+          {/* <Route path="/login" /> */}
+        </Routes>
+      ) : (
+        <Routes location={location} key={location.pathname}>
+          <Route exact path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/creditpacks" element={<CreditPacks />} />
+          <Route path="*" element={<Error />} />
+        </Routes>
+      )}
+    </AnimatePresence>
   );
 };
 
