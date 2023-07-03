@@ -12,7 +12,6 @@ const router = (app) => {
   app.use("/user", userController);
 
   app.all("*", (req, res, next) => {
-    // const err = new Error(`Can't find ${req.urlencoded} on the server! `);
     const err = new Error("Not found");
     err.status = "fail";
     err.statusCode = 404;
@@ -33,7 +32,3 @@ const router = (app) => {
 module.exports = router;
 
 // app.use("/gpt", authMiddleware, gptController);
-
-// app.use("", (req, res, next, err) => {
-//   res.status(500).json({ message: "Server error" });
-// });

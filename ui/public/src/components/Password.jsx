@@ -5,10 +5,13 @@ import {
   OutlinedInput,
   InputLabel,
   InputAdornment,
+  Typography,
+  TextField,
+  FormHelperText
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-export default function InputAdornments() {
+export default function InputAdornments({register,errors}) {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -26,6 +29,12 @@ export default function InputAdornments() {
         sx={{ width: "100%" }}
         id="outlined-adornment-password"
         type={showPassword ? "text" : "password"}
+        error={Boolean(errors.password)}
+        {...register("password", {
+          minLength: 6,
+          required: true,
+          validate: (val) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/.test(val),
+        })}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
@@ -40,6 +49,13 @@ export default function InputAdornments() {
         }
         placeholder="Password"
       />
+      {Boolean(errors.password) && (
+        <FormHelperText error id="username-error" sx={{ ml: "14px" }}>
+          <Typography>
+            azi 6 xarakterden ibaret, azi 1 herf, 1 reqem olmalidi
+          </Typography>
+        </FormHelperText>
+      )}
     </Box>
   );
 }

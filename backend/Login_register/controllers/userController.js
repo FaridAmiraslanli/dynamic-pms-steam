@@ -69,15 +69,64 @@ router.post("/forgot-password", async (req, res) => {
   }
 });
 
+router.post("/resendLink/:id/:token", async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email }).select("-password");
+    if (!user) {
+      const err = new Error("Can't find user");
+      err.statusCode = 403;
+      next(err);
+    }
+    //nodemaile
+    const { ...theRest } = user;
+    const token = jwt.sign(theRest, process.env.SECRET_KEY, {
+      expiresIn: "5m",
+    });
+    user.passResetToken = token;
+
+    user.save();
+    const link = `${process.env.BACKEND_URL}/reset-password/${user.id}/${token}`;
+    // nodemaile
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.SERVICE_USER,
+        pass: process.env.SERVICE_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.SERVICE_USER,
+      // User's email
+      to: email,
+      subject: "Password Reset",
+      text: link,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        res.json(error.message);
+      } else {
+        res.json("Email sent" + info.response);
+      }
+    });
+
+    // nodemaile
+    res.json("Password resend link has been sen to email...");
+    //nodemaile
+  } catch (error) {
+    next(error);;
+  }
+});
+
 router.post("/reset-password/:id/:token", async (req, res) => {
   const { id, token } = req.params;
   const { password, comfirmPassword } = req.body;
   const user = await User.findById(id);
-
   if (password !== comfirmPassword) {
     const err = new Error("Confirm password is incorrect");
     next(err);
-
     // res.status(401).json({ message: "Confirm password is incorrect" });
     return;
   }

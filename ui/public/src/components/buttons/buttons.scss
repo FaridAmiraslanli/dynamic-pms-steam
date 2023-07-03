@@ -1,15 +1,15 @@
 @import "../../assets/sass/normalize";
 
-$color-main-btn: #34A853;
-$color-secondary-btn: #62B273;
+$color-main-btn: #34a853;
+$color-secondary-btn: #62b273;
 $color-blue-btn: #4285f4;
 $color-white-btn: #fff;
 $offwhite: #f3f5f7;
 $color-hover-btn: #36cb56;
 
-
 button {
   cursor: pointer;
+  line-height: 24px;
   line-height: 24px;
 }
 
@@ -30,6 +30,11 @@ button {
 .long-green-1 {
   @include long-btn;
   background-color: $color-main-btn;
+
+  &:disabled {
+    background-color: rgba(60, 60, 67, 0.18);
+    cursor: not-allowed;
+  }
 }
 
 .long-green-2 {
@@ -45,8 +50,8 @@ button {
 }
 
 .icon-btn {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background-color: $offwhite;
   color: $color-blue-btn;
@@ -55,8 +60,8 @@ button {
   place-items: center;
 
   svg {
-    width: 28px;
-    height: 28px;
+    width: 40px;
+    height: 40px;
   }
 }
 
@@ -65,9 +70,10 @@ button {
   color: $color-secondary-btn;
   border: none;
   background-color: transparent;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &:hover {
     color: $color-hover-btn;
   }
 }
+

@@ -33,7 +33,7 @@ router.post("/registration", async (req, res, next) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
   const { username, email, password } = req.body;
   const hashedPassword = cryto.pbkdf2Sync(
     password,

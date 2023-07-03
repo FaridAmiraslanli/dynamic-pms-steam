@@ -1,10 +1,10 @@
 import React from "react";
-import SignIn from "@components/signIn/SignIn";
+import SignUp from "@components/signUp/SignUp";
 import Layout from "../components/layout/Layout";
 const Register = () => {
   return (
     <Layout>
-      <SignIn />
+      <SignUp />
     </Layout>
   );
 };

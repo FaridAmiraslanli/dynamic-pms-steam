@@ -11,7 +11,7 @@
     "http"
   ],
   "paths": {
-    "/registration": {
+    "/auth/registration": {
       "post": {
         "description": "",
         "parameters": [
@@ -37,17 +37,11 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/login": {
+    "/auth/login": {
       "post": {
         "description": "",
         "parameters": [
@@ -73,17 +67,11 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/forgot-password": {
+    "/user/forgot-password": {
       "get": {
         "description": "",
         "parameters": [],
@@ -112,7 +100,7 @@
         }
       }
     },
-    "/reset-password/{id}/{token}": {
+    "/user/reset-password/{id}/{token}": {
       "get": {
         "description": "",
         "parameters": [
@@ -129,11 +117,7 @@
             "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": {}
       },
       "post": {
         "description": "",
@@ -170,16 +154,49 @@
           "200": {
             "description": "OK"
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "403": {
             "description": "Forbidden"
           }
         }
       }
     },
-    "/user/{id}": {
+    "/user/resendLink/{id}/{token}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/user/user/{id}": {
       "put": {
         "description": "",
         "parameters": [
@@ -216,9 +233,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       }

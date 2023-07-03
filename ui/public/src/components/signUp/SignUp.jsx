@@ -1,35 +1,60 @@
 import * as React from "react";
 import {
-  CssBaseline,
-  Grid,
-  Box,
-  Typography,
-  Container,
-  FormLabel,
-  TextField,
   Stack,
-  Link,
-  FormHelperText,
+  FormLabel,
+  Container,
+  Typography,
+  Box,
+  Grid,
+  // Link,
+  TextField,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
 } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+// import signUpSchema from "../validations/signUpValidation";
+// import { handleRegisterApi } from "../../services/api.service";
 
-import { LongBtn } from "../buttons/LongBtn";
-import Or from "../or/Or";
-import { IconBtn } from "../buttons/IconBtn";
+import { Link } from "react-router-dom";
 import Password from "../Password";
 import Title from "../Title";
+import Or from "../or/Or";
+import { IconBtn } from "../buttons/IconBtn";
+import { LongBtn } from "../buttons/LongBtn";
+
 import "../../assets/sass/mui-input-btn.scss";
+
+import { useForm, SubmitHandler } from "react-hook-form";
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const formRef = React.useRef(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const handleRegisterApi = async (formData) => {
+    const url = "http://localhost:8080/auth/registration";
+
+    console.log(formData);
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      console.log("response", response);
+
+      const data = await response.json();
+
+      console.log("data", data);
+    } catch (error) {
+      console.log("handleSubmit error", error);
+    }
   };
 
   return (
@@ -45,15 +70,39 @@ export default function SignUp() {
           }}
         >
           <Typography component="h1" variant="h5">
-            <Title text={"Welcome"} />
+            <Title text={"Create your account"} />
           </Typography>
           <Box
             component="form"
+            ref={formRef}
             noValidate
-            onSubmit={handleSubmit}
+            // onChange={(event) => handleValidation(event)}
+            onSubmit={handleSubmit(handleRegisterApi)}
+            // onSubmit={handleSubmit(onSubmit)}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} variant="rounded">
+                <FormLabel component="legend">Full name</FormLabel>
+                <TextField
+                  autoComplete="given-name"
+                  name="fullName"
+                  fullWidth
+                  id="fullName"
+                  placeholder="Full Name"
+                  autoFocus
+                  error={Boolean(errors.username)}
+                  helperText={
+                    Boolean(errors.username) && (
+                      <Typography>invalid username</Typography>
+                    )
+                  }
+                  {...register("username", {
+                    validate: (val) => /^.{5,}$/.test(val),
+                  })}
+                />
+              </Grid>
+
               <Grid item xs={12}>
                 <FormLabel component="legend">Email</FormLabel>
                 <TextField
@@ -63,40 +112,28 @@ export default function SignUp() {
                   placeholder="Email Address"
                   name="email"
                   autoComplete="email"
+                  type={"email"}
+                  {...register("email", {
+                    validate: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+                  })}
+                  error={Boolean(errors.email)}
+                  helperText={
+                    Boolean(errors.email) && (
+                      <Typography>invalid email</Typography>
+                    )
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
-                <Password
-                  sx={{ mb: 2 }}
-                  helperText="Forgot password"
-                  variant="standard"
-                />
-              </Grid>
-              <Grid
-                sx={{
-                  mt: 1,
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  width: "100%",
-                }}
-              >
-                <Link
-                  href="/forget"
-                  variant="body2"
-                  sx={{ color: "#62B273",textDecoration:"none" }}
-                >
-                  Forgot password
-                </Link>
+                <Password sx={{ mb: 3 }} register={register} errors={errors} />
               </Grid>
               <Grid item xs={12}>
-              <Link 
-              href="/welcome"
-              >
-              <LongBtn className="long-gray" text="Continue" />
-              </Link>
+                <LongBtn text="Continue" />
               </Grid>
             </Grid>
+
             <Or item sx={{ mt: 3 }} />
+
             <Stack
               direction="row"
               spacing={2}
@@ -107,17 +144,25 @@ export default function SignUp() {
               <IconBtn icon="google" />
               <IconBtn icon="apple" />
             </Stack>
-            <Grid container alignItems="center" justifyContent="center">
-              <Grid item>
-                <Link href="#" variant="body2" sx={{textDecoration:"none", color:"#000"}}>
+            <Grid container alignItems="center" justifyContent="center" >
+              <Grid item  sx={{marginTop:'20px'}}>
+                <Link
+                  to="#"
+                  // variant="body2"
+                  sx={{ textDecoration: "none", color: "#000" }}
+                >
                   Already have an account?
                 </Link>
                 <Link
-                  href="/register"
-                  variant="body2"
-                  sx={{ color: "#62B273", pl: "10px", textDecoration:"none"}}
+                className="signinBtn"
+                  to="/login"
+                  // variant="body2"
+                  sx={{
+                    pl: "10px",
+                    textDecoration: "none",
+                  }}
                 >
-                  Sign up
+                  Sign in
                 </Link>
               </Grid>
             </Grid>
