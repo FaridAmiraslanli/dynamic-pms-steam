@@ -12,7 +12,7 @@ import {
   ThemeProvider,
   createTheme,
 } from "@mui/material";
-import signUpSchema from "../validations/signUpValidation";
+import signUpSchema from "../../validations/signUpValidation";
 
 import Password from "../Password";
 import Title from "../Title";
