@@ -13,18 +13,47 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { LongBtn } from "../buttons/LongBtn";
 import Title from "../Title";
 import "../../assets/sass/mui-input-btn.scss";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+
 
 const defaultTheme = createTheme();
 
 export default function ForgetPassword() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get("email"),
+  //     password: data.get("password"),
+  //   });
+  // };
+  const handleForget = async (formData) => {
+    const url = "http://localhost:8080/user/forgot-password";
+
+    console.log(formData);
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      console.log("response", response);
+
+      const data = await response.json();
+
+      console.log("data", data);
+    } catch (error) {
+      console.log("handleSubmit error", error);
+    }
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -47,7 +76,8 @@ export default function ForgetPassword() {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit}
+            // onSubmit={handleSubmit}
+            onSubmit={handleSubmit(handleForget)}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
@@ -60,12 +90,25 @@ export default function ForgetPassword() {
                   placeholder="Email Address"
                   name="email"
                   autoComplete="email"
+                  helperText={
+                    Boolean(errors.email) && (
+                      <Typography>invalid email</Typography>
+                    )
+                  }
+                  error={Boolean(errors.email)}
+
+                  {...register("email", {
+                    validate: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+                  })}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Link to={"/check"} variant="body2">
-                  <LongBtn className="long-green-1" text="Reset password" />
-                </Link>
+                {/* <Link to={"/check"} variant="body2"> */}
+                <LongBtn
+                  className="long-green-1"
+                  text="Reset password"
+                />
+                {/* </Link> */}
               </Grid>
               <Grid item xs={12}>
                 <Link
