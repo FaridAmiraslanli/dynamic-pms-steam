@@ -25,16 +25,27 @@ import { LongBtn } from "../buttons/LongBtn";
 import "../../assets/sass/mui-input-btn.scss";
 
 import { useForm, SubmitHandler } from "react-hook-form";
+import { MuiSnackbar } from "../toasts/MuiSnackbar";
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
   const formRef = React.useRef(null);
+  const [alert, setAlert] = React.useState({
+    show: false,
+    message: ""
+  })
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setAlert({show: false, message: ""})
+    }, 4000);
+  }, [alert])
 
   const handleRegisterApi = async (formData) => {
     const url = "http://localhost:8080/auth/registration";
@@ -50,11 +61,18 @@ export default function SignIn() {
       console.log("response", response);
 
       const data = await response.json();
+      console.log("data",data)
+      setAlert({show: true, message: data.message ? data.message : data})
+      // setAlert({show: false, message: ""})
 
-      console.log("data", data);
+
+
     } catch (error) {
       console.log("handleSubmit error", error);
+      setAlert({show: true, message: "error"})
+      // setAlert({show: false, message: ""})
     }
+    
   };
 
   return (
@@ -169,6 +187,9 @@ export default function SignIn() {
           </Box>
         </Box>
       </Container>
+      {
+        alert.show && <MuiSnackbar message={alert.message} />
+      }
     </ThemeProvider>
   );
 }

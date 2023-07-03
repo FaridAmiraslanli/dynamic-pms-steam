@@ -49,12 +49,12 @@ export default function SignUp() {
       }).then((res) => {
         setAuthKey(res?.data.accsessToken);
         if (res.data.accsessToken) {
-          setAlert({
-            show: true,
-            severity: "success",
-            message: "istifadeci movcuddur",
-            title: "duzgun giris",
-          });
+          // setAlert({
+          //   show: true,
+          //   severity: "success",
+          //   message: "istifadeci movcuddur",
+          //   title: "duzgun giris",
+          // });
           localStorage.setItem(
             "authkey",
             JSON.stringify(res.data.accsessToken)
@@ -63,12 +63,12 @@ export default function SignUp() {
       });
     } catch (err) {
       console.error("error", err);
-      setAlert({
-        show: true,
-        severity: "warning",
-        message: err.message,
-        title: "email ve ya parol sehvdir",
-      });
+      // setAlert({
+      //   show: true,
+      //   severity: "warning",
+      //   message: err.message,
+      //   title: "email ve ya parol sehvdir",
+      // });
     }
   };
 
@@ -186,14 +186,14 @@ export default function SignUp() {
           </Box>
         </Box>
       </Container>
-      {alert.show && (
+      {/* {alert.show && (
         // <MuiAlert
         //   severity={alert.severity}
         //   message={alert.message}
         //   title={alert.title}
         // />
         <MuiSnackbar message={alert.message} />
-      )}
+      )} */}
     </ThemeProvider>
   );
 }
