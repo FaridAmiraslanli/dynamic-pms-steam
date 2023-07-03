@@ -28,7 +28,7 @@ import { useForm } from "react-hook-form";
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const {  setAuthKey } = userStore();
+  const { setAuthKey } = userStore();
   const [alert, setAlert] = React.useState({
     show: false,
     severity: "",
@@ -133,7 +133,7 @@ export default function SignUp() {
                 }}
               >
                 <Link
-                  href="/forget"
+                  to="/forget"
                   variant="body2"
                   sx={{ color: "#62B273", textDecoration: "none" }}
                 >

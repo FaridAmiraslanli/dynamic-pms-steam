@@ -37,7 +37,7 @@ export default function SignIn() {
   } = useForm();
 
   const handleRegisterApi = async (formData) => {
-    const url = "http://localhost:8080/auth/register";
+    const url = "http://localhost:8080/auth/registration";
 
     console.log(formData);
     try {
