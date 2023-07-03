@@ -1,4 +1,5 @@
 import * as React from "react";
+import Axios from "axios";
 import {
   CssBaseline,
   Grid,
@@ -8,10 +9,10 @@ import {
   FormLabel,
   TextField,
   Stack,
-  Link,
-  FormHelperText,
+  // Link,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Link } from "react-router-dom";
 
 import { LongBtn } from "../buttons/LongBtn";
 import Or from "../or/Or";
@@ -20,30 +21,56 @@ import Password from "../Password";
 import Title from "../Title";
 import "../../assets/sass/mui-input-btn.scss";
 import { userStore } from "../../store/userStore";
-import { useEffect } from "react";
 import MuiAlert from "../alerts/MuiAlert";
-import { handleLoginApi } from "../../services/api.service";
-import axios from "axios";
+import { MuiSnackbar } from "../toasts/MuiSnackbar";
+import { useForm } from "react-hook-form";
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const { authKey, setAuthKey } = userStore();
+  const {  setAuthKey } = userStore();
   const [alert, setAlert] = React.useState({
     show: false,
     severity: "",
     message: "",
     title: "",
   });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  // React.useEffect(() => {
-  //   console.log("autkeyimiz", authKey);
-  //   if (authKey) {
-  //     console.log("authkey var");
-  //   } else {
-  //     console.log("yoxdu");
-  //   }
-  // }, [authKey]);
+  const handleLoginApi = async (formData) => {
+    const url = "http://localhost:8080/auth/login";
+    try {
+      await Axios.post(url, formData, {
+        headers: { "Content-Type": "application/json" },
+      }).then((res) => {
+        setAuthKey(res?.data.accsessToken);
+        if (res.data.accsessToken) {
+          setAlert({
+            show: true,
+            severity: "success",
+            message: "istifadeci movcuddur",
+            title: "duzgun giris",
+          });
+          localStorage.setItem(
+            "authkey",
+            JSON.stringify(res.data.accsessToken)
+          );
+        }
+      });
+    } catch (err) {
+      console.error("error", err);
+      setAlert({
+        show: true,
+        severity: "warning",
+        message: err.message,
+        title: "email ve ya parol sehvdir",
+      });
+    }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -63,7 +90,7 @@ export default function SignUp() {
           <Box
             component="form"
             noValidate
-            onSubmit={(event) => handleLoginApi(event, setAuthKey, setAlert)}
+            onSubmit={handleSubmit(handleLoginApi)}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
@@ -76,13 +103,25 @@ export default function SignUp() {
                   placeholder="Email Address"
                   name="email"
                   autoComplete="email"
+                  type={"email"}
+                  {...register("email", {
+                    validate: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+                  })}
+                  error={Boolean(errors.email)}
+                  helperText={
+                    Boolean(errors.email) && (
+                      <Typography>invalid email</Typography>
+                    )
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
                 <Password
                   sx={{ mb: 2 }}
-                  helperText="Forgot password"
+                  // helperText="helper text" --- doesnt work
                   variant="standard"
+                  register={register}
+                  errors={errors}
                 />
               </Grid>
               <Grid
@@ -102,9 +141,13 @@ export default function SignUp() {
                 </Link>
               </Grid>
               <Grid item xs={12}>
-                <Link href="/welcome">
-                  <LongBtn className="long-gray" text="Continue" />
-                </Link>
+                {/* <Link to="/"> */}
+                <LongBtn
+                  className="long-gray"
+                  text="Continue"
+                  // disabled={Boolean(errors.email)}
+                />
+                {/* </Link> */}
               </Grid>
             </Grid>
             <Or item sx={{ mt: 3 }} />
@@ -121,16 +164,20 @@ export default function SignUp() {
             <Grid container alignItems="center" justifyContent="center">
               <Grid item>
                 <Link
-                  href="#"
-                  variant="body2"
+                  to="#"
+                  // variant="body2"
                   sx={{ textDecoration: "none", color: "#000" }}
                 >
                   Already have an account?
                 </Link>
                 <Link
-                  href="/register"
-                  variant="body2"
-                  sx={{ color: "#62B273", pl: "10px", textDecoration: "none" }}
+                  to="/register"
+                  // variant="body2"
+                  sx={{
+                    color: "#62B273",
+                    pl: "10px",
+                    textDecoration: "none",
+                  }}
                 >
                   Sign up
                 </Link>
@@ -140,11 +187,12 @@ export default function SignUp() {
         </Box>
       </Container>
       {alert.show && (
-        <MuiAlert
-          severity={alert.severity}
-          message={alert.message}
-          title={alert.title}
-        />
+        // <MuiAlert
+        //   severity={alert.severity}
+        //   message={alert.message}
+        //   title={alert.title}
+        // />
+        <MuiSnackbar message={alert.message} />
       )}
     </ThemeProvider>
   );
