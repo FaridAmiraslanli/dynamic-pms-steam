@@ -41,8 +41,10 @@ export default function SignIn() {
     formState: { errors },
   } = useForm();
 
-  const handleLoginApi = async (formData) => {
-    const url = "http://localhost:8080/auth/login";
+  const handleRegisterApi = async (formData) => {
+    const url = "http://localhost:8080/auth/registration";
+
+    console.log(formData);
     try {
       await Axios.post(url, formData, {
         headers: { "Content-Type": "application/json" },
@@ -90,7 +92,9 @@ export default function SignIn() {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit(handleLoginApi)}
+            // onChange={(event) => handleValidation(event)}
+            onSubmit={handleSubmit(handleRegisterApi)}
+            // onSubmit={handleSubmit(onSubmit)}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2} sx={{marginTop:'10px'}}>
@@ -133,7 +137,7 @@ export default function SignIn() {
                 }}
               >
                 <Link
-                  href="/forget"
+                  to="/forget"
                   variant="body2"
                   sx={{ color: "#62B273", textDecoration: "none" }}
                 >

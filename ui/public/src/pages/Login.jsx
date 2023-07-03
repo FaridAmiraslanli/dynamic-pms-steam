@@ -6,16 +6,20 @@ import { useEffect } from "react";
 
 function Login() {
   const { authKey } = userStore();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // useEffect(() => {
   //   if (authKey){
   //     navigate("/home")
   //   }
   // }, [authKey])
-  if (authKey) {
-    return <Navigate to="/home" replace={true} />
-    
-  }
+  // if (authKey) {
+  //   return <Navigate to="/home" replace={true} />;
+  // }
+  // useEffect(() => {
+  //   if (authKey) {
+  //     window.location.url = "http://localhost:3001/home";
+  //   }
+  // }, []);
   return (
     <Layout>
       <SignIn />

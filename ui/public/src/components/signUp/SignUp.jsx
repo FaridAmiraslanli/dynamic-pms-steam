@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 // import signUpSchema from "../validations/signUpValidation";
 // import { handleRegisterApi } from "../../services/api.service";
-
+import { userStore } from "../../store/userStore";
 import { Link } from "react-router-dom";
 import Password from "../Password";
 import Title from "../Title";
@@ -29,7 +29,13 @@ import { useForm, SubmitHandler } from "react-hook-form";
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const formRef = React.useRef(null);
+  const {  setAuthKey } = userStore();
+  const [alert, setAlert] = React.useState({
+    show: false,
+    severity: "",
+    message: "",
+    title: "",
+  });
   const {
     register,
     handleSubmit,
@@ -74,7 +80,7 @@ export default function SignUp() {
           </Typography>
           <Box
             component="form"
-            ref={formRef}
+
             noValidate
             // onChange={(event) => handleValidation(event)}
             onSubmit={handleSubmit(handleRegisterApi)}
@@ -125,7 +131,29 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Password sx={{ mb: 3 }} register={register} errors={errors} />
+                <Password
+                  sx={{ mb: 2 }}
+                  // helperText="helper text" --- doesnt work
+                  variant="standard"
+                  register={register}
+                  errors={errors}
+                />
+              </Grid>
+              <Grid
+                sx={{
+                  mt: 1,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  width: "100%",
+                }}
+              >
+                {/* <Link
+                  to="/forget"
+                  variant="body2"
+                  sx={{ color: "#62B273", textDecoration: "none" }}
+                >
+                  Forgot password
+                </Link> */}
               </Grid>
               <Grid item xs={12}>
                 <LongBtn text="Continue" />
