@@ -1,0 +1,82 @@
+body{
+    background-color: #dbd9d9 !important;
+  }
+  
+  .textfield-outline{
+      background-color: #DDDDDD;
+      border: 0 solid transparent;
+    
+      &:hover{
+        outline: none !important;
+        border: none !important;
+        offset: none !important;
+      }
+    }
+    
+    .MuiOutlinedInput-root{
+      border-radius: 0px !important;
+    }
+    
+    .MuiOutlinedInput-notchedOutline{
+      border-color: #DDDDDD !important;
+    }
+  
+    .MuiGrid-root .css-vj1n65-MuiGrid-root{
+      display: flex !important;
+      justify-content: space-between !important;
+    }
+  
+  
+    .addBalance{
+      width: 150px !important;
+      background-color: #9EFF23 !important;
+      height: 50px ;
+      color: #000 !important;
+      border-radius: 10px !important;
+      margin-top: 20px !important;
+    }
+  
+  
+  
+  .middle-box{
+    background-color: #fff !important;
+    width: 800px;
+    height: 250px;
+  }
+  
+  .box-button{
+    display: flex;
+    justify-content: end;
+    margin-top: 55px;
+  }
+  
+  .middle-container{
+    display: flex !important;
+    justify-content: center;
+  }
+  
+  .support-grid{
+    display: flex;
+    justify-content: end;
+    margin-top: 90px;
+  }
+  
+  .support-button{
+    width: 170px;
+    background: #B0B0B0 !important;
+    height: 50px;
+    color: #000 !important;
+    border-radius: 20px !important;
+  }
+  
+  
+  .new-research{
+    margin-top: 20px !important;
+  }
+  
+  .url{
+    margin-top: 10px;
+    width: 95%;
+    margin: auto;
+    display: flex;
+  }
