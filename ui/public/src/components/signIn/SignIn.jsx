@@ -12,8 +12,6 @@ import {
   ThemeProvider,
   createTheme,
 } from "@mui/material";
-// import signUpSchema from "../validations/signUpValidation";
-// import { handleRegisterApi } from "../../services/api.service";
 
 import { Link } from "react-router-dom";
 import Password from "../Password";
@@ -22,30 +20,22 @@ import Or from "../or/Or";
 import { IconBtn } from "../buttons/IconBtn";
 import { LongBtn } from "../buttons/LongBtn";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import "../../assets/sass/mui-input-btn.scss";
 
-import { useForm, SubmitHandler } from "react-hook-form";
-import { MuiSnackbar } from "../toasts/MuiSnackbar";
+import { useForm } from "react-hook-form";
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
   const formRef = React.useRef(null);
-  const [alert, setAlert] = React.useState({
-    show: false,
-    message: ""
-  })
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      setAlert({show: false, message: ""})
-    }, 4000);
-  }, [alert])
 
   const handleRegisterApi = async (formData) => {
     const url = "http://localhost:8080/auth/registration";
@@ -61,18 +51,17 @@ export default function SignIn() {
       console.log("response", response);
 
       const data = await response.json();
-      console.log("data",data)
-      setAlert({show: true, message: data.message ? data.message : data})
-      // setAlert({show: false, message: ""})
+      console.log("data", data);
 
-
-
+      if (data.message) {
+        toast.warn(data.message);
+      } else {
+        toast.info(data);
+      }
     } catch (error) {
       console.log("handleSubmit error", error);
-      setAlert({show: true, message: "error"})
-      // setAlert({show: false, message: ""})
+      toast.error("error");
     }
-    
   };
 
   return (
@@ -187,9 +176,18 @@ export default function SignIn() {
           </Box>
         </Box>
       </Container>
-      {
-        alert.show && <MuiSnackbar message={alert.message} />
-      }
+      <ToastContainer
+        position="bottom-left"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </ThemeProvider>
   );
 }

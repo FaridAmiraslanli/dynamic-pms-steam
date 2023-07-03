@@ -14,10 +14,11 @@ import CreditPacks from "./pages/CreditPacks";
 import { userStore } from "./store/userStore";
 // import {AnimatePresence} from "framer-motion/dist/framer-motion";
 import {AnimatePresence} from "framer-motion";
+// import ChatPage from "./pages/ChatPage";
+import "./assets/sass/globals.scss"
 
 const App = () => {
   // TODO .env fayli olmalidi backend islemesi ucun
-  // TODO snackbar mui
   // TODO config js
   // TODO redux toolkit
   // TODO login duymesi yasil olsun
@@ -36,6 +37,7 @@ const App = () => {
         <Routes location={location} key={location.pathname}>
           <Route exact path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
+          {/* <Route path="/chatpage" element={<ChatPage />} /> */}
           <Route path="*" element={<Error />} />
           {/* <Route path="/login" /> */}
         </Routes>

@@ -21,20 +21,16 @@ import Password from "../Password";
 import Title from "../Title";
 import "../../assets/sass/mui-input-btn.scss";
 import { userStore } from "../../store/userStore";
-import MuiAlert from "../alerts/MuiAlert";
-import { MuiSnackbar } from "../toasts/MuiSnackbar";
 import { useForm } from "react-hook-form";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
   const { setAuthKey } = userStore();
-  const [alert, setAlert] = React.useState({
-    show: false,
-    severity: "",
-    message: "",
-    title: "",
-  });
   const {
     register,
     handleSubmit,
@@ -49,12 +45,6 @@ export default function SignUp() {
       }).then((res) => {
         setAuthKey(res?.data.accsessToken);
         if (res.data.accsessToken) {
-          // setAlert({
-          //   show: true,
-          //   severity: "success",
-          //   message: "istifadeci movcuddur",
-          //   title: "duzgun giris",
-          // });
           localStorage.setItem(
             "authkey",
             JSON.stringify(res.data.accsessToken)
@@ -63,12 +53,7 @@ export default function SignUp() {
       });
     } catch (err) {
       console.error("error", err);
-      // setAlert({
-      //   show: true,
-      //   severity: "warning",
-      //   message: err.message,
-      //   title: "email ve ya parol sehvdir",
-      // });
+      toast.error("sehv istifadeci melumatlari")
     }
   };
 
@@ -186,14 +171,18 @@ export default function SignUp() {
           </Box>
         </Box>
       </Container>
-      {/* {alert.show && (
-        // <MuiAlert
-        //   severity={alert.severity}
-        //   message={alert.message}
-        //   title={alert.title}
-        // />
-        <MuiSnackbar message={alert.message} />
-      )} */}
+      <ToastContainer
+        position="bottom-left"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </ThemeProvider>
   );
 }
