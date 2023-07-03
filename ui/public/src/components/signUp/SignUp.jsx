@@ -173,7 +173,7 @@ export default function SignUp() {
               <IconBtn icon="apple" />
             </Stack>
             <Grid container alignItems="center" justifyContent="center" >
-              <Grid item  sx={{marginTop:'20px'}}>
+              <Grid item  sx={{marginTop:'10px'}}>
                 <Link
                   to="#"
                   // variant="body2"
@@ -185,9 +185,10 @@ export default function SignUp() {
                 className="signinBtn"
                   to="/login"
                   // variant="body2"
-                  sx={{
+                  style={{
                     pl: "10px",
                     textDecoration: "none",
+                    paddingLeft:'3px'
                   }}
                 >
                   Sign in

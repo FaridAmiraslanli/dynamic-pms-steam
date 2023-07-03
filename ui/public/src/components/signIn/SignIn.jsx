@@ -139,7 +139,7 @@ export default function SignIn() {
                 <Link
                   to="/forget"
                   variant="body2"
-                  sx={{ color: "#62B273", textDecoration: "none" }}
+                  sx={{ color: "#62B273", textDecoration: "none"}}
                 >
                   Forgot password
                 </Link>
@@ -171,7 +171,7 @@ export default function SignIn() {
                     textDecoration: "none",
                   }}
            >
-              <Grid item sx={{marginTop:'20px'}}  >
+              <Grid item sx={{marginTop:'10px'}}  >
                 <Link
                   to="#"
                  
@@ -180,6 +180,7 @@ export default function SignIn() {
                 </Link>
                 <Link
                   to="/register"
+                 style={{ color: '#62B273',paddingLeft:'3px'}}
                  
                 >
                   Sign up
