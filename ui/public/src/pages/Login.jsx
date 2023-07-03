@@ -1,4 +1,4 @@
-import SignUp from "@components/signUp/SignUp";
+import SignIn from "@components/signIn/SignIn";
 import Layout from "../components/layout/Layout";
 import { userStore } from "../store/userStore";
 import { Navigate, redirect, useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ function Login() {
   // }, []);
   return (
     <Layout>
-      <SignUp />
+      <SignIn />
     </Layout>
   );
 }

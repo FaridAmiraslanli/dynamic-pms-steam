@@ -1,34 +1,35 @@
 import * as React from "react";
-import Axios from "axios";
 import {
-  CssBaseline,
-  Grid,
-  Box,
-  Typography,
-  Container,
-  FormLabel,
-  TextField,
   Stack,
+  FormLabel,
+  Container,
+  Typography,
+  Box,
+  Grid,
   // Link,
+  TextField,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
 } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+// import signUpSchema from "../validations/signUpValidation";
+// import { handleRegisterApi } from "../../services/api.service";
+import { userStore } from "../../store/userStore";
 import { Link } from "react-router-dom";
-
-import { LongBtn } from "../buttons/LongBtn";
-import Or from "../or/Or";
-import { IconBtn } from "../buttons/IconBtn";
 import Password from "../Password";
 import Title from "../Title";
+import Or from "../or/Or";
+import { IconBtn } from "../buttons/IconBtn";
+import { LongBtn } from "../buttons/LongBtn";
+
 import "../../assets/sass/mui-input-btn.scss";
-import { userStore } from "../../store/userStore";
-import MuiAlert from "../alerts/MuiAlert";
-import { MuiSnackbar } from "../toasts/MuiSnackbar";
-import { useForm } from "react-hook-form";
+
+import { useForm, SubmitHandler } from "react-hook-form";
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const { setAuthKey } = userStore();
+  const {  setAuthKey } = userStore();
   const [alert, setAlert] = React.useState({
     show: false,
     severity: "",
@@ -41,34 +42,24 @@ export default function SignUp() {
     formState: { errors },
   } = useForm();
 
-  const handleLoginApi = async (formData) => {
-    const url = "http://localhost:8080/auth/login";
+  const handleRegisterApi = async (formData) => {
+    const url = "http://localhost:8080/auth/registration";
+
+    console.log(formData);
     try {
-      await Axios.post(url, formData, {
+      const response = await fetch(url, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-      }).then((res) => {
-        setAuthKey(res?.data.accsessToken);
-        if (res.data.accsessToken) {
-          setAlert({
-            show: true,
-            severity: "success",
-            message: "istifadeci movcuddur",
-            title: "duzgun giris",
-          });
-          localStorage.setItem(
-            "authkey",
-            JSON.stringify(res.data.accsessToken)
-          );
-        }
+        body: JSON.stringify(formData),
       });
-    } catch (err) {
-      console.error("error", err);
-      setAlert({
-        show: true,
-        severity: "warning",
-        message: err.message,
-        title: "email ve ya parol sehvdir",
-      });
+
+      console.log("response", response);
+
+      const data = await response.json();
+
+      console.log("data", data);
+    } catch (error) {
+      console.log("handleSubmit error", error);
     }
   };
 
@@ -85,15 +76,39 @@ export default function SignUp() {
           }}
         >
           <Typography component="h1" variant="h5">
-            <Title text={"Welcome"} />
+            <Title text={"Create your account"} />
           </Typography>
           <Box
             component="form"
+
             noValidate
-            onSubmit={handleSubmit(handleLoginApi)}
+            // onChange={(event) => handleValidation(event)}
+            onSubmit={handleSubmit(handleRegisterApi)}
+            // onSubmit={handleSubmit(onSubmit)}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} variant="rounded">
+                <FormLabel component="legend">Full name</FormLabel>
+                <TextField
+                  autoComplete="given-name"
+                  name="fullName"
+                  fullWidth
+                  id="fullName"
+                  placeholder="Full Name"
+                  autoFocus
+                  error={Boolean(errors.username)}
+                  helperText={
+                    Boolean(errors.username) && (
+                      <Typography>invalid username</Typography>
+                    )
+                  }
+                  {...register("username", {
+                    validate: (val) => /^.{5,}$/.test(val),
+                  })}
+                />
+              </Grid>
+
               <Grid item xs={12}>
                 <FormLabel component="legend">Email</FormLabel>
                 <TextField
@@ -132,25 +147,21 @@ export default function SignUp() {
                   width: "100%",
                 }}
               >
-                <Link
+                {/* <Link
                   to="/forget"
                   variant="body2"
                   sx={{ color: "#62B273", textDecoration: "none" }}
                 >
                   Forgot password
-                </Link>
+                </Link> */}
               </Grid>
               <Grid item xs={12}>
-                {/* <Link to="/"> */}
-                <LongBtn
-                  className="long-gray"
-                  text="Continue"
-                  // disabled={Boolean(errors.email)}
-                />
-                {/* </Link> */}
+                <LongBtn text="Continue" />
               </Grid>
             </Grid>
+
             <Or item sx={{ mt: 3 }} />
+
             <Stack
               direction="row"
               spacing={2}
@@ -161,8 +172,8 @@ export default function SignUp() {
               <IconBtn icon="google" />
               <IconBtn icon="apple" />
             </Stack>
-            <Grid container alignItems="center" justifyContent="center">
-              <Grid item>
+            <Grid container alignItems="center" justifyContent="center" >
+              <Grid item  sx={{marginTop:'10px'}}>
                 <Link
                   to="#"
                   // variant="body2"
@@ -171,29 +182,22 @@ export default function SignUp() {
                   Already have an account?
                 </Link>
                 <Link
-                  to="/register"
+                className="signinBtn"
+                  to="/login"
                   // variant="body2"
-                  sx={{
-                    color: "#62B273",
+                  style={{
                     pl: "10px",
                     textDecoration: "none",
+                    paddingLeft:'3px'
                   }}
                 >
-                  Sign up
+                  Sign in
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
       </Container>
-      {alert.show && (
-        // <MuiAlert
-        //   severity={alert.severity}
-        //   message={alert.message}
-        //   title={alert.title}
-        // />
-        <MuiSnackbar message={alert.message} />
-      )}
     </ThemeProvider>
   );
 }
