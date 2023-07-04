@@ -34,7 +34,8 @@ export default function InputAdornments({ register, errors }) {
           minLength: 6,
           required: true,
           validate: (val) =>
-            /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/.test(val),
+          /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d$%^]*$/
+          .test(val),
         })}
         endAdornment={
           <InputAdornment position="end">

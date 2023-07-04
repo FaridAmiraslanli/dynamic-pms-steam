@@ -1,10 +1,20 @@
-import React from 'react'
-import styled from "styled-components"
-
-
+import React, { useRef, useState } from "react";
+import styled from "styled-components";
+import { BiSend } from "react-icons/bi";
+import {nanoid} from "nanoid"
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
 
 function ChatPage() {
+  const [messages, setMessages] = useState([]);
+  function clickHandler(){
+    if (areaRef.current.value !== ""){
+      // console.log(areaRef.current.value)
+      setMessages([...messages, areaRef.current.value])
+      areaRef.current.value = ""
+    }
+   console.log(messages)
+  }
+  const areaRef = useRef(null)
   return (
     <S.Container>
       <S.Header>
@@ -15,86 +25,29 @@ function ChatPage() {
         <S.SidebarMain></S.SidebarMain>
       </S.Sidebar>
       <S.Chat>
-        <S.Message who="user">
-          <p>asdasdasd</p>
-        </S.Message>
-        <S.Message who="bot">
-          <p>asdasd</p>
-        </S.Message>
-        <S.Message who="user">
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus,
-            dolorum.
-          </p>
-        </S.Message>
-        <S.Message who="bot">
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquam
-            iusto asperiores quasi repudiandae excepturi numquam possimus
-            voluptates perspiciatis odit. Ad maiores fuga aperiam. Illo quo
-            delectus provident tempore voluptates, dolore praesentium
-            necessitatibus error id totam impedit explicabo vitae amet
-            aspernatur architecto quia corrupti pariatur perferendis inventore
-            vero, facilis sunt numquam!
-          </p>
-        </S.Message>
-        <S.Message who="user">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-            placeat minima esse optio odit animi quis illum! Quas modi quis,
-            iure quisquam exercitationem natus repellendus mollitia voluptate
-            minus dicta repudiandae non voluptas facilis? Perspiciatis aliquid
-            unde officia veritatis nam neque mollitia dolor iusto. Tempora
-            perspiciatis sunt provident vel cumque doloremque.
-          </p>
-        </S.Message>
-        <S.Message who="bot">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat
-            rerum aperiam omnis maiores, perspiciatis laudantium, tenetur
-            provident natus laborum dolorum placeat autem, nisi alias eveniet
-            adipisci consequuntur tempore hic modi dolores et eaque praesentium
-            ab esse similique? Praesentium explicabo eveniet quibusdam amet
-            commodi reiciendis, adipisci odit officiis rerum, aliquid asperiores
-            eaque voluptatem illum iure. Rerum necessitatibus delectus unde?
-            Eius omnis eaque ab dolorem voluptatem, inventore dolor numquam
-            ipsum, doloribus labore vel suscipit ducimus nihil voluptatum
-            perferendis veniam? Veniam id cupiditate incidunt. Eligendi aperiam
-            quasi hic modi in omnis, nostrum, repellendus adipisci, fuga ullam
-            placeat porro labore laborum dolorem voluptatem iusto?
-          </p>
-        </S.Message>
-        <S.Message who="user">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-            placeat minima esse optio odit animi quis illum! Quas modi quis,
-            iure quisquam exercitationem natus repellendus mollitia voluptate
-            minus dicta repudiandae non voluptas facilis? Perspiciatis aliquid
-            unde officia veritatis nam neque mollitia dolor iusto. Tempora
-            perspiciatis sunt provident vel cumque doloremque.
-          </p>
-        </S.Message>
-        <S.Message who="bot">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat
-            rerum aperiam omnis maiores, perspiciatis laudantium, tenetur
-            provident natus laborum dolorum placeat autem, nisi alias eveniet
-            adipisci consequuntur tempore hic modi dolores et eaque praesentium
-            ab esse similique? Praesentium explicabo eveniet quibusdam amet
-            commodi reiciendis, adipisci odit officiis rerum, aliquid asperiores
-            eaque voluptatem illum iure. Rerum necessitatibus delectus unde?
-            Eius omnis eaque ab dolorem voluptatem, inventore dolor numquam
-            ipsum, doloribus labore vel suscipit ducimus nihil voluptatum
-            perferendis veniam? Veniam id cupiditate incidunt. Eligendi aperiam
-            quasi hic modi in omnis, nostrum, repellendus adipisci, fuga ullam
-            placeat porro labore laborum dolorem voluptatem iusto?
-          </p>
-        </S.Message>
+        <S.MessagesContainer>
+          <S.Message who="user">
+            <p>Best RPG Games</p>
+          </S.Message>
+          <S.Message who="bot">
+            <p>When it comes to RPG (Role-Playing Game) games, there are many fantastic options available. The "best" RPG games can vary depending on personal preferences, but here are some highly acclaimed and popular RPG games that have received widespread praise:</p>
+          </S.Message>
+          {
+            messages.map(msg => <S.Message key={nanoid()} who="user">
+              <p>{msg}</p>
+            </S.Message>)
+          }
+        </S.MessagesContainer>
+        <S.Prompt>
+          <textarea ref={areaRef} />
+          <button onClick={clickHandler}>
+            <BiSend />
+          </button>
+        </S.Prompt>
       </S.Chat>
     </S.Container>
   );
 }
-
 
 const S = {
   Container: styled.div`
@@ -134,6 +87,14 @@ const S = {
     height: 100%;
     width: 100%;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `,
+  MessagesContainer: styled.div`
+    flex: 1;
+    margin-bottom: 120px;
+    width: 750px;
   `,
   Message: styled.div`
     background-color: ${(props) =>
@@ -156,6 +117,39 @@ const S = {
         props.who === "user" ? "white" : "green"};
     }
   `,
+  Prompt: styled.div`
+    width: 750px;
+    justify-self: flex-end;
+    position: fixed;
+    bottom: 20px;
+
+    button {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      background-color: transparent;
+      border: 0;
+      font-size: 1.5rem;
+    }
+
+    textarea {
+      width: 100%;
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      height: 80px;
+      border-radius: 8px;
+      background-color: white;
+      border: 0;
+      resize: none;
+      padding: 15px;
+      &:focus,
+      &:active {
+        border: 0;
+        outline: 0;
+      }
+    }
+  `,
 };
 
-export default ChatPage
+export default ChatPage;
