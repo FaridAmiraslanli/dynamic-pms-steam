@@ -1,7 +1,7 @@
 import { Box, Button, Container, FormLabel, Grid, TextField, Typography } from '@mui/material'
 import React from 'react'
-import "./newresearches-cost.scss"
-const NewResearchesCost = () => {
+import "./newresearches.scss"
+const NewResearches = () => {
   return (
     <>
      <Container>
@@ -44,33 +44,32 @@ const NewResearchesCost = () => {
       }} align='center' className='new-research'>
         New research
       </Typography>
- <Typography align='center'
- sx={{
-  color: "#C6C6C6"
- }}>We'll analyze 25,000 reviews</Typography>
 
+      <Grid className='grid-outline' sx={{padding: "5px"}} item xs={12} sm={12} variant="rounded">
+                <FormLabel className='url' component="legend">URL</FormLabel>
+                <TextField
+                  className='textfield-outline Mui-focused'
+                  autoComplete="given-name"
+                  name="fullName"
+                  fullWidth="920px"
+                  id="fullName"
+                  placeholder="Enter steam url"
+                  autoFocus={false}
+                  sx={{
+                    borderColor: "#DDDDDD",
+                    width: "95%",
+                    display: "flex",
+                    margin: "auto"
+                  }}
+                />
+              </Grid>
  <Box sx={{
   display: "flex",
   justifyContent: "center",
   marginTop: "25px"
  }}>
-  <Typography
-  sx={{
-    textAlign: "center",
-    alignSelf: "center"
-  }}
-  >Total cost</Typography>
-  <Button className='100-credit'
-  sx={{
-    padding: "0",
-    backgroundColor: "#5C5C5C",
-    color: "#fff",
-    width: "100px",
-    height: "35px",
-    borderRadius: "0",
-    marginLeft: "10px",
-    textTransform: "none"
-  }}>100 credit</Button>
+ 
+
  </Box>
                 <Box className="box-button">
                      <Button sx={{
@@ -108,4 +107,4 @@ const NewResearchesCost = () => {
     </>
   )
 }
-export default NewResearchesCost;
+export default NewResearches;

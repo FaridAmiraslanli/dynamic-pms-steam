@@ -5,6 +5,8 @@ body{
   .textfield-outline{
       background-color: #DDDDDD;
       border: 0 solid transparent;
+  
+
     
       &:hover{
         outline: none !important;
@@ -47,7 +49,7 @@ body{
   .box-button{
     display: flex;
     justify-content: end;
-    margin-top: 55px;
+    margin-top: 20px;
   }
   
   .middle-container{
