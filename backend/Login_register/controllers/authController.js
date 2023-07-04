@@ -13,6 +13,17 @@ router.post("/registration", async (req, res, next) => {
       next(err);
       // return res.status(400).json({ message: "Email already exists" });
     }
+
+    if (password.length <= 6) {
+      const err = new Error("Password is required to be at least 6 character");
+      next(err);
+    }
+
+    if (!(/\d/.test(password) && /[a-zA-Z]/.test(password))) {
+      const err = new Error("Password must contain both letters and numbers");
+      next(err);
+    }
+
     const hashedPassword = cryto.pbkdf2Sync(
       password,
       process.env.SALT,
@@ -20,6 +31,7 @@ router.post("/registration", async (req, res, next) => {
       64,
       "sha512"
     );
+
 
     const user = await User.create({
       username,
@@ -53,7 +65,7 @@ router.post("/login", async (req, res) => {
       res.status(200).json({ user, accsessToken });
     } else {
       const err = new Error("Email or password is wrong");
-      next(err)
+      next(err);
       // res.status(401).json({ message: "Email or password is wrong" });
     }
   } catch (error) {
