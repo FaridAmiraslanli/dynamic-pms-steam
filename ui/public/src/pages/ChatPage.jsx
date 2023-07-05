@@ -1,20 +1,56 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { BiSend } from "react-icons/bi";
-import {nanoid} from "nanoid"
+import { nanoid } from "nanoid";
+// import openai from "openai";
+
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
 
 function ChatPage() {
   const [messages, setMessages] = useState([]);
-  function clickHandler(){
-    if (areaRef.current.value !== ""){
-      // console.log(areaRef.current.value)
-      setMessages([...messages, areaRef.current.value])
-      areaRef.current.value = ""
+  function keyHandler(e) {
+    if (e.key === "Enter") {
+      addMessage();
     }
-   console.log(messages)
   }
-  const areaRef = useRef(null)
+
+  const sendMessage = async (message) => {
+    const apiKey = "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";
+    const url = "https://api.openai.com/v1/chat/completions";
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{role: "user", content: message}],
+        max_tokens: 100,
+      }),
+    }
+    await fetch(url, options)
+      .then((res) => res.json())
+      .then((data) => {
+        let obj = {content: data.choices[0].message.content, who: "bot"}
+        setMessages(prev => [...prev, obj])
+      });
+  };
+
+  function addMessage() {
+    if (areaRef.current.value.trim() !== "") {
+      let obj = {content: areaRef.current.value, who: "user"}
+      setMessages(prev => [...prev, obj])
+
+      sendMessage(areaRef.current.value);
+      areaRef.current.value = "";
+    }
+  }
+  function clickHandler() {
+    addMessage();
+  }
+
+  const areaRef = useRef(null);
   return (
     <S.Container>
       <S.Header>
@@ -26,20 +62,26 @@ function ChatPage() {
       </S.Sidebar>
       <S.Chat>
         <S.MessagesContainer>
-          <S.Message who="user">
+          {/* <S.Message who="user">
             <p>Best RPG Games</p>
           </S.Message>
           <S.Message who="bot">
-            <p>When it comes to RPG (Role-Playing Game) games, there are many fantastic options available. The "best" RPG games can vary depending on personal preferences, but here are some highly acclaimed and popular RPG games that have received widespread praise:</p>
-          </S.Message>
-          {
-            messages.map(msg => <S.Message key={nanoid()} who="user">
-              <p>{msg}</p>
-            </S.Message>)
-          }
+            <p>
+              When it comes to RPG (Role-Playing Game) games, there are many
+              fantastic options available. The "best" RPG games can vary
+              depending on personal preferences, but here are some highly
+              acclaimed and popular RPG games that have received widespread
+              praise:
+            </p>
+          </S.Message> */}
+          {messages.map((msg) => (
+            <S.Message key={nanoid()} who={msg.who}>
+              <p>{msg.content}</p>
+            </S.Message>
+          ))}
         </S.MessagesContainer>
         <S.Prompt>
-          <textarea ref={areaRef} />
+          <textarea placeholder="ask me a question" ref={areaRef} onKeyDown={keyHandler} />
           <button onClick={clickHandler}>
             <BiSend />
           </button>
