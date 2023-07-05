@@ -14,7 +14,8 @@ import CreditPacks from "./pages/CreditPacks";
 import { userStore } from "./store/userStore";
 // import {AnimatePresence} from "framer-motion/dist/framer-motion";
 import {AnimatePresence} from "framer-motion";
-import './assets/sass/globals.scss'
+
+
 const App = () => {
   // TODO .env fayli olmalidi backend islemesi ucun
   // TODO snackbar mui
@@ -31,6 +32,8 @@ const App = () => {
   }, []);
 
   return (
+
+  
     <AnimatePresence>
       {authKey ? (
         <Routes location={location} key={location.pathname}>
