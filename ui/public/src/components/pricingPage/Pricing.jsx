@@ -10,9 +10,9 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import './pricing.scss'
-// import PricingCard from './PricingCards';
+
 
 
 const tiers = [
@@ -81,7 +81,8 @@ export default function Pricing() {
    
       {/* Hero unit */}
       
-      <Container  disableGutters component="main" sx={{ pt: 8, pb: 6, display: "flex", justifyContent: "center"}}>
+      <Grid container  disableGutters component="main"  className='main' spacing={5} sx={{ pt: 8, pb: 6, display: "flex", justifyContent: "flex-end"}}>
+        <Grid  item md={8} sx={{ display: "flex",justifyContent:"flex-end"}}>
         <Typography
           component="h1"
           variant="h1"
@@ -89,19 +90,36 @@ export default function Pricing() {
           color="#FFFFFF"
           gutterBottom
           bgcolor='#695B5B'
-          width='420px'
+          width='469px'
           height='80px'
           display='flex'
           justifyContent='center'
           alignItems='center'
           fontSize='24px'
+         
         >
           Credit Packs
         </Typography>
-        <Button variant="contained" sx={{width: '300px', height:'40px', bgcolor:'#9EFF23', color: '#000000', position: "absolute", right: "10px"}} >Try Demo</Button>
-      </Container>
+        </Grid>
+       
+        <Grid
+        item md={4}
+        display="flex"
+      justifyContent={{sm: 'center', xs: 'center', md: 'end'}}>
+        <Button
+         variant="contained" sx={{width: '300px', height:'40px', bgcolor:'#9EFF23', color: '#000000'}} >Try Demo</Button>
+         </Grid>
 
-      <Container  /*maxWidth="md"*/ /*component="main"*/>
+
+
+        
+
+
+
+      
+      </Grid>
+
+      <Container  /*className="sabina"*/ maxWidth='xl' /*component="main"*/>
         <Grid container spacing={5} /*alignItems="flex-end"*/>
           {tiers.map((tier) => (
             // Enterprise card is full width at sm breakpoint
@@ -131,13 +149,13 @@ export default function Pricing() {
                 />
                 <CardContent >
                   <Box
+                  
                     sx={{
                       color:'#000000',
                       // display: 'flex',
                       // justifyContent: 'center',
                       mb: 2,
                     height:'200px'
-          
                     }}
                   >
                  
@@ -162,7 +180,7 @@ export default function Pricing() {
                 
                 </CardContent>
                 <CardActions>
-                  <Button variant="contained" sx={{width: '90%', bgcolor:'#9EFF23', color: '#000000', margin: 'auto', marginBottom: "30px"}} >
+                  <Button variant="contained" sx={{width: '90%', height:"50px", bgcolor:'#9EFF23', color: '#000000', margin: 'auto', marginBottom: "30px"}} >
                     {tier.buttonText}
                   </Button>
                 </CardActions>
