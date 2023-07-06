@@ -14,26 +14,18 @@ import { LongBtn } from "../buttons/LongBtn";
 import Title from "../Title";
 import "../../assets/sass/mui-input-btn.scss";
 import { useForm, SubmitHandler } from "react-hook-form";
-
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const defaultTheme = createTheme();
 
 export default function ForgetPassword() {
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get("email"),
-  //     password: data.get("password"),
-  //   });
-  // };
+
   const handleForget = async (formData) => {
     const url = "http://localhost:8080/user/forgot-password";
 
@@ -49,11 +41,18 @@ export default function ForgetPassword() {
 
       const data = await response.json();
 
+      if(data.message){
+        toast.warn(data.message)
+      } else {
+
+        toast.info(data)
+      }
+
       console.log("data", data);
     } catch (error) {
       console.log("handleSubmit error", error);
     }
-  }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -96,7 +95,6 @@ export default function ForgetPassword() {
                     )
                   }
                   error={Boolean(errors.email)}
-
                   {...register("email", {
                     validate: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
                   })}
@@ -104,10 +102,7 @@ export default function ForgetPassword() {
               </Grid>
               <Grid item xs={12}>
                 {/* <Link to={"/check"} variant="body2"> */}
-                <LongBtn
-                  className="long-green-1"
-                  text="Reset password"
-                />
+                <LongBtn className="long-green-1" text="Reset password" />
                 {/* </Link> */}
               </Grid>
               <Grid item xs={12}>
@@ -123,6 +118,18 @@ export default function ForgetPassword() {
           </Box>
         </Box>
       </Container>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </ThemeProvider>
   );
 }
