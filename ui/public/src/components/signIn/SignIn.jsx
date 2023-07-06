@@ -1,40 +1,36 @@
 import * as React from "react";
-import Axios from "axios";
 import {
-  CssBaseline,
-  Grid,
-  Box,
-  Typography,
-  Container,
-  FormLabel,
-  TextField,
   Stack,
+  FormLabel,
+  Container,
+  Typography,
+  Box,
+  Grid,
   // Link,
+  TextField,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
 } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
 
-import { LongBtn } from "../buttons/LongBtn";
-import Or from "../or/Or";
-import { IconBtn } from "../buttons/IconBtn";
+import { Link } from "react-router-dom";
 import Password from "../Password";
 import Title from "../Title";
+import Or from "../or/Or";
+import { IconBtn } from "../buttons/IconBtn";
+import { LongBtn } from "../buttons/LongBtn";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import "../../assets/sass/mui-input-btn.scss";
-import { userStore } from "../../store/userStore";
-import MuiAlert from "../alerts/MuiAlert";
-import { MuiSnackbar } from "../toasts/MuiSnackbar";
+
 import { useForm } from "react-hook-form";
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const {  setAuthKey } = userStore();
-  const [alert, setAlert] = React.useState({
-    show: false,
-    severity: "",
-    message: "",
-    title: "",
-  });
+  const formRef = React.useRef(null);
   const {
     register,
     handleSubmit,
@@ -46,31 +42,25 @@ export default function SignIn() {
 
     console.log(formData);
     try {
-      await Axios.post(url, formData, {
+      const response = await fetch(url, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-      }).then((res) => {
-        setAuthKey(res?.data.accsessToken);
-        if (res.data.accsessToken) {
-          setAlert({
-            show: true,
-            severity: "success",
-            message: "istifadeci movcuddur",
-            title: "duzgun giris",
-          });
-          localStorage.setItem(
-            "authkey",
-            JSON.stringify(res.data.accsessToken)
-          );
-        }
+        body: JSON.stringify(formData),
       });
-    } catch (err) {
-      console.error("error", err);
-      setAlert({
-        show: true,
-        severity: "warning",
-        message: err.message,
-        title: "email ve ya parol sehvdir",
-      });
+
+      console.log("response", response);
+
+      const data = await response.json();
+      console.log("data", data);
+
+      if (data.message) {
+        toast.warn(data.message);
+      } else {
+        toast.info(data);
+      }
+    } catch (error) {
+      console.log("handleSubmit error", error);
+      toast.error("error");
     }
   };
 
@@ -87,17 +77,39 @@ export default function SignIn() {
           }}
         >
           <Typography component="h1" variant="h5">
-            <Title text={"Welcome"} />
+            <Title text={"Create your account"} />
           </Typography>
           <Box
             component="form"
+            ref={formRef}
             noValidate
             // onChange={(event) => handleValidation(event)}
             onSubmit={handleSubmit(handleRegisterApi)}
             // onSubmit={handleSubmit(onSubmit)}
             sx={{ mt: 3 }}
           >
-            <Grid container spacing={2} sx={{marginTop:'10px'}}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} variant="rounded">
+                <FormLabel component="legend">Full name</FormLabel>
+                <TextField
+                  autoComplete="given-name"
+                  name="fullName"
+                  fullWidth
+                  id="fullName"
+                  placeholder="Full Name"
+                  autoFocus
+                  error={Boolean(errors.username)}
+                  helperText={
+                    Boolean(errors.username) && (
+                      <Typography>invalid username</Typography>
+                    )
+                  }
+                  {...register("username", {
+                    validate: (val) => /^.{5,}$/.test(val),
+                  })}
+                />
+              </Grid>
+
               <Grid item xs={12}>
                 <FormLabel component="legend">Email</FormLabel>
                 <TextField
@@ -120,41 +132,15 @@ export default function SignIn() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Password
-                  sx={{ mb: 2 }}
-                  // helperText="helper text" --- doesnt work
-                  variant="standard"
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-              <Grid
-                sx={{
-                  mt: 1,
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  width: "100%",
-                }}
-              >
-                <Link
-                  to="/forget"
-                  variant="body2"
-                  sx={{ color: "#62B273", textDecoration: "none"}}
-                >
-                  Forgot password
-                </Link>
+                <Password sx={{ mb: 3 }} register={register} errors={errors} />
               </Grid>
               <Grid item xs={12}>
-                {/* <Link to="/"> */}
-                <LongBtn
-                  className="long-gray"
-                  text="Continue"
-                  // disabled={Boolean(errors.email)}
-                />
-                {/* </Link> */}
+                <LongBtn text="Continue" />
               </Grid>
             </Grid>
+
             <Or item sx={{ mt: 3 }} />
+
             <Stack
               direction="row"
               spacing={2}
@@ -165,39 +151,43 @@ export default function SignIn() {
               <IconBtn icon="google" />
               <IconBtn icon="apple" />
             </Stack>
-            <Grid container alignItems="center" justifyContent="center" style={{
-                    color: "#62B273",
-                    pl: "10px",
-                    textDecoration: "none",
-                  }}
-           >
-              <Grid item sx={{marginTop:'10px'}}  >
+            <Grid container alignItems="center" justifyContent="center">
+              <Grid item>
                 <Link
                   to="#"
-                 
+                  // variant="body2"
+                  sx={{ textDecoration: "none", color: "#000" }}
                 >
                   Already have an account?
                 </Link>
                 <Link
-                  to="/register"
-                 style={{ color: '#62B273',paddingLeft:'3px'}}
-                 
+                  to="/login"
+                  // variant="body2"
+                  sx={{
+                    color: "#62B273",
+                    pl: "10px",
+                    textDecoration: "none",
+                  }}
                 >
-                  Sign up
+                  Sign in
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
       </Container>
-      {alert.show && (
-        // <MuiAlert
-        //   severity={alert.severity}
-        //   message={alert.message}
-        //   title={alert.title}
-        // />
-        <MuiSnackbar message={alert.message} />
-      )}
+      <ToastContainer
+        position="bottom-left"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </ThemeProvider>
   );
 }
