@@ -1,12 +1,9 @@
 import { Link } from "react-router-dom";
+import ChatPage from "./ChatPage";
+import Layout from "../components/layout/Layout";
 
 const Home = () => {
-  return (
-    <>
-      <h1>Header</h1>
-      <Link to="/chatpage" />
-    </>
-  );
+  return <ChatPage />;
 };
 
 export default Home;
