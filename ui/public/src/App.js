@@ -14,8 +14,10 @@ import CreditPacks from "./pages/CreditPacks";
 import { userStore } from "./store/userStore";
 // import {AnimatePresence} from "framer-motion/dist/framer-motion";
 import {AnimatePresence} from "framer-motion";
-// import ChatPage from "./pages/ChatPage";
-import "./assets/sass/globals.scss"
+import NewResearchesCost from "./components/newreseacrhes-cost/newresearches-cost";
+import NewResearches from "./components/newresearches/newresearches";
+import DemoResearches from "./components/demo-researches/demoresearches"; 
+
 
 const App = () => {
   // TODO .env fayli olmalidi backend islemesi ucun
@@ -37,7 +39,9 @@ const App = () => {
         <Routes location={location} key={location.pathname}>
           <Route exact path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
-          {/* <Route path="/chatpage" element={<ChatPage />} /> */}
+          <Route path="newresearch" element={<NewResearches />} />
+          <Route path="researchcost" element={<NewResearchesCost />} />
+          <Route path="demoresearch" element={<DemoResearches />} />
           <Route path="*" element={<Error />} />
           {/* <Route path="/login" /> */}
         </Routes>
