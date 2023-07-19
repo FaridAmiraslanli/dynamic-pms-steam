@@ -1,66 +1,58 @@
 import * as React from "react";
+import Axios from "axios";
 import {
-  Stack,
-  FormLabel,
-  Container,
-  Typography,
-  Box,
-  Grid,
-  // Link,
-  TextField,
   CssBaseline,
-  ThemeProvider,
-  createTheme,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  FormLabel,
+  TextField,
+  Stack,
+  // Link,
 } from "@mui/material";
-
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-import Password from "../Password";
-import Title from "../Title";
+
+import { LongBtn } from "../buttons/LongBtn";
 import Or from "../or/Or";
 import { IconBtn } from "../buttons/IconBtn";
-import { LongBtn } from "../buttons/LongBtn";
+import Password from "../Password";
+import Title from "../Title";
+import "../../assets/sass/mui-input-btn.scss";
+import { userStore } from "../../store/userStore";
+import { useForm } from "react-hook-form";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import "../../assets/sass/mui-input-btn.scss";
-
-import { useForm } from "react-hook-form";
-
 const defaultTheme = createTheme();
 
-export default function SignIn() {
-  const formRef = React.useRef(null);
+export default function SignUp() {
+  const { setAuthKey } = userStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const handleRegisterApi = async (formData) => {
-    const url = "http://localhost:8080/auth/registration";
-
-    console.log(formData);
+  const handleLoginApi = async (formData) => {
+    const url = "http://localhost:8080/auth/login";
     try {
-      const response = await fetch(url, {
-        method: "POST",
+      await Axios.post(url, formData, {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      }).then((res) => {
+        setAuthKey(res?.data.accsessToken);
+        if (res.data.accsessToken) {
+          localStorage.setItem(
+            "authkey",
+            JSON.stringify(res.data.accsessToken)
+          );
+        }
       });
-
-      console.log("response", response);
-
-      const data = await response.json();
-      console.log("data", data);
-
-      if (data.message) {
-        toast.warn(data.message);
-      } else {
-        toast.info(data);
-      }
-    } catch (error) {
-      console.log("handleSubmit error", error);
-      toast.error("error");
+    } catch (err) {
+      console.error("error", err);
+      toast.error("sehv istifadeci melumatlari");
     }
   };
 
@@ -77,39 +69,15 @@ export default function SignIn() {
           }}
         >
           <Typography component="h1" variant="h5">
-            <Title text={"Create your account"} />
+            <Title text={"Welcome"} />
           </Typography>
           <Box
             component="form"
-            ref={formRef}
             noValidate
-            // onChange={(event) => handleValidation(event)}
-            onSubmit={handleSubmit(handleRegisterApi)}
-            // onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(handleLoginApi)}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={12} variant="rounded">
-                <FormLabel component="legend">Full name</FormLabel>
-                <TextField
-                  autoComplete="given-name"
-                  name="fullName"
-                  fullWidth
-                  id="fullName"
-                  placeholder="Full Name"
-                  autoFocus
-                  error={Boolean(errors.username)}
-                  helperText={
-                    Boolean(errors.username) && (
-                      <Typography>invalid username</Typography>
-                    )
-                  }
-                  {...register("username", {
-                    validate: (val) => /^.{5,}$/.test(val),
-                  })}
-                />
-              </Grid>
-
               <Grid item xs={12}>
                 <FormLabel component="legend">Email</FormLabel>
                 <TextField
@@ -132,15 +100,41 @@ export default function SignIn() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Password sx={{ mb: 3 }} register={register} errors={errors} />
+                <Password
+                  sx={{ mb: 2 }}
+                  // helperText="helper text" --- doesnt work
+                  variant="standard"
+                  register={register}
+                  errors={errors}
+                />
+              </Grid>
+              <Grid
+                sx={{
+                  mt: 1,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  width: "100%",
+                }}
+              >
+                <Link
+                  to="/forget"
+                  variant="body2"
+                  sx={{ color: "#62B273", textDecoration: "none" }}
+                >
+                  Forgot password
+                </Link>
               </Grid>
               <Grid item xs={12}>
-                <LongBtn text="Continue" />
+                {/* <Link to="/"> */}
+                <LongBtn
+                  className="long-gray"
+                  text="Continue"
+                  // disabled={Boolean(errors.email)}
+                />
+                {/* </Link> */}
               </Grid>
             </Grid>
-
             <Or item sx={{ mt: 3 }} />
-
             <Stack
               direction="row"
               spacing={2}
@@ -161,7 +155,7 @@ export default function SignIn() {
                   Already have an account?
                 </Link>
                 <Link
-                  to="/login"
+                  to="/register"
                   // variant="body2"
                   sx={{
                     color: "#62B273",
@@ -169,7 +163,7 @@ export default function SignIn() {
                     textDecoration: "none",
                   }}
                 >
-                  Sign in
+                  Sign up
                 </Link>
               </Grid>
             </Grid>

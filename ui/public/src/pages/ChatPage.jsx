@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { BiSend } from "react-icons/bi";
 import { nanoid } from "nanoid";
+import { useEffect } from "react";
 // import openai from "openai";
 
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
@@ -13,6 +14,17 @@ function ChatPage() {
       addMessage();
     }
   }
+
+  // load messages from local storage 
+  useEffect(() => {
+    let lsMsgs = localStorage.getItem("ls-msgs")
+    lsMsgs !== null && setMessages(JSON.parse(lsMsgs))
+  }, [])
+  
+  // save messages to local storage 
+  useEffect(() => {
+    localStorage.setItem("ls-msgs", JSON.stringify(messages));
+  }, [messages])
 
   const sendMessage = async (message) => {
     const apiKey = "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";
@@ -62,18 +74,6 @@ function ChatPage() {
       </S.Sidebar>
       <S.Chat>
         <S.MessagesContainer>
-          {/* <S.Message who="user">
-            <p>Best RPG Games</p>
-          </S.Message>
-          <S.Message who="bot">
-            <p>
-              When it comes to RPG (Role-Playing Game) games, there are many
-              fantastic options available. The "best" RPG games can vary
-              depending on personal preferences, but here are some highly
-              acclaimed and popular RPG games that have received widespread
-              praise:
-            </p>
-          </S.Message> */}
           {messages.map((msg) => (
             <S.Message key={nanoid()} who={msg.who}>
               <p>{msg.content}</p>
@@ -146,6 +146,7 @@ const S = {
     align-items: center;
     gap: 20px;
     padding: 20px;
+    border-radius: 4px;
 
     p {
       width: 94%;
