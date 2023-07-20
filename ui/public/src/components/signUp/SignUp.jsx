@@ -29,7 +29,7 @@ import { useForm } from "react-hook-form";
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function SignUp() {
   const formRef = React.useRef(null);
   const {
     register,

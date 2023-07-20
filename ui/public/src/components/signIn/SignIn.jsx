@@ -12,7 +12,7 @@ import {
   // Link,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import { LongBtn } from "../buttons/LongBtn";
 import Or from "../or/Or";
@@ -28,7 +28,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
+export default function SignIn() {
+  const navigate = useNavigate();
+
   const { setAuthKey } = userStore();
   const {
     register,
@@ -48,6 +50,7 @@ export default function SignUp() {
             "authkey",
             JSON.stringify(res.data.accsessToken)
           );
+          navigate("/home");
         }
       });
     } catch (err) {
@@ -68,7 +71,7 @@ export default function SignUp() {
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" color="white">
             <Title text={"Welcome"} />
           </Typography>
           <Box
