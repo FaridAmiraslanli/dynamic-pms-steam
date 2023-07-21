@@ -15,7 +15,7 @@ import { todaysDate } from "../utils/todaysDate";
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
 
 function ChatPage() {
-  const areaRef = useRef(null);
+  const [areaValue, setAreaValue] = useState("");
   const [messages, setMessages] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [parent] = useAutoAnimate();
@@ -58,12 +58,11 @@ function ChatPage() {
   };
 
   function addMessage() {
-    if (areaRef.current.value.trim() !== "") {
-      let obj = { content: areaRef.current.value, who: "user" };
+    if (areaValue.trim() !== "") {
+      let obj = { content: areaValue, who: "user" };
       setMessages((prev) => [...prev, obj]);
-
-      sendMessage(areaRef.current.value);
-      areaRef.current.value = "";
+      sendMessage(areaValue);
+      setAreaValue("");
     }
   }
 
@@ -114,9 +113,11 @@ function ChatPage() {
         </S.MessagesContainer>
         <S.Prompt>
           <textarea
+            autoFocus
             placeholder="ask me a question"
-            ref={areaRef}
             onKeyDown={keyHandler}
+            value={areaValue}
+            onChange={e => setAreaValue(e.target.value)}
           />
           <button onClick={addMessage}>
             <BiSend />

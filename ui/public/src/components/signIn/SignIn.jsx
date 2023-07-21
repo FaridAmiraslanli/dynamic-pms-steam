@@ -11,19 +11,21 @@ import {
   Stack,
   // Link,
 } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
+import {Link, Navigate, useNavigate} from "react-router-dom";
+// import styled from "styled-components";
+// import { styled } from "@mui/material/styles";
 
-import { LongBtn } from "../buttons/LongBtn";
+import {LongBtn} from "../buttons/LongBtn";
 import Or from "../or/Or";
-import { IconBtn } from "../buttons/IconBtn";
+import {IconBtn} from "../buttons/IconBtn";
 import Password from "../Password";
 import Title from "../Title";
 import "../../assets/sass/mui-input-btn.scss";
-import { userStore } from "../../store/userStore";
-import { useForm } from "react-hook-form";
+import {userStore} from "../../store/userStore";
+import {useForm} from "react-hook-form";
 
-import { ToastContainer, toast } from "react-toastify";
+import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const defaultTheme = createTheme();
@@ -31,18 +33,18 @@ const defaultTheme = createTheme();
 export default function SignIn() {
   const navigate = useNavigate();
 
-  const { setAuthKey } = userStore();
+  const {setAuthKey} = userStore();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm();
 
   const handleLoginApi = async (formData) => {
     const url = "http://localhost:8080/auth/login";
     try {
       await Axios.post(url, formData, {
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
       }).then((res) => {
         setAuthKey(res?.data.accsessToken);
         if (res.data.accsessToken) {
@@ -69,8 +71,7 @@ export default function SignIn() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-          }}
-        >
+          }}>
           <Typography component="h1" variant="h5" color="white">
             <Title text={"Welcome"} />
           </Typography>
@@ -78,12 +79,12 @@ export default function SignIn() {
             component="form"
             noValidate
             onSubmit={handleSubmit(handleLoginApi)}
-            sx={{ mt: 3 }}
-          >
+            sx={{mt: 3}}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <FormLabel component="legend">Email</FormLabel>
                 <TextField
+                  variant="standard"
                   required
                   fullWidth
                   id="email"
@@ -104,7 +105,7 @@ export default function SignIn() {
               </Grid>
               <Grid item xs={12}>
                 <Password
-                  sx={{ mb: 2 }}
+                  sx={{mb: 2}}
                   // helperText="helper text" --- doesnt work
                   variant="standard"
                   register={register}
@@ -117,13 +118,11 @@ export default function SignIn() {
                   display: "flex",
                   justifyContent: "flex-end",
                   width: "100%",
-                }}
-              >
+                }}>
                 <Link
                   to="/forget"
                   variant="body2"
-                  sx={{ color: "#62B273", textDecoration: "none" }}
-                >
+                  sx={{color: "#62B273", textDecoration: "none"}}>
                   Forgot password
                 </Link>
               </Grid>
@@ -137,13 +136,12 @@ export default function SignIn() {
                 {/* </Link> */}
               </Grid>
             </Grid>
-            <Or item sx={{ mt: 3 }} />
+            <Or item sx={{mt: 3}} />
             <Stack
               direction="row"
               spacing={2}
               justifyContent="center"
-              alignItems="center"
-            >
+              alignItems="center">
               <IconBtn icon="facebook" />
               <IconBtn icon="google" />
               <IconBtn icon="apple" />
@@ -153,8 +151,7 @@ export default function SignIn() {
                 <Link
                   to="#"
                   // variant="body2"
-                  sx={{ textDecoration: "none", color: "#000" }}
-                >
+                  sx={{textDecoration: "none", color: "#000"}}>
                   Already have an account?
                 </Link>
                 <Link
@@ -164,8 +161,7 @@ export default function SignIn() {
                     color: "#62B273",
                     pl: "10px",
                     textDecoration: "none",
-                  }}
-                >
+                  }}>
                   Sign up
                 </Link>
               </Grid>
@@ -188,3 +184,10 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
+
+// const S = {
+//   Input: styled(TextField)`
+
+//       background-color: white
+//   `
+// }
