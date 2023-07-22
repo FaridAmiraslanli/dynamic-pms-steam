@@ -11,13 +11,18 @@ import { IoIosArrowBack } from "react-icons/io";
 import { ActionBtn } from "../components/buttons/ActionBtn";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { todaysDate } from "../utils/todaysDate";
+import { delay } from "../utils/delay";
 
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
+// TODO - textarea mesajla beraber mueyyen hundurluye kimi boyusun, chatgptdeki kimi
+// TODO - sehife yenilenende sonuncu mesaja fokuslansin
 
 function ChatPage() {
   const [areaValue, setAreaValue] = useState("");
+  const [disableSend, setDisableSend] = useState(false);
   const [messages, setMessages] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [typingText, setTypingText] = useState("");
   const [parent] = useAutoAnimate();
 
   // load messages from local storage
@@ -42,19 +47,23 @@ function ChatPage() {
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: message}],
+        messages: [{ role: "user", content: message }],
         max_tokens: 100,
       }),
     };
-    await fetch(url, options)
-      .then((res) => res.json())
-      .then((data) => {
-        let obj = {
-          content: data.choices[0].message.content,
-          who: "bot",
-        };
-        setMessages((prev) => [...prev, obj]);
-      });
+    try {
+      setDisableSend(true);
+      const res = await fetch(url, options);
+      const data = await res.json();
+      let obj = {
+        content: data.choices[0].message.content,
+        who: "bot",
+      };
+      setMessages((prev) => [...prev, obj]);
+      setDisableSend(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   function addMessage() {
@@ -66,11 +75,11 @@ function ChatPage() {
     }
   }
 
-  function keyHandler(e) {
-    if (e.key === "Enter") {
-      addMessage();
-    }
-  }
+  // function keyHandler(e) {
+  //   if (e.key === "Enter") {
+  //     addMessage();
+  //   }
+  // }
   return (
     <S.Container sb={sidebarOpen} ref={parent}>
       {/* <S.Header>
@@ -115,11 +124,11 @@ function ChatPage() {
           <textarea
             autoFocus
             placeholder="ask me a question"
-            onKeyDown={keyHandler}
+            // onKeyDown={keyHandler}
             value={areaValue}
-            onChange={e => setAreaValue(e.target.value)}
+            onChange={(e) => setAreaValue(e.target.value)}
           />
-          <button onClick={addMessage}>
+          <button onClick={addMessage} disabled={disableSend}>
             <BiSend />
           </button>
         </S.Prompt>
