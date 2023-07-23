@@ -33,7 +33,7 @@ const defaultTheme = createTheme();
 export default function SignIn() {
   const navigate = useNavigate();
 
-  const {setAuthKey} = userStore();
+  const setAuthKey = userStore(state => state.setAuthKey);
   const {
     register,
     handleSubmit,

@@ -26,7 +26,9 @@ const App = () => {
   // TODO config js
   // TODO redux toolkit
 
-  const { authKey, setAuthKey } = userStore();
+  // const { authKey, setAuthKey } = userStore();
+  const authKey = userStore(state => state.authKey)
+  const setAuthKey = userStore(state => state.setAuthKey)
   const location = useLocation();
 
   React.useEffect(() => {
