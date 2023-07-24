@@ -12,10 +12,9 @@ import { ActionBtn } from "../components/buttons/ActionBtn";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { todaysDate } from "../utils/todaysDate";
 import { delay } from "../utils/delay";
+import CopyToClipboard from "../components/copy/CopyToClipboard";
 
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
-// TODO - textarea mesajla beraber mueyyen hundurluye kimi boyusun, chatgptdeki kimi
-// TODO - sehife yenilenende sonuncu mesaja fokuslansin
 
 function ChatPage() {
   const [areaValue, setAreaValue] = useState("");
@@ -24,16 +23,22 @@ function ChatPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [typingText, setTypingText] = useState("");
   const [parent] = useAutoAnimate();
+  const textAreaRef = useRef(null);
+  const chatEndRef = useRef(null);
 
   // load messages from local storage
   useEffect(() => {
     let lsMsgs = localStorage.getItem("ls-msgs");
     lsMsgs !== null && setMessages(JSON.parse(lsMsgs));
+    //  chatRef.current.scrollIntoView({ behavior: "smooth", bottom: 0 });
+    window.scrollTo(0, document.body.scrollHeight);
+    //  console.log(chatRef.current)
   }, []);
 
   // save messages to local storage
   useEffect(() => {
     localStorage.setItem("ls-msgs", JSON.stringify(messages));
+    chatEndRef.current?.scrollIntoView();
   }, [messages]);
 
   const sendMessage = async (message) => {
@@ -117,21 +122,30 @@ function ChatPage() {
           {messages.map((msg) => (
             <S.Message key={nanoid()} who={msg.who}>
               <p>{msg.content}</p>
+              {msg.who == "bot" && <CopyToClipboard text={msg.content} />}
             </S.Message>
           ))}
         </S.MessagesContainer>
         <S.Prompt>
           <textarea
             autoFocus
+            ref={textAreaRef}
             placeholder="ask me a question"
             // onKeyDown={keyHandler}
             value={areaValue}
-            onChange={(e) => setAreaValue(e.target.value)}
+            onChange={(e) => {
+              setAreaValue(e.target.value);
+
+              textAreaRef.current.style.height = "auto";
+              textAreaRef.current.style.height =
+                textAreaRef.current.scrollHeight + "px";
+            }}
           />
           <button onClick={addMessage} disabled={disableSend}>
             <BiSend />
           </button>
         </S.Prompt>
+        <div ref={chatEndRef}></div>
       </S.Chat>
     </S.Container>
   );
@@ -201,9 +215,10 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
+    scroll-behavior: smooth;
 
     > button {
-      position: absolute;
+      position: fixed;
       left: 24px;
       top: 24px;
     }
@@ -245,7 +260,7 @@ const S = {
     button {
       position: absolute;
       top: 50%;
-      right: 10px;
+      right: 18px;
       transform: translateY(-50%);
       cursor: pointer;
       background-color: transparent;
@@ -256,12 +271,29 @@ const S = {
     textarea {
       width: 100%;
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-      height: 80px;
+      min-height: 80px;
+      height: auto;
+      max-height: 200px;
       border-radius: 8px;
       background-color: white;
       border: 0;
       resize: none;
       padding: 15px;
+      padding-right: 40px;
+      scrollbar-width: auto;
+      scrollbar-color: #131623 #ffffff;
+      /* Chrome, Edge, and Safari */
+      &::-webkit-scrollbar {
+        width: 16px;
+      }
+      &::-webkit-scrollbar-track {
+        background: #ffffff;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #131623;
+        border-radius: 10px;
+        border: 3px solid #ffffff;
+      }
       &:focus,
       &:active {
         border: 0;
