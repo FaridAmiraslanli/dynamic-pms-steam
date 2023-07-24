@@ -13,6 +13,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { todaysDate } from "../utils/todaysDate";
 import { delay } from "../utils/delay";
 import CopyToClipboard from "../components/copy/CopyToClipboard";
+import {useAnimate} from "framer-motion"
 
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
 
@@ -80,13 +81,14 @@ function ChatPage() {
     }
   }
 
+
   // function keyHandler(e) {
   //   if (e.key === "Enter") {
   //     addMessage();
   //   }
   // }
   return (
-    <S.Container sb={sidebarOpen} ref={parent}>
+    <S.Container sb={sidebarOpen} ref={parent}> 
       {/* <S.Header>
         <h1>Apex Legend</h1>
       </S.Header> */}
@@ -226,7 +228,8 @@ const S = {
   MessagesContainer: styled.div`
     flex: 1;
     margin-bottom: 120px;
-    width: 750px;
+    width: 100%;
+    max-width: 1000px;
   `,
   Message: styled.div`
     background-color: ${(props) =>
@@ -252,7 +255,8 @@ const S = {
     }
   `,
   Prompt: styled.div`
-    width: 750px;
+    max-width: 1000px;
+    width: 100%;
     justify-self: flex-end;
     position: fixed;
     bottom: 20px;
@@ -270,6 +274,7 @@ const S = {
 
     textarea {
       width: 100%;
+      /* max-width: 1000px; */
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
       min-height: 80px;
       height: auto;
