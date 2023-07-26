@@ -16,7 +16,7 @@ import { userStore } from "./store/userStore";
 // import {AnimatePresence} from "framer-motion/dist/framer-motion";
 import {AnimatePresence} from "framer-motion";
 import './assets/sass/globals.scss'
-import Pricing from "./components/pricingPage/Pricing";
+import Pricing2 from "./components/pricingPage/Pricing2";
 const App = () => {
   // TODO .env fayli olmalidi backend islemesi ucun
   // TODO snackbar mui
@@ -34,28 +34,28 @@ const App = () => {
 
   return (
 
-  // <div>
-  //   <Pricing/>
-  // </div>
-    <AnimatePresence>
-      {authKey ? (
-        <Routes location={location} key={location.pathname}>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="*" element={<Error />} />
-          <Route path="/login" />
-        </Routes>
-      ) : (
-        <Routes location={location} key={location.pathname}>
-          <Route exact path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/creditpacks" element={<CreditPacks />} />
-          <Route path="/forget" element={<Forget />} />
-          <Route path="*" element={<Error />} />
-        </Routes>
-      )}
-    </AnimatePresence>
+  <div>
+    <Pricing2/>
+  </div>
+    // <AnimatePresence>
+    //   {authKey ? (
+    //     <Routes location={location} key={location.pathname}>
+    //       <Route exact path="/" element={<Home />} />
+    //       <Route path="/home" element={<Home />} />
+    //       <Route path="*" element={<Error />} />
+    //       <Route path="/login" />
+    //     </Routes>
+    //   ) : (
+    //     <Routes location={location} key={location.pathname}>
+    //       <Route exact path="/" element={<Login />} />
+    //       <Route path="/login" element={<Login />} />
+    //       <Route path="/register" element={<Register />} />
+    //       <Route path="/creditpacks" element={<CreditPacks />} />
+    //       <Route path="/forget" element={<Forget />} />
+    //       <Route path="*" element={<Error />} />
+    //     </Routes>
+    //   )}
+    // </AnimatePresence>
   );
 };
 

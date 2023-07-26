@@ -81,8 +81,7 @@ export default function Pricing() {
    
       {/* Hero unit */}
       
-      <Grid container  disableGutters component="main"  className='main' spacing={5} sx={{ pt: 8, pb: 6, display: "flex", justifyContent: "flex-end"}}>
-        <Grid  item md={8} sx={{ display: "flex",justifyContent:"flex-end"}}>
+      <Box>
         <Typography
           component="h1"
           variant="h1"
@@ -100,15 +99,7 @@ export default function Pricing() {
         >
           Credit Packs
         </Typography>
-        </Grid>
-       
-        <Grid
-        item md={4}
-        display="flex"
-      justifyContent={{sm: 'center', xs: 'center', md: 'end'}}>
-        <Button
-         variant="contained" sx={{width: '300px', height:'40px', bgcolor:'#9EFF23', color: '#000000'}} >Try Demo</Button>
-         </Grid>
+        </Box>
 
 
 
@@ -117,7 +108,7 @@ export default function Pricing() {
 
 
       
-      </Grid>
+      
 
       <Container  /*className="sabina"*/ maxWidth='xl' /*component="main"*/>
         <Grid container spacing={5} /*alignItems="flex-end"*/>
