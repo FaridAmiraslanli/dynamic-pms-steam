@@ -42,8 +42,8 @@ const App = () => {
           <Route exact path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="newresearch" element={<NewResearches />} />
-          <Route path="researchcost" element={<NewResearchesCost />} />
-          <Route path="demoresearch" element={<DemoResearches />} />
+          <Route path="/researchcost" element={<NewResearchesCost />} />
+          <Route path="/demoresearch" element={<DemoResearches />} />
           <Route path="/pricing" element={<Pricing2 />} />
           <Route path="*" element={<Error />} />
         </Routes>
