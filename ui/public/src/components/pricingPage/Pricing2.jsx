@@ -90,7 +90,7 @@ export default function Pricing2() {
         "Help center access",
         "Phone & email support",
       ],
-      buttonText: "But Credit",
+      buttonText: "Buy Credit",
       buttonVariant: "outlined",
     },
   ]);
