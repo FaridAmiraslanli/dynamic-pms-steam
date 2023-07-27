@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { BiSend } from "react-icons/bi";
 import { nanoid } from "nanoid";
 import { useEffect } from "react";
@@ -13,7 +13,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { todaysDate } from "../utils/todaysDate";
 import { delay } from "../utils/delay";
 import CopyToClipboard from "../components/copy/CopyToClipboard";
-import {useAnimate} from "framer-motion"
+import { useAnimate } from "framer-motion";
 
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
 
@@ -22,7 +22,7 @@ function ChatPage() {
   const [disableSend, setDisableSend] = useState(false);
   const [messages, setMessages] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [typingText, setTypingText] = useState("");
+  const [globalTyping, setGlobalTyping] = useState(false);
   const [parent] = useAutoAnimate();
   const textAreaRef = useRef(null);
   const chatEndRef = useRef(null);
@@ -31,13 +31,12 @@ function ChatPage() {
   useEffect(() => {
     let lsMsgs = localStorage.getItem("ls-msgs");
     lsMsgs !== null && setMessages(JSON.parse(lsMsgs));
-    //  chatRef.current.scrollIntoView({ behavior: "smooth", bottom: 0 });
     window.scrollTo(0, document.body.scrollHeight);
-    //  console.log(chatRef.current)
   }, []);
 
   // save messages to local storage
   useEffect(() => {
+    // setGlobalTyping(false)
     localStorage.setItem("ls-msgs", JSON.stringify(messages));
     chatEndRef.current?.scrollIntoView();
   }, [messages]);
@@ -58,6 +57,7 @@ function ChatPage() {
       }),
     };
     try {
+      setGlobalTyping(true);
       setDisableSend(true);
       const res = await fetch(url, options);
       const data = await res.json();
@@ -81,14 +81,13 @@ function ChatPage() {
     }
   }
 
-
   // function keyHandler(e) {
   //   if (e.key === "Enter") {
   //     addMessage();
   //   }
   // }
   return (
-    <S.Container sb={sidebarOpen} ref={parent}> 
+    <S.Container sb={sidebarOpen} ref={parent}>
       {/* <S.Header>
         <h1>Apex Legend</h1>
       </S.Header> */}
@@ -123,14 +122,34 @@ function ChatPage() {
         <S.MessagesContainer>
           {messages.map((msg) => (
             <S.Message key={nanoid()} who={msg.who}>
-              <p>{msg.content}</p>
-              {msg.who == "bot" && <CopyToClipboard text={msg.content} />}
+              {msg.who === "bot" ? (
+                <>
+                  <TypewriterMessage
+                    key={nanoid()}
+                    message={msg.content}
+                    globalTyping={globalTyping}
+                  />
+                  <CopyToClipboard text={msg.content} />
+                </>
+              ) : (
+                <p>{msg.content}</p>
+              )}
             </S.Message>
           ))}
+          {/* {messages.map((msg) =>
+
+       
+              <S.Message key={nanoid()} who={msg.who}>
+                <p>{msg.content}</p>
+                {msg.who == "bot" && <CopyToClipboard text={msg.content} />}
+              </S.Message>
+      
+          )} */}
         </S.MessagesContainer>
         <S.Prompt>
           <textarea
             autoFocus
+            rows={2}
             ref={textAreaRef}
             placeholder="ask me a question"
             // onKeyDown={keyHandler}
@@ -152,6 +171,31 @@ function ChatPage() {
     </S.Container>
   );
 }
+
+const TypewriterMessage = ({ message, globalTyping }) => {
+  const [displayedMessage, setDisplayedMessage] = useState("");
+
+  useEffect(() => {
+    if (message) {
+      let currentIndex = 0;
+      const typingTimer = setInterval(
+        () => {
+          if (currentIndex <= message.length) {
+            setDisplayedMessage(message.slice(0, currentIndex));
+            currentIndex++;
+          } else {
+            clearInterval(typingTimer);
+          }
+        },
+        globalTyping ? 50 : 1
+      ); // Adjust the typing speed here
+
+      return () => clearInterval(typingTimer); // Cleanup function to clear the interval when the component unmounts
+    }
+  }, [message]);
+
+  return <p>{globalTyping ? displayedMessage : message}</p>;
+};
 
 const S = {
   Container: styled.div`
@@ -240,6 +284,7 @@ const S = {
     gap: 20px;
     padding: 20px;
     border-radius: 4px;
+    line-break: anywhere;
 
     p {
       width: 94%;
