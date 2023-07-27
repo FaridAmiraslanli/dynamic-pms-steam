@@ -4,7 +4,7 @@ import "./newresearches-cost.scss"
 const NewResearchesCost = () => {
   return (
     <>
-     <Container>
+     <Container className='researchcost'>
    <Grid
       className='container general-grid'>
 

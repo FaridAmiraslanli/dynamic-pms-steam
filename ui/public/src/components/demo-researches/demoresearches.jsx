@@ -12,7 +12,7 @@ import "./demoresearches.scss";
 const DemoResearches = () => {
   return (
     <>
-      <Container>
+      <Container className="demoresearch">
         <Grid className="down-part">
           <Button sx={{color: "#000000"}}>Logo</Button>
 
