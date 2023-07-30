@@ -85,11 +85,12 @@ function ChatPage() {
     }
   }
 
-  // function keyHandler(e) {
-  //   if (e.key === "Enter") {
-  //     addMessage();
-  //   }
-  // }
+  function keyHandler(e) {
+    if (e.key === "Enter") {
+      addMessage();
+      setTimeout(() => setAreaValue(""), 10)
+    }
+  }
   return (
     <S.Container sb={sidebarOpen} ref={animationParent}>
       {/* <S.Header>
@@ -136,7 +137,7 @@ function ChatPage() {
             autoFocus
             ref={textAreaRef}
             placeholder="ask me a question"
-            // onKeyDown={keyHandler}
+            onKeyDown={keyHandler}
             value={areaValue}
             onChange={(e) => {
               setAreaValue(e.target.value);
@@ -276,7 +277,7 @@ const S = {
       width: 100%;
       /* max-width: 1000px; */
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-      min-height: 80px;
+      min-height: 56px;
       height: auto;
       max-height: 200px;
       border-radius: 8px;
