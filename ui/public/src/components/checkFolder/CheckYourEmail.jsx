@@ -6,7 +6,6 @@ import {
   Typography,
   Container,
   FormLabel,
-  Button,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { LongBtn } from "../buttons/LongBtn";
@@ -14,7 +13,6 @@ import Title from "../Title";
 import "../../assets/sass/mui-input-btn.scss";
 
 import { Link } from "react-router-dom";
-// import { Link } from "react-router-dom";
 const defaultTheme = createTheme();
 
 export default function CheckYourEmail() {
@@ -79,7 +77,6 @@ export default function CheckYourEmail() {
               paragraph={true}
               sx={{
                 color: "black",
-               
                 textDecoration: "none",
               }}
             >

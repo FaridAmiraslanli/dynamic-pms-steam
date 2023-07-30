@@ -94,7 +94,7 @@ export default function Pricing2() {
       buttonVariant: "outlined",
     },
   ]);
-  const [parent] = useAutoAnimate();
+  const [animationParent] = useAutoAnimate({ duration: 500 });
 
   const handleClick = (title) => {
     // console.log(title)
@@ -150,7 +150,7 @@ export default function Pricing2() {
       </Container>
       {/* End hero unit */}
       <Container maxWidth="md" component="main">
-        <Grid container spacing={3} alignItems="center" ref={parent}>
+        <Grid container spacing={3} alignItems="center" ref={animationParent}>
           {tiers.map((tier, ind) => (
             // Enterprise card is full width at sm breakpoint
             <Grid
