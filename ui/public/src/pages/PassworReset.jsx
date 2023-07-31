@@ -6,13 +6,13 @@ import {
   Typography,
   Container,
   FormLabel,
-  TextField,
+  // TextField,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { LongBtn } from "../components/buttons/LongBtn";
 import Title from "../components/Title";
-import '../assets/sass/mui-input-btn.scss'
-import {Link} from 'react-router-dom'
+import "../assets/sass/mui-input-btn.scss";
+import { Link } from "react-router-dom";
 const defaultTheme = createTheme();
 
 export default function PasswordReset() {
@@ -26,9 +26,10 @@ export default function PasswordReset() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme} >
-      <Container component="main" 
-    //   sx={{width:'603px'}}
+    <ThemeProvider theme={defaultTheme}>
+      <Container
+        component="main"
+        //   sx={{width:'603px'}}
       >
         <CssBaseline />
         <Box
@@ -37,7 +38,6 @@ export default function PasswordReset() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            
           }}
         >
           <Typography component="h1" variant="h5" sx={{ mb: 1 }}>
@@ -50,14 +50,13 @@ export default function PasswordReset() {
             component="form"
             noValidate
             onSubmit={handleSubmit}
-            sx={{ mt: 3,minWidth:"600px"}}
-            
+            sx={{ mt: 3, minWidth: "600px" }}
           >
-              <Grid item xs={20}  sx={{ width: '100%', padding: 1, margin: 2 }}>
-               <Link to={'/login'}>
-                 <LongBtn  className="long-green-1" text="Back to login"/>
-               </Link>
-              </Grid>
+            <Grid item xs={20} sx={{ width: "100%", padding: 1, margin: 2 }}>
+              <Link to={"/login"}>
+                <LongBtn className="long-green-1" text="Back to login" />
+              </Link>
+            </Grid>
           </Box>
         </Box>
       </Container>

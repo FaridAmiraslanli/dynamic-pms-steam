@@ -22,8 +22,8 @@ function ChatPage() {
   const [disableSend, setDisableSend] = useState(false);
   const [messages, setMessages] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [globalTyping, setGlobalTyping] = useState(false);
-  const [parent] = useAutoAnimate();
+  const [typingText, setTypingText] = useState("");
+  const [animationParent] = useAutoAnimate({ duration: 400 });
   const textAreaRef = useRef(null);
   const chatEndRef = useRef(null);
 
@@ -40,6 +40,12 @@ function ChatPage() {
     localStorage.setItem("ls-msgs", JSON.stringify(messages));
     chatEndRef.current?.scrollIntoView();
   }, [messages]);
+
+  // textarea height
+  useEffect(() => {
+    textAreaRef.current.style.height = "auto";
+    textAreaRef.current.style.height = textAreaRef.current.scrollHeight + "px";
+  }, [areaValue]);
 
   const sendMessage = async (message) => {
     const apiKey = "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";
@@ -81,13 +87,14 @@ function ChatPage() {
     }
   }
 
-  // function keyHandler(e) {
-  //   if (e.key === "Enter") {
-  //     addMessage();
-  //   }
-  // }
+  function keyHandler(e) {
+    if (e.key === "Enter") {
+      addMessage();
+      setTimeout(() => setAreaValue(""), 10)
+    }
+  }
   return (
-    <S.Container sb={sidebarOpen} ref={parent}>
+    <S.Container sb={sidebarOpen} ref={animationParent}>
       {/* <S.Header>
         <h1>Apex Legend</h1>
       </S.Header> */}
@@ -152,14 +159,10 @@ function ChatPage() {
             rows={2}
             ref={textAreaRef}
             placeholder="ask me a question"
-            // onKeyDown={keyHandler}
+            onKeyDown={keyHandler}
             value={areaValue}
             onChange={(e) => {
               setAreaValue(e.target.value);
-
-              textAreaRef.current.style.height = "auto";
-              textAreaRef.current.style.height =
-                textAreaRef.current.scrollHeight + "px";
             }}
           />
           <button onClick={addMessage} disabled={disableSend}>
@@ -288,6 +291,7 @@ const S = {
 
     p {
       width: 94%;
+      white-space: pre-line;
     }
 
     &::before {
@@ -321,7 +325,7 @@ const S = {
       width: 100%;
       /* max-width: 1000px; */
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-      min-height: 80px;
+      min-height: 56px;
       height: auto;
       max-height: 200px;
       border-radius: 8px;
