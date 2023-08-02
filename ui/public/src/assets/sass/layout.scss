@@ -2,6 +2,8 @@
 @import "mixin";
 
 $container-width: 1440px;
+$main-color: rgba(19, 22, 35, 1);
+$secondary-color:#181B29;
 
 %description {
   font-family: Montserrat !important;
@@ -11,7 +13,7 @@ $container-width: 1440px;
 
 .logo {
   height: 56px;
-  background-color: #181B29;
+  background-color: $main-color;
   color: white;
 
   &__description {
@@ -21,10 +23,10 @@ $container-width: 1440px;
 }
 
 .side {
-  width: (472px * 100% )/ $container-width;
+  // width: (590px * 100% )/ $container-width;
   height: 100vh;
   padding: 0px 103px 0px 104px;
-  background-color: #181B29;
+  background-color: $secondary-color;
   text-align: left;
   display: flex;
   justify-content: center;
@@ -37,11 +39,12 @@ $container-width: 1440px;
 }
 
 .layout {
+  // width: 100%;
   display: flex;
   flex-direction: row;
 
   &__main {
-    width: 100% - (472px * 100% / $container-width);
+    // width: 100% - (590px * 100% / $container-width);
     height: 100vh;
   }
 }

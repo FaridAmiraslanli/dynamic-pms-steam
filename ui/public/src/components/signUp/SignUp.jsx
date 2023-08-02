@@ -11,6 +11,7 @@ import {
   CssBaseline,
   ThemeProvider,
   createTheme,
+  OutlinedInput,
 } from "@mui/material";
 
 import { Link } from "react-router-dom";
@@ -76,7 +77,7 @@ export default function SignUp() {
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" color="white">
             <Title text={"Create your account"} />
           </Typography>
           <Box
@@ -90,14 +91,15 @@ export default function SignUp() {
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12} variant="rounded">
-                <FormLabel component="legend">Full name</FormLabel>
-                <TextField
+                <FormLabel component="legend" sx={{color:"white"}}>Full name</FormLabel>
+                <OutlinedInput
+                id="outlined-basic" 
+                sx={{backgroundColor:"rgba(248, 250, 239, 1)", overflow:"hidden"}}
                   autoComplete="given-name"
                   name="fullName"
                   fullWidth
-                  id="fullName"
-                  placeholder="Full Name"
-                  autoFocus
+                  placeholder="Enter your name"
+                  autoFocus={false}
                   error={Boolean(errors.username)}
                   helperText={
                     Boolean(errors.username) && (
@@ -111,12 +113,13 @@ export default function SignUp() {
               </Grid>
 
               <Grid item xs={12}>
-                <FormLabel component="legend">Email</FormLabel>
-                <TextField
+                <FormLabel component="legend" sx={{color:"white"}}>Email</FormLabel>
+                <OutlinedInput
+                 sx={{backgroundColor:"rgba(248, 250, 239, 1)", overflow:"hidden" }}
                   required
                   fullWidth
                   id="email"
-                  placeholder="Email Address"
+                  placeholder="Enter your email"
                   name="email"
                   autoComplete="email"
                   type={"email"}

@@ -3,7 +3,7 @@ import SignIn from "../components/signIn/SignIn";
 
 function Login() {
   return (
-    <Layout>
+    <Layout >
       <SignIn />
     </Layout>
   );

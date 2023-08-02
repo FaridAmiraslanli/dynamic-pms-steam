@@ -1,11 +1,11 @@
 @import "../../assets/sass/normalize";
 
-$color-main-btn: #34a853;
+$color-main-btn: rgba(221, 221, 221, 1);
 $color-secondary-btn: #62b273;
 $color-blue-btn: #4285f4;
 $color-white-btn: #fff;
 $offwhite: #f3f5f7;
-$color-hover-btn: #36cb56;
+$color-hover-btn: rgba(134, 112, 255, 1);
 
 button {
   cursor: pointer;
@@ -18,8 +18,9 @@ button {
   height: 48px;
   border: none;
   color: $color-white-btn;
-  border-radius: 32px;
+  border-radius: 8px;
   font-size: 16px;
+  color: rgba(0, 0, 0, 0.2);
 }
 
 .long-gray {
