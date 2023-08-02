@@ -1,306 +1,311 @@
-import React, { useEffect, useRef, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Paper,
-  Grid,
-  Box,
-  Divider,
-  TextField,
-  List,
-  Fab,
-  Button,
-} from "@material-ui/core";
-import SendIcon from "@material-ui/icons/Send";
-import { Typography, InputBase } from "@mui/material";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { MdModeEditOutline } from "react-icons/md";
-import { AiOutlineCheck } from "react-icons/ai";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import { AiOutlineClose } from "react-icons/ai";
+import { BiSend } from "react-icons/bi";
+import { nanoid } from "nanoid";
+import { useEffect } from "react";
+import {
+  TbLayoutSidebarLeftCollapse,
+  TbLayoutSidebarLeftExpand,
+} from "react-icons/tb";
+import { IoIosArrowBack } from "react-icons/io";
+import { ActionBtn } from "../components/buttons/ActionBtn";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { todaysDate } from "../utils/todaysDate";
+import { delay } from "../utils/delay";
+import CopyToClipboard from "../components/copy/CopyToClipboard";
+import {useAnimate} from "framer-motion"
 
-const useStyles = makeStyles({
-  header: {
-    padding: "5px",
-    overflow: "hidden",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    height: "12vh",
-  },
-  headerTitle: {
-    fontFamily: "Montserrat",
-    fontSize: "24px",
-    fontWeight: 600,
-    lineHeight: "24px",
-    letterSpacing: "0em",
-    textAlign: "left",
-  },
-  chatSection: {
-    width: "100%",
-    height: "88vh",
-    backgroundColor: "#9B9B9B",
-  },
-  borderRight500: {
-    borderRight: "1px solid #e0e0e0",
-    backgroundColor: "#C6C6C6",
-  },
-  messageArea: {
-    backgroundColor: "#9B9B9B",
-    height: "72vh",
-    overflowY: "auto",
-  },
-  btnicon: {
-    maxWidth: "30px",
-    maxHeight: "30px",
-    minWidth: "30px",
-    minHeight: "30px",
-  },
-});
+// TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
 
-const ChatPage = () => {
-  const [focusChatEdit, setFocusChatEdit] = useState(false);
-  const classes = useStyles();
-  const change = () => {
-    setFocusChatEdit((prev) => !prev);
+function ChatPage() {
+  const [areaValue, setAreaValue] = useState("");
+  const [disableSend, setDisableSend] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [typingText, setTypingText] = useState("");
+  const [parent] = useAutoAnimate();
+  const textAreaRef = useRef(null);
+  const chatEndRef = useRef(null);
+
+  // load messages from local storage
+  useEffect(() => {
+    let lsMsgs = localStorage.getItem("ls-msgs");
+    lsMsgs !== null && setMessages(JSON.parse(lsMsgs));
+    //  chatRef.current.scrollIntoView({ behavior: "smooth", bottom: 0 });
+    window.scrollTo(0, document.body.scrollHeight);
+    //  console.log(chatRef.current)
+  }, []);
+
+  // save messages to local storage
+  useEffect(() => {
+    localStorage.setItem("ls-msgs", JSON.stringify(messages));
+    chatEndRef.current?.scrollIntoView();
+  }, [messages]);
+
+  const sendMessage = async (message) => {
+    const apiKey = "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";
+    const url = "https://api.openai.com/v1/chat/completions";
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: message }],
+        max_tokens: 100,
+      }),
+    };
+    try {
+      setDisableSend(true);
+      const res = await fetch(url, options);
+      const data = await res.json();
+      let obj = {
+        content: data.choices[0].message.content,
+        who: "bot",
+      };
+      setMessages((prev) => [...prev, obj]);
+      setDisableSend(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
+  function addMessage() {
+    if (areaValue.trim() !== "") {
+      let obj = { content: areaValue, who: "user" };
+      setMessages((prev) => [...prev, obj]);
+      sendMessage(areaValue);
+      setAreaValue("");
+    }
+  }
+
+
+  // function keyHandler(e) {
+  //   if (e.key === "Enter") {
+  //     addMessage();
+  //   }
+  // }
   return (
-    <div>
-      <Grid container className={classes.header} alignItems="center">
-        <Grid item xs={5} sx={{ textAlign: "left" }}>
-          <Button>
-            <ArrowBackIosNewIcon
-              sx={{
-                width: "40px",
-                height: "40px",
-                padding: "7.5px 12.5px",
-              }}
-            />
-          </Button>
-        </Grid>
-        <Grid item xs={6} sx={{ textAlign: "left" }}>
-          <Typography
-            variant="h5"
-            className={`header-message ${classes.headerTitle}`}
-          >
-            God of War
-          </Typography>
-        </Grid>
-      </Grid>
+    <S.Container sb={sidebarOpen} ref={parent}> 
+      {/* <S.Header>
+        <h1>Apex Legend</h1>
+      </S.Header> */}
+      {sidebarOpen && (
+        <S.Sidebar>
+          <S.SidebarHeader>
+            <S.SidebarNav>
+              <S.NavBtn>
+                <IoIosArrowBack />
+              </S.NavBtn>
+              <S.NavBtn
+                onClick={() => {
+                  setSidebarOpen(false);
+                  console.log(sidebarOpen);
+                }}
+              >
+                <TbLayoutSidebarLeftCollapse />
+              </S.NavBtn>
+            </S.SidebarNav>
+            <ActionBtn text="New Request" radius="8" w="281" h="56" />
+          </S.SidebarHeader>
+          <S.SidebarMain></S.SidebarMain>
+        </S.Sidebar>
+      )}
 
-      <Grid container component={Paper} className={classes.chatSection}>
-        <Grid
-          item
-          xs={3}
-          className={classes.borderRight500}
-          style={{
-            backgroundColor: "#e0e0e0",
-            overflow: "hidden",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            padding: "10px 20px 30px",
-          }}
-        >
-          <Box>
-            <Box fullWidth>
-              <Button
-                style={{
-                  background: "#9EFF23",
-                  fontFamily: "Montserrat",
-                  fontSize: "16px",
-                  fontWeight: 400,
-                  lineHeight: "16px",
-                  letterSpacing: "0em",
-                  textAlign: "left",
-                  width: `calc(100% - 50px)`,
-                  height: "40px",
-                  margin: "10px 0",
-                  marginRight: "10px",
-                  textTransform: "lowercase",
-                }}
-              >
-                new request
-              </Button>
-              <Button
-                style={{
-                  maxWidth: "40px",
-                  maxHeight: "40px",
-                  minWidth: "40px",
-                  minHeight: "40px",
-                  backgroundColor: "#fff",
-                }}
-              />
-            </Box>
-            <Typography
-              style={{
-                fontFamily: "Montserrat",
-                fontSize: "16px",
-                fontWeight: 500,
-                lineHeight: "16px",
-                letterSpacing: "0em",
-                textAlign: "left",
-                color: "#727272",
-                margin: "10px 0",
-              }}
-            >
-              Demo Research
-            </Typography>
-            <Box
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                margin: "10px 0",
-                height: "40px",
-                backgroundColor: `${focusChatEdit ? "#343540" : "transparent"}`,
-                borderRadius: `${focusChatEdit && "4px"}`,
-              }}
-            >
-              <Box
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  className={classes.btnicon}
-                  size="small"
-                  style={{
-                    marginRight: "5px",
-                  }}
-                >
-                  {focusChatEdit ? (
-                    <RiDeleteBin6Line color="#fff" fontSize="24px" />
-                  ) : (
-                    <ChatBubbleOutlineIcon
-                      fontSize="30px"
-                      style={{ color: "#727272" }}
-                    />
-                  )}
-                </Button>
+      <S.Chat sd={sidebarOpen}>
+        {!sidebarOpen && (
+          <S.NavBtn onClick={() => setSidebarOpen(true)}>
+            <TbLayoutSidebarLeftExpand />
+          </S.NavBtn>
+        )}
+        <S.MessagesContainer>
+          {messages.map((msg) => (
+            <S.Message key={nanoid()} who={msg.who}>
+              <p>{msg.content}</p>
+              {msg.who == "bot" && <CopyToClipboard text={msg.content} />}
+            </S.Message>
+          ))}
+        </S.MessagesContainer>
+        <S.Prompt>
+          <textarea
+            autoFocus
+            ref={textAreaRef}
+            placeholder="ask me a question"
+            // onKeyDown={keyHandler}
+            value={areaValue}
+            onChange={(e) => {
+              setAreaValue(e.target.value);
 
-                <div contentEditable>
-                  <Typography
-                    variant="h1"
-                    style={{
-                      fontFamily: "Montserrat",
-                      fontSize: "16px",
-                      fontWeight: 400,
-                      lineHeight: "16px",
-                      letterSpacing: "0em",
-                      textAlign: "left",
-                      color: `${focusChatEdit ? "#fff" : "#000"}`,
-                    }}
-                  >
-                    God of War
-                  </Typography>
-                </div>
-              </Box>
-              <Box
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "auto",
-                }}
-              >
-                <Button
-                  className={classes.btnicon}
-                  size="small"
-                  onClick={change}
-                >
-                  {focusChatEdit ? (
-                    <AiOutlineCheck color="#fff" fontSize="24px" />
-                  ) : (
-                    <MdModeEditOutline fontSize="24px" />
-                  )}
-                </Button>
-                <Button
-                  className={classes.btnicon}
-                  size="small"
-                  style={{
-                    marginLeft: "10px",
-                  }}
-                >
-                  {focusChatEdit ? (
-                    <AiOutlineClose color="#fff" fontSize="24px" />
-                  ) : (
-                    <RiDeleteBin6Line fontSize="24px" />
-                  )}
-                </Button>
-              </Box>
-            </Box>
-          </Box>
-          <Box>
-            <Typography
-              style={{
-                fontFamily: "Montserrat",
-                fontSize: "16px",
-                fontWeight: 500,
-                lineHeight: "16px",
-                letterSpacing: "0em",
-                textAlign: "left",
-              }}
-            >
-              Upgrade to Plus
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid item xs={9} sx={{ backgroundColor: "red", overflow: "auto" }}>
-          <List className={classes.messageArea}>{/* List items */}</List>
-          <Divider />
-          <Grid
-            container
-            style={{ padding: "10px", backgroundColor: "#9B9B9B" }}
-          >
-            <Grid
-              item
-              xs={12}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                backgroundColor: "white",
-                height: "10vh",
-                padding: "0 0 0 7px",
-                outline: "hidden",
-                borderRadius: "8px",
-              }}
-            >
-              <TextField
-                id="outlined-basic-email"
-                label="Send a message"
-                fullWidth
-                InputProps={{
-                  disableUnderline: true,
-                  sx: {
-                    "& .MuiInputBase-input": {
-                      borderBottom: "none",
-                    },
-                  },
-                  inputComponent: InputBase,
-                }}
-              />
-              <Fab
-                color="primary"
-                aria-label="add"
-                style={{
-                  height: "10vh",
-                  borderRadius: 0,
-                  backgroundColor: "white",
-                  color: "#C6C6C6",
-                  boxShadow: "none",
-                  borderRadius: "8px",
-                }}
-              >
-                <SendIcon />
-              </Fab>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-    </div>
+              textAreaRef.current.style.height = "auto";
+              textAreaRef.current.style.height =
+                textAreaRef.current.scrollHeight + "px";
+            }}
+          />
+          <button onClick={addMessage} disabled={disableSend}>
+            <BiSend />
+          </button>
+        </S.Prompt>
+        <div ref={chatEndRef}></div>
+      </S.Chat>
+    </S.Container>
   );
+}
+
+const S = {
+  Container: styled.div`
+    width: 100%;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: ${(props) => (props.sb ? "1fr 4fr" : "1fr")};
+    /* grid-template-rows: 80px auto; */
+    position: relative;
+    overflow: hidden;
+  `,
+  Header: styled.header`
+    grid-column: 1/5;
+    grid-row: 1/2;
+    background-color: white;
+    display: grid;
+    place-items: center;
+  `,
+  Sidebar: styled.aside`
+    grid-column: 1/2;
+    /* grid-row: 2/4; */
+    flex: 1;
+    background-color: #181b29;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    z-index: 5;
+  `,
+  SidebarHeader: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  `,
+  SidebarNav: styled.div`
+    display: flex;
+    justify-content: space-between;
+  `,
+  NavBtn: styled.button`
+    background-color: transparent;
+    border: 0;
+    color: white;
+    width: 32px;
+    height: 32px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  `,
+  SidebarMain: styled.div`
+    display: flex;
+    flex-direction: column;
+  `,
+  Chat: styled.main`
+    grid-column: ${(props) => (props.sd ? "2/5" : "1fr")};
+    /* grid-row: span 2/4; */
+    background-color: #131623;
+    position: absolute;
+    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    scroll-behavior: smooth;
+
+    > button {
+      position: fixed;
+      left: 24px;
+      top: 24px;
+    }
+  `,
+  MessagesContainer: styled.div`
+    flex: 1;
+    margin-bottom: 120px;
+    width: 100%;
+    max-width: 1000px;
+  `,
+  Message: styled.div`
+    background-color: ${(props) =>
+      props.who === "user" ? "transparent" : "#181B29"};
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 4px;
+
+    p {
+      width: 94%;
+    }
+
+    &::before {
+      content: "";
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background-color: ${(props) =>
+        props.who === "user" ? "white" : "#5563DE"};
+    }
+  `,
+  Prompt: styled.div`
+    max-width: 1000px;
+    width: 100%;
+    justify-self: flex-end;
+    position: fixed;
+    bottom: 20px;
+
+    button {
+      position: absolute;
+      top: 50%;
+      right: 18px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      background-color: transparent;
+      border: 0;
+      font-size: 1.5rem;
+    }
+
+    textarea {
+      width: 100%;
+      /* max-width: 1000px; */
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      min-height: 80px;
+      height: auto;
+      max-height: 200px;
+      border-radius: 8px;
+      background-color: white;
+      border: 0;
+      resize: none;
+      padding: 15px;
+      padding-right: 40px;
+      scrollbar-width: auto;
+      scrollbar-color: #131623 #ffffff;
+      /* Chrome, Edge, and Safari */
+      &::-webkit-scrollbar {
+        width: 16px;
+      }
+      &::-webkit-scrollbar-track {
+        background: #ffffff;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #131623;
+        border-radius: 10px;
+        border: 3px solid #ffffff;
+      }
+      &:focus,
+      &:active {
+        border: 0;
+        outline: 0;
+      }
+    }
+  `,
 };
 
 export default ChatPage;

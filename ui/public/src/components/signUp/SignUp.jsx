@@ -12,9 +12,7 @@ import {
   ThemeProvider,
   createTheme,
 } from "@mui/material";
-// import signUpSchema from "../validations/signUpValidation";
-// import { handleRegisterApi } from "../../services/api.service";
-import { userStore } from "../../store/userStore";
+
 import { Link } from "react-router-dom";
 import Password from "../Password";
 import Title from "../Title";
@@ -22,20 +20,17 @@ import Or from "../or/Or";
 import { IconBtn } from "../buttons/IconBtn";
 import { LongBtn } from "../buttons/LongBtn";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import "../../assets/sass/mui-input-btn.scss";
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const {  setAuthKey } = userStore();
-  const [alert, setAlert] = React.useState({
-    show: false,
-    severity: "",
-    message: "",
-    title: "",
-  });
+  const formRef = React.useRef(null);
   const {
     register,
     handleSubmit,
@@ -56,10 +51,16 @@ export default function SignUp() {
       console.log("response", response);
 
       const data = await response.json();
-
       console.log("data", data);
+
+      if (data.message) {
+        toast.warn(data.message);
+      } else {
+        toast.info(data);
+      }
     } catch (error) {
       console.log("handleSubmit error", error);
+      toast.error("error");
     }
   };
 
@@ -80,7 +81,7 @@ export default function SignUp() {
           </Typography>
           <Box
             component="form"
-
+            ref={formRef}
             noValidate
             // onChange={(event) => handleValidation(event)}
             onSubmit={handleSubmit(handleRegisterApi)}
@@ -131,29 +132,7 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Password
-                  sx={{ mb: 2 }}
-                  // helperText="helper text" --- doesnt work
-                  variant="standard"
-                  register={register}
-                  errors={errors}
-                />
-              </Grid>
-              <Grid
-                sx={{
-                  mt: 1,
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  width: "100%",
-                }}
-              >
-                {/* <Link
-                  to="/forget"
-                  variant="body2"
-                  sx={{ color: "#62B273", textDecoration: "none" }}
-                >
-                  Forgot password
-                </Link> */}
+                <Password sx={{ mb: 3 }} register={register} errors={errors} />
               </Grid>
               <Grid item xs={12}>
                 <LongBtn text="Continue" />
@@ -172,8 +151,8 @@ export default function SignUp() {
               <IconBtn icon="google" />
               <IconBtn icon="apple" />
             </Stack>
-            <Grid container alignItems="center" justifyContent="center" >
-              <Grid item  sx={{marginTop:'10px'}}>
+            <Grid container alignItems="center" justifyContent="center">
+              <Grid item>
                 <Link
                   to="#"
                   // variant="body2"
@@ -182,13 +161,12 @@ export default function SignUp() {
                   Already have an account?
                 </Link>
                 <Link
-                className="signinBtn"
                   to="/login"
                   // variant="body2"
-                  style={{
+                  sx={{
+                    color: "#62B273",
                     pl: "10px",
                     textDecoration: "none",
-                    paddingLeft:'3px'
                   }}
                 >
                   Sign in
@@ -198,6 +176,19 @@ export default function SignUp() {
           </Box>
         </Box>
       </Container>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </ThemeProvider>
   );
 }
+

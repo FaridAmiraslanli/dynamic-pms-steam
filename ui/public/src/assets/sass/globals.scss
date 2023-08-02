@@ -1,11 +1,10 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Montserrat, sans-serif;
+}
 
-@import './normalize.scss';
-
-.signinBtn{
-    color: #62B273
-  }
-  a{
-    text-decoration: none !important;
-    color: #000;
-    margin-top: 8px;
-  }
+body {
+  background-color: #131623 !important;
+}

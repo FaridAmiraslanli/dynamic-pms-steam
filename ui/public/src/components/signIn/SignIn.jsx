@@ -11,66 +11,53 @@ import {
   Stack,
   // Link,
 } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
+import {Link, Navigate, useNavigate} from "react-router-dom";
+// import styled from "styled-components";
+// import { styled } from "@mui/material/styles";
 
-import { LongBtn } from "../buttons/LongBtn";
+import {LongBtn} from "../buttons/LongBtn";
 import Or from "../or/Or";
-import { IconBtn } from "../buttons/IconBtn";
+import {IconBtn} from "../buttons/IconBtn";
 import Password from "../Password";
 import Title from "../Title";
 import "../../assets/sass/mui-input-btn.scss";
-import { userStore } from "../../store/userStore";
-import MuiAlert from "../alerts/MuiAlert";
-import { MuiSnackbar } from "../toasts/MuiSnackbar";
-import { useForm } from "react-hook-form";
+import {userStore} from "../../store/userStore";
+import {useForm} from "react-hook-form";
+
+import {ToastContainer, toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const {  setAuthKey } = userStore();
-  const [alert, setAlert] = React.useState({
-    show: false,
-    severity: "",
-    message: "",
-    title: "",
-  });
+  const navigate = useNavigate();
+
+  const setAuthKey = userStore(state => state.setAuthKey);
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm();
 
-  const handleRegisterApi = async (formData) => {
-    const url = "http://localhost:8080/auth/registration";
-
-    console.log(formData);
+  const handleLoginApi = async (formData) => {
+    const url = "http://localhost:8080/auth/login";
     try {
       await Axios.post(url, formData, {
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
       }).then((res) => {
         setAuthKey(res?.data.accsessToken);
         if (res.data.accsessToken) {
-          setAlert({
-            show: true,
-            severity: "success",
-            message: "istifadeci movcuddur",
-            title: "duzgun giris",
-          });
           localStorage.setItem(
             "authkey",
             JSON.stringify(res.data.accsessToken)
           );
+          navigate("/home");
         }
       });
     } catch (err) {
       console.error("error", err);
-      setAlert({
-        show: true,
-        severity: "warning",
-        message: err.message,
-        title: "email ve ya parol sehvdir",
-      });
+      toast.error("sehv istifadeci melumatlari");
     }
   };
 
@@ -84,23 +71,20 @@ export default function SignIn() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-          }}
-        >
-          <Typography component="h1" variant="h5">
+          }}>
+          <Typography component="h1" variant="h5" color="white">
             <Title text={"Welcome"} />
           </Typography>
           <Box
             component="form"
             noValidate
-            // onChange={(event) => handleValidation(event)}
-            onSubmit={handleSubmit(handleRegisterApi)}
-            // onSubmit={handleSubmit(onSubmit)}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2} sx={{marginTop:'10px'}}>
+            onSubmit={handleSubmit(handleLoginApi)}
+            sx={{mt: 3}}>
+            <Grid container spacing={2}>
               <Grid item xs={12}>
                 <FormLabel component="legend">Email</FormLabel>
                 <TextField
+                  variant="standard"
                   required
                   fullWidth
                   id="email"
@@ -121,7 +105,7 @@ export default function SignIn() {
               </Grid>
               <Grid item xs={12}>
                 <Password
-                  sx={{ mb: 2 }}
+                  sx={{mb: 2}}
                   // helperText="helper text" --- doesnt work
                   variant="standard"
                   register={register}
@@ -134,13 +118,11 @@ export default function SignIn() {
                   display: "flex",
                   justifyContent: "flex-end",
                   width: "100%",
-                }}
-              >
+                }}>
                 <Link
                   to="/forget"
                   variant="body2"
-                  sx={{ color: "#62B273", textDecoration: "none"}}
-                >
+                  sx={{color: "#62B273", textDecoration: "none"}}>
                   Forgot password
                 </Link>
               </Grid>
@@ -154,35 +136,32 @@ export default function SignIn() {
                 {/* </Link> */}
               </Grid>
             </Grid>
-            <Or item sx={{ mt: 3 }} />
+            <Or item sx={{mt: 3}} />
             <Stack
               direction="row"
               spacing={2}
               justifyContent="center"
-              alignItems="center"
-            >
+              alignItems="center">
               <IconBtn icon="facebook" />
               <IconBtn icon="google" />
               <IconBtn icon="apple" />
             </Stack>
-            <Grid container alignItems="center" justifyContent="center" style={{
-                    color: "#62B273",
-                    pl: "10px",
-                    textDecoration: "none",
-                  }}
-           >
-              <Grid item sx={{marginTop:'10px'}}  >
+            <Grid container alignItems="center" justifyContent="center">
+              <Grid item>
                 <Link
                   to="#"
-                 
-                >
+                  // variant="body2"
+                  sx={{textDecoration: "none", color: "#000"}}>
                   Already have an account?
                 </Link>
                 <Link
                   to="/register"
-                 style={{ color: '#62B273',paddingLeft:'3px'}}
-                 
-                >
+                  // variant="body2"
+                  sx={{
+                    color: "#62B273",
+                    pl: "10px",
+                    textDecoration: "none",
+                  }}>
                   Sign up
                 </Link>
               </Grid>
@@ -190,14 +169,25 @@ export default function SignIn() {
           </Box>
         </Box>
       </Container>
-      {alert.show && (
-        // <MuiAlert
-        //   severity={alert.severity}
-        //   message={alert.message}
-        //   title={alert.title}
-        // />
-        <MuiSnackbar message={alert.message} />
-      )}
+      <ToastContainer
+        position="bottom-left"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </ThemeProvider>
   );
 }
+
+// const S = {
+//   Input: styled(TextField)`
+
+//       background-color: white
+//   `
+// }
