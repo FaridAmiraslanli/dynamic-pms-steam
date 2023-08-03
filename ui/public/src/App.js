@@ -20,7 +20,6 @@ import Pricing2 from "./components/pricingPage/Pricing2"
 import { userStore } from "./store/userStore";
 import {AnimatePresence} from "framer-motion";
 
-
 const App = () => {
   // TODO .env fayli olmalidi backend islemesi ucun
   // TODO config js
@@ -35,7 +34,10 @@ const App = () => {
     setAuthKey(JSON.parse(localStorage.getItem("authkey")));
   }, []);
 
+
+
   return (
+
     <AnimatePresence>
       {authKey ? (
         <Routes location={location} key={location.pathname}>
