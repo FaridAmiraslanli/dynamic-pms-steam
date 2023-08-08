@@ -1,14 +1,13 @@
-import React from 'react'
-import ForgetPassword from "../components/forgetPassword/ForgetPassword"
-import Layout from '../components/layout/Layout'
-
+import React from "react";
+import ForgetPassword from "../components/forgetPassword/ForgetPassword";
+import Layout from "../components/layout/Layout";
 
 const Forget = () => {
   return (
     <Layout>
-    <ForgetPassword/>
+      <ForgetPassword />
     </Layout>
-  )
-}
+  );
+};
 
-export default Forget
+export default Forget;
