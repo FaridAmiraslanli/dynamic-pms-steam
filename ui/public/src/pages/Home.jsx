@@ -8,6 +8,7 @@ const Home = () => {
   return (
     <>
       <Box sx={{ display: "flex", gap: "10px", padding: "20px" }}>
+        <S.Link to="/research">research</S.Link>
         <S.Link to="/chat">chat</S.Link>
         <S.Link to="/pricing">pricing</S.Link>
         <S.Link to="/newresearch">new research</S.Link>
