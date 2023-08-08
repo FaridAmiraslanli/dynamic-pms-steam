@@ -2,6 +2,7 @@ import ChatPage from "./ChatPage";
 import Layout from "../components/layout/Layout";
 import styled from "styled-components";
 import { Box } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
