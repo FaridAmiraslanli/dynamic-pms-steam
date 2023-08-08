@@ -17,9 +17,10 @@ import NewResearchesCost from "./components/newreseacrhes-cost/newresearches-cos
 import NewResearches from "./components/newresearches/newresearches";
 import DemoResearches from "./components/demo-researches/demoresearches"; 
 import Pricing2 from "./components/pricingPage/Pricing2"
+import ChatPage from "./pages/ChatPage";
 import { userStore } from "./store/userStore";
 import {AnimatePresence} from "framer-motion";
-
+import Research from "./pages/Research";
 
 const App = () => {
   // TODO .env fayli olmalidi backend islemesi ucun
@@ -41,7 +42,8 @@ const App = () => {
         <Routes location={location} key={location.pathname}>
           <Route exact path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
-          <Route path="newresearch" element={<NewResearches />} />
+          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/research" element={<Research />} />
           <Route path="/researchcost" element={<NewResearchesCost />} />
           <Route path="/demoresearch" element={<DemoResearches />} />
           <Route path="/pricing" element={<Pricing2 />} />
