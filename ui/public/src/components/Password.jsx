@@ -6,7 +6,6 @@ import {
   InputLabel,
   InputAdornment,
   Typography,
-  TextField,
   FormHelperText,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -22,11 +21,11 @@ export default function InputAdornments({ register, errors }) {
 
   return (
     <Box>
-      <InputLabel sx={{ width: "100%" }} htmlFor="outlined-adornment-password">
+      <InputLabel sx={{ width: "100%", color:"white"}} htmlFor="outlined-adornment-password">
         Password
       </InputLabel>
       <OutlinedInput
-        sx={{ width: "100%" }}
+        sx={{ width: "100%", backgroundColor:"rgba(248, 250, 239, 1)",  borderRadius:"8px"  }}
         id="outlined-adornment-password"
         type={showPassword ? "text" : "password"}
         error={Boolean(errors.password)}
@@ -49,7 +48,7 @@ export default function InputAdornments({ register, errors }) {
             </IconButton>
           </InputAdornment>
         }
-        placeholder="Password"
+        placeholder="Enter your password"
       />
       {Boolean(errors.password) && (
         <FormHelperText error id="username-error" sx={{ ml: "14px" }}>
@@ -63,7 +62,7 @@ export default function InputAdornments({ register, errors }) {
 function PasswordError() {
   return (
     <Typography>
-      azi 6 xarakterden ibaret, azi 1 herf, 1 reqem olmalidi
+      It must contain at least 6 characters, at least 1 letter, and 1 number.
     </Typography>
   );
 }

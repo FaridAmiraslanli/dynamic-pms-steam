@@ -9,6 +9,7 @@ import {
   FormLabel,
   TextField,
   Stack,
+  OutlinedInput,
   // Link,
 } from "@mui/material";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
@@ -73,7 +74,7 @@ export default function SignIn() {
             alignItems: "center",
           }}>
           <Typography component="h1" variant="h5" color="white">
-            <Title text={"Welcome"} />
+            <Title text={"Welcome back"} />
           </Typography>
           <Box
             component="form"
@@ -82,13 +83,14 @@ export default function SignIn() {
             sx={{mt: 3}}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <FormLabel component="legend">Email</FormLabel>
-                <TextField
+                <FormLabel component="legend" sx={{color:"white"}}>Email</FormLabel>
+                <OutlinedInput
+                sx={{backgroundColor:"rgba(248, 250, 239, 1)" }}
                   variant="standard"
                   required
                   fullWidth
                   id="email"
-                  placeholder="Email Address"
+                  placeholder="Enter your email"
                   name="email"
                   autoComplete="email"
                   type={"email"}

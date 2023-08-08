@@ -5,7 +5,7 @@ function Or() {
   const inlineStyle = {
     width: "39%",
     height: "1px",
-    backgroundColor: "#ebebeb",
+    backgroundColor:"rgba(255, 255, 255, 0.2)"
   };
   return (
     <Box
@@ -19,7 +19,7 @@ function Or() {
       }}
     >
       <Typography sx={inlineStyle}></Typography>
-      <Typography>or</Typography>
+      <Typography sx={{color: "rgba(255, 255, 255, 0.6)"}}>OR</Typography>
       <Typography sx={inlineStyle}></Typography>
     </Box>
   );
