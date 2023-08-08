@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-// css 
-import "./assets/sass/globals.scss"
+import { loadStripe } from "@stripe/stripe-js";
+// css
+import "./assets/sass/globals.scss";
+import "./App.css";
 
-// pages 
+// pages
 import Login from "@pages/Login";
 import Home from "@pages/Home";
 import Register from "@pages/Register";
@@ -15,12 +17,14 @@ import Check from "./pages/Check";
 import CreditPacks from "./pages/CreditPacks";
 import NewResearchesCost from "./components/newreseacrhes-cost/newresearches-cost";
 import NewResearches from "./components/newresearches/newresearches";
-import DemoResearches from "./components/demo-researches/demoresearches"; 
-import Pricing2 from "./components/pricingPage/Pricing2"
+import DemoResearches from "./components/demo-researches/demoresearches";
+import Pricing2 from "./components/pricingPage/Pricing2";
 import ChatPage from "./pages/ChatPage";
 import { userStore } from "./store/userStore";
-import {AnimatePresence} from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import Research from "./pages/Research";
+import Payment from "./pages/payment/Payment";
+import Completion from "./pages/payment/Completion";
 
 const App = () => {
   // TODO .env fayli olmalidi backend islemesi ucun
@@ -28,11 +32,18 @@ const App = () => {
   // TODO redux toolkit
 
   // const { authKey, setAuthKey } = userStore();
-  const authKey = userStore(state => state.authKey)
-  const setAuthKey = userStore(state => state.setAuthKey)
+  const authKey = userStore((state) => state.authKey);
+  const setAuthKey = userStore((state) => state.setAuthKey);
   const location = useLocation();
 
+  const [stripePromise, setStripePromise] = useState(null);
+
   React.useEffect(() => {
+    fetch("/config").then(async (r) => {
+      const { publishableKey } = await r.json();
+      setStripePromise(loadStripe(publishableKey));
+    });
+
     setAuthKey(JSON.parse(localStorage.getItem("authkey")));
   }, []);
 
@@ -47,6 +58,14 @@ const App = () => {
           <Route path="/researchcost" element={<NewResearchesCost />} />
           <Route path="/demoresearch" element={<DemoResearches />} />
           <Route path="/pricing" element={<Pricing2 />} />
+          <Route
+            path="/payment"
+            element={<Payment stripePromise={stripePromise} />}
+          />
+          <Route
+            path="/completion"
+            element={<Completion stripePromise={stripePromise} />}
+          />
           <Route path="*" element={<Error />} />
         </Routes>
       ) : (
