@@ -17,6 +17,7 @@ import NewResearchesCost from "./components/newreseacrhes-cost/newresearches-cos
 import NewResearches from "./components/newresearches/newresearches";
 import DemoResearches from "./components/demo-researches/demoresearches"; 
 import Pricing2 from "./components/pricingPage/Pricing2"
+import ChatPage from "./pages/ChatPage";
 import { userStore } from "./store/userStore";
 import {AnimatePresence} from "framer-motion";
 
@@ -34,15 +35,13 @@ const App = () => {
     setAuthKey(JSON.parse(localStorage.getItem("authkey")));
   }, []);
 
-
-
   return (
-
     <AnimatePresence>
       {authKey ? (
         <Routes location={location} key={location.pathname}>
           <Route exact path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/chat" element={<ChatPage />} />
           <Route path="/newresearch" element={<NewResearches />} />
           <Route path="/researchcost" element={<NewResearchesCost />} />
           <Route path="/demoresearch" element={<DemoResearches />} />

@@ -52,6 +52,7 @@ export default function CheckYourEmail() {
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
+            
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Link to="/login" variant="body2">
