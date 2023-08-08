@@ -11,6 +11,6 @@ const connect = () => {
     }).catch((err) => {
         console.log(err.message);
     })
-}
+}   
 
 module.exports = connect;
