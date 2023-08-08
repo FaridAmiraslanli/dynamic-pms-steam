@@ -73,7 +73,7 @@ router.post("/resendLink/:id/:token", async (req, res, next) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ email }).select("-password");
-    if (!user) {
+    if (email !== user.email) {
       const err = new Error("Can't find user");
       err.statusCode = 403;
       next(err);
@@ -116,7 +116,7 @@ router.post("/resendLink/:id/:token", async (req, res, next) => {
     res.json("Password resend link has been sen to email...");
     //nodemaile
   } catch (error) {
-    next(error);;
+    next(error);
   }
 });
 
@@ -126,7 +126,8 @@ router.post("/reset-password/:id/:token", async (req, res) => {
   const user = await User.findById(id);
   if (password !== comfirmPassword) {
     const err = new Error("Confirm password is incorrect");
-    next(err);
+    // next(err);
+    throw err;
     // res.status(401).json({ message: "Confirm password is incorrect" });
     return;
   }

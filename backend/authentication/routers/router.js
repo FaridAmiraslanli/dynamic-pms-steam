@@ -1,15 +1,12 @@
+const swaggerUI = require("swagger-ui-express");
+const swaggerDocs = require("../swagger.json");
 const authController = require("../controllers/authController");
 const userController = require("../controllers/userController");
-const authMiddleware = require("../middleware/authMiddleware");
-const express = require("express");
 
 const router = (app) => {
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
-  app.set("view engine", "ejs");
-
   app.use("/auth", authController);
   app.use("/user", userController);
+  app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
   app.all("*", (req, res, next) => {
     const err = new Error("Not found");
@@ -30,5 +27,3 @@ const router = (app) => {
 };
 
 module.exports = router;
-
-// app.use("/gpt", authMiddleware, gptController);

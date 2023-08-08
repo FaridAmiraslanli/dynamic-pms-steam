@@ -18,6 +18,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       minlength: [6, "Minimum password length is 6 characters"],
+      match: /[a-zA-Z0-9]/,
     },
     passResetToken: {
       type: String,
