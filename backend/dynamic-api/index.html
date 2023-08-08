@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  #logContainer {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    height: 200px;
+    overflow-y: scroll;
+    font-family: Consolas;
+  }
+</style>
+<div id="buttons">
+  <button id="connectButton">Connect</button>
+  <p>
+    <button id="updateDataButton">Update Data</button>
+    <button id="uploadUrlButton">Upload URL</button>
+    <button id="sendPromptButton">Send Prompt</button>
+    <button id="getDatabaseButton">Get Database</button>
+</div>
+<script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+  integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+<!-- axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+
+<script>
+  // const socket = io('ws://localhost:8080')
+
+  const host = 'http://192.168.50.112:5000';
+  const socket = io(host, { autoConnect: false });
+  const EndpointType = {
+    UPDATE_DATA: `${host}/update_data`,
+    UPLOAD_URL: `${host}/upload_url`,
+    SEND_PROMPT: `${host}/send_prompt`,
+    GET_DATABASE: `${host}/get_database`,
+  };
+
+
+
+  const updateDataButton = document.getElementById('updateDataButton');
+  const uploadUrlButton = document.getElementById('uploadUrlButton');
+  const sendPromptButton = document.getElementById('sendPromptButton');
+  const getDatabaseButton = document.getElementById('getDatabaseButton');
+  const buttons = [updateDataButton, uploadUrlButton, sendPromptButton, getDatabaseButton];
+
+  toggleButtons(false);
+
+  connectButton.onclick = function () {
+    socket.connect();
+  };
+
+  socket.on("connect", function () {
+    console.log("Connected to WebSocket");
+    toggleButtons(true);
+  });
+  
+  // socketConnect("salam");
+  // async function socketConnect(data) {
+  //  await axios.post(`/app_connect`, data)
+  //     .then((response) => {
+  //       console.log("sendTo data Back");
+  //     }).catch((error) => {
+  //       console.log(error.message);
+  //     })
+  // }
+
+
+  socket.on("update_data_result", function (data) {
+    // socket.broadcast.emit('update_data', data); 
+
+    console.log("[update_data_result] data got: " + JSON.stringify(data));
+  });
+
+  socket.on("upload_url_result", function (data) {
+    sendUploadUrlToBackend(data);
+    console.log("[upload_url_result] data got: " + JSON.stringify(data));
+  });
+
+  socket.on("send_prompt_result", function (data) {
+
+    console.log("[send_prompt_result] data got: " + JSON.stringify(data));
+  });
+
+  socket.on("get_database_result", function (data) {
+    sendUploadUrlToBackend(data);
+    console.log("[get_database_result] data got: " + JSON.stringify(data));
+  });
+
+  async function sendUploadUrlToBackend(data) {
+    const url = `/upload_url`;
+    await axios.post(url, { ...data, session_id: socket.id })
+      .then((response) => {
+        console.log(" Data sent to backend successfully");
+      })
+      .catch(error => {
+        console.log("Error occurred while sending data to backend: ", JSON.stringify(error))
+      });
+  };
+
+  async function sendDataToBackend(data) {
+    const url = `/get_database`;
+    await axios.post(url, { ...data, session_id: socket.id })
+      .then((response) => {
+        console.log(" Data sent to backend successfully");
+      })
+      .catch(error => {
+        console.log("Error occurred while sending data to backend: ", JSON.stringify(error))
+      });
+  }
+
+
+  function toggleButtons(toggle) {
+    buttons.forEach(function (button) {
+      button.disabled = !toggle;
+    });
+    if (toggle) { addButtonListeners(); }
+  }
+
+  function addButtonListeners() {
+    updateDataButton.onclick = function () {
+      var updateDataPayload = { session_id: socket.id, namespace: "556480_Rugby_League_Live_4", date: "2023-07-03", timestamp: 1688308993 };
+      const updateDataResponse = sendRequest(EndpointType.UPDATE_DATA, updateDataPayload);
+    };
+
+    uploadUrlButton.onclick = function () {
+      const uploadUrlPayload = { session_id: socket.id, game_url: "https://store.steampowered.com/app/1578390/My_Garage/" };
+      const uploadUrlResponse = sendRequest(EndpointType.UPLOAD_URL, uploadUrlPayload);
+    };
+
+    sendPromptButton.onclick = function () {
+      const sendPromptPayload = { session_id: socket.id, prompt: "Hello! Data you see are reviews for a game called 'Master Of Orion 1'. Tell me its positive impacts", chat_history: { "human": [], "ai": [] }, namespace: "410970_Master_of_Orion_1" };
+      const sendPromptResponse = sendRequest(EndpointType.SEND_PROMPT, sendPromptPayload);
+    };
+
+    getDatabaseButton.onclick = function () {
+      const getDatabasePayload = { session_id: socket.id };
+      const getDatabaseResponse = sendRequest(EndpointType.GET_DATABASE, getDatabasePayload);
+      console.log(getDatabaseResponse);
+    };
+  }
+
+  function sendRequest(endpoint, dataPayload) {
+    fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataPayload)
+    })
+      .then(function (response) {
+        if (response.ok) {
+          console.log('Response sent successfully');
+          console.log("response: " + response.json());
+          return response.json();
+        } else {
+          throw new Error('Response is not OK');
+        }
+      })
+      .catch(function (error) {
+        console.error('Error sending response:', error);
+      });
+  }
+</script>
+
+<label>Log</label>
+<div id="logContainer"></div>
+<script>
+  // Custom logging function
+  function writeToLog(message) {
+    const logContainer = document.getElementById('logContainer');
+    const logEntry = document.createElement('div');
+    logEntry.textContent = message;
+    logContainer.appendChild(logEntry);
+  }
+
+  // Override console.log to write to the website log
+  console.log = function (message) {
+    writeToLog(message);
+  };
+</script>
+
+</html>

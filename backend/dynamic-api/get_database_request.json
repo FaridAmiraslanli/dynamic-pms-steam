@@ -1,0 +1,31 @@
+// get_db
+// frontend request
+{
+    "user_id": ""
+}
+
+// backend response
+[
+    {
+      "id": "1578390",
+      "name": "My Garage",
+      "namespace": "1578390_My_Garage"
+    },
+    {
+      "id": "556480",
+      "name": "Rugby League Live 4",
+      "namespace": "556480_Rugby_League_Live_4"
+    }
+]
+
+// send_prompt
+// fronend request
+{
+    "namespace": "",
+    "prompt": ""
+}
+
+// backend response
+{
+    "answer": ""
+}
