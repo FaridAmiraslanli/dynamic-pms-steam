@@ -17,6 +17,8 @@ import GlobalStyles from "@mui/material/GlobalStyles";
 import Container from "@mui/material/Container";
 import Star from "../../assets/sass/Icons/Star.jsx";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useNavigate } from "react-router-dom";
+import {IoIosArrowBack} from "react-icons/io"
 
 // import "../assets/Icons/Star.jsx"
 // import Star from '../../assets/sass/Icons/Star.jsx';
@@ -50,6 +52,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 const defaultTheme = createTheme();
 
 export default function Pricing2() {
+  const navigate = useNavigate();
   const [tiers, setTiers] = useState([
     {
       title: "Basic",
@@ -81,7 +84,6 @@ export default function Pricing2() {
     },
     {
       title: "Platinum",
-
       subheader: "1500 Credit",
       price: "30",
       description: [
@@ -94,27 +96,11 @@ export default function Pricing2() {
       buttonVariant: "outlined",
     },
   ]);
-  const [animationParent] = useAutoAnimate({ duration: 500 });
 
-  const handleClick = (title) => {
-    // console.log(title)
-
-    let draft = [...tiers];
-    let index = draft.findIndex((el) => el.title === title);
-    console.log(index);
-    if (index !== 1) {
-      let newArr = draft.map((el, ind, arr) => {
-        if (ind === 1) {
-          return arr[index];
-        } else if (ind === index) {
-          return arr[1];
-        } else {
-          return el;
-        }
-      });
-      setTiers(newArr);
-    }
+  const handlePriceClick = (tierPrice) => {
+    navigate("/payment", { state: { paymentAmount: Number(tierPrice) } });
   };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyles
@@ -150,7 +136,10 @@ export default function Pricing2() {
       </Container>
       {/* End hero unit */}
       <Container maxWidth="md" component="main">
-        <Grid container spacing={3} alignItems="center" ref={animationParent}>
+        <Button onClick={() => navigate("/research")}>
+          <IoIosArrowBack />
+        </Button>
+        <Grid container spacing={3} alignItems="center">
           {tiers.map((tier, ind) => (
             // Enterprise card is full width at sm breakpoint
             <Grid
@@ -161,7 +150,6 @@ export default function Pricing2() {
               md={4}
             >
               <Card
-                onClick={() => handleClick(tier.title)}
                 data-id={tier.title}
                 sx={{
                   bgcolor: "#181B29",
@@ -222,6 +210,7 @@ export default function Pricing2() {
                 <CardActions sx={{ height: "110px", justifyContent: "center" }}>
                   <Button
                     fullWidth
+                    onClick={() => handlePriceClick(tier.price)}
                     variant={tier.buttonVariant}
                     sx={{
                       borderRadius: "32px",

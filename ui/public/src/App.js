@@ -40,10 +40,10 @@ const App = () => {
 
   React.useEffect(() => {
     try {
-      // fetch("/config").then(async (r) => {
-      //   const { publishableKey } = await r.json();
-      //   setStripePromise(loadStripe(publishableKey));
-      // });
+      fetch("http://localhost:4242/config").then(async (r) => {
+        const { publishableKey } = await r.json();
+        setStripePromise(loadStripe(publishableKey));
+      });
     } catch (error) {
       console.log("fetch config error: ", error);
     }

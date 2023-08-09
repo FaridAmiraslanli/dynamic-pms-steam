@@ -1885,6 +1885,20 @@
   dependencies:
     "@babel/runtime" "^7.22.6"
 
+"@mui/lab@^5.0.0-alpha.139":
+  version "5.0.0-alpha.139"
+  resolved "https://registry.yarnpkg.com/@mui/lab/-/lab-5.0.0-alpha.139.tgz#a5d5aa2095786add49276c2df6d154358545763f"
+  integrity sha512-YlKKELtGZEpd3Hj9cUo6ekwB6RSDzGBw+LlaCBntudhVb4aRn5mQYFej3BYn6fOYz5335jkTgvBt0sEwlSo4qA==
+  dependencies:
+    "@babel/runtime" "^7.22.6"
+    "@mui/base" "5.0.0-beta.10"
+    "@mui/system" "^5.14.4"
+    "@mui/types" "^7.2.4"
+    "@mui/utils" "^5.14.4"
+    clsx "^2.0.0"
+    prop-types "^15.8.1"
+    react-is "^18.2.0"
+
 "@mui/material@^5.13.5":
   version "5.14.4"
   resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.14.4.tgz#9d4d1834a929a4acc59e550e34ca64c0fd60b3a6"
