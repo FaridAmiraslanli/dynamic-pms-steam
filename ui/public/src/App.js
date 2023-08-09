@@ -39,10 +39,14 @@ const App = () => {
   const [stripePromise, setStripePromise] = useState(null);
 
   React.useEffect(() => {
-    fetch("/config").then(async (r) => {
-      const { publishableKey } = await r.json();
-      setStripePromise(loadStripe(publishableKey));
-    });
+    try {
+      fetch("http://localhost:4242/config").then(async (r) => {
+        const { publishableKey } = await r.json();
+        setStripePromise(loadStripe(publishableKey));
+      });
+    } catch (error) {
+      console.log("fetch config error: ", error);
+    }
 
     setAuthKey(JSON.parse(localStorage.getItem("authkey")));
   }, []);
