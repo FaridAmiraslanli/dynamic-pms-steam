@@ -14,10 +14,12 @@ import { todaysDate } from "../utils/todaysDate";
 import { delay } from "../utils/delay";
 import CopyToClipboard from "../components/copy/CopyToClipboard";
 import { useAnimate } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
 
 function ChatPage() {
+  const navigate = useNavigate()
   const [areaValue, setAreaValue] = useState("");
   const [disableSend, setDisableSend] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -100,7 +102,7 @@ function ChatPage() {
         <S.Sidebar>
           <S.SidebarHeader>
             <S.SidebarNav>
-              <S.NavBtn>
+              <S.NavBtn onClick={() => navigate("/research")}>
                 <IoIosArrowBack />
               </S.NavBtn>
               <S.NavBtn

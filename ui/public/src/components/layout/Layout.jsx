@@ -14,7 +14,6 @@ const Layout = ({ children }) => {
         <Grid
           className="layout__main"
           // flexGrow={6}
-          border="1px solid red"
           md={7}
           item
           sx={{ height: '100vh' }}

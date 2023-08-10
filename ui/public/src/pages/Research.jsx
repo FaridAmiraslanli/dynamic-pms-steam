@@ -16,32 +16,16 @@ import styled from "styled-components";
 // icons
 import { LiaCoinsSolid } from "react-icons/lia";
 import {AiOutlinePlus} from "react-icons/ai"
+
+
 import ResearchModal from "../components/modal/ResearchModal";
 import { useNavigate } from "react-router-dom";
+import { researchStore } from "../store/researchStore";
 
-
-// function TabPanel(props) {
-//   const { children, value, index, ...other } = props;
-
-//   return (
-//     <div
-//       role="tabpanel"
-//       hidden={value !== index}
-//       id={`full-width-tabpanel-${index}`}
-//       aria-labelledby={`full-width-tab-${index}`}
-//       {...other}
-//     >
-//       {value === index && (
-//         <Box sx={{ p: 3 }}>
-//           <Typography>{children}</Typography>
-//         </Box>
-//       )}
-//     </div>
-//   );
-// }
 
 const Research = () => {
   const navigate = useNavigate()
+  const readyResearches = researchStore((state) => state.readyResearches);
   const [researchTabValue, setResearchTabValue] = useState("ready");
   const [modalOpen, setModalOpen] = useState(false)
   const [researchInputValue, setResearchInputValue] = useState("");
@@ -87,12 +71,12 @@ const Research = () => {
               alignItems: "center",
               "& .MuiTabs-flexContainer": { justifyContent: "space-between" },
               "& .MuiTabs-indicator": { display: "none" },
-              "& .MuiTab-root": { color: "#8670FF", opacity: "1" },
+              "& .MuiTab-root": { color: "#8670FF", opacity: "1", fontSize: "20px" },
               "& .Mui-selected": { color: "white" },
             }}
           >
             <Tab value="progress" label="In progress" />
-            <Tab value="ready" label="Ready" />
+            <Tab value="ready" label={`Ready (${readyResearches.length})`} />
             <Tab value="all" label="All researches" />
           </TabList>
 
@@ -107,7 +91,14 @@ const Research = () => {
               Item One
             </TabPanel>
             <TabPanel value="ready" index={1}>
-              Item Two
+              <Stack spacing={4}>
+                {readyResearches.map((res) => (
+                  <S.ReadyResearch>
+                    {res}
+                    <Button onClick={() => navigate("/chat")}>Open</Button>
+                  </S.ReadyResearch>
+                ))}
+              </Stack>
             </TabPanel>
             <TabPanel value="all" index={2}>
               Item Three
@@ -176,6 +167,29 @@ const S = {
 
       &:hover {
         background-color: #e9eef3;
+      }
+    }
+  `,
+  ReadyResearch: styled(Box)`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 16px;
+
+    button {
+      background-color: #8670ff;
+      color: #271c62;
+      font-weight: 600;
+      font-size: 20px;
+      letter-spacing: 0.1%;
+      padding: 10px 20px;
+      text-transform: none;
+      border-radius: 4px;
+      transition: .3s;
+
+      &:hover {
+        background-color: #5e47e6
       }
     }
   `,

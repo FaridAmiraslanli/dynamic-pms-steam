@@ -22,7 +22,7 @@ const ResearchModal = ({ open, setOpen, value, setValue }) => {
           width: "920px",
         //   height: "504px",
           display: "flex",
-          padding: "20px"
+          padding: "5px 10px"
         },
       }}
     >

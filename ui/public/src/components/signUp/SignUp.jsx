@@ -91,10 +91,15 @@ export default function SignUp() {
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12} variant="rounded">
-                <FormLabel component="legend" sx={{color:"white"}}>Full name</FormLabel>
+                <FormLabel component="legend" sx={{ color: "white" }}>
+                  Full name
+                </FormLabel>
                 <OutlinedInput
-                id="outlined-basic" 
-                sx={{backgroundColor:"rgba(248, 250, 239, 1)", overflow:"hidden"}}
+                  id="outlined-basic"
+                  sx={{
+                    backgroundColor: "rgba(248, 250, 239, 1)",
+                    overflow: "hidden",
+                  }}
                   autoComplete="given-name"
                   name="fullName"
                   fullWidth
@@ -113,9 +118,14 @@ export default function SignUp() {
               </Grid>
 
               <Grid item xs={12}>
-                <FormLabel component="legend" sx={{color:"white"}}>Email</FormLabel>
+                <FormLabel component="legend" sx={{ color: "white" }}>
+                  Email
+                </FormLabel>
                 <OutlinedInput
-                 sx={{backgroundColor:"rgba(248, 250, 239, 1)", overflow:"hidden" }}
+                  sx={{
+                    backgroundColor: "rgba(248, 250, 239, 1)",
+                    overflow: "hidden",
+                  }}
                   required
                   fullWidth
                   id="email"
@@ -156,18 +166,18 @@ export default function SignUp() {
             </Stack>
             <Grid container alignItems="center" justifyContent="center">
               <Grid item>
-                <Link
-                  to="#"
+                <Typography
+                  variant="span"
                   // variant="body2"
-                  sx={{ textDecoration: "none", color: "#000" }}
+                  sx={{ textDecoration: "none", color: "white" }}
                 >
-                  Already have an account?
-                </Link>
+                  Already have an account?{" "}
+                </Typography>
                 <Link
                   to="/login"
                   // variant="body2"
                   sx={{
-                    color: "#62B273",
+                    color: "#8670FF",
                     pl: "10px",
                     textDecoration: "none",
                   }}
@@ -187,7 +197,8 @@ export default function SignUp() {
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
-        draggable
+        draggabl
+        e
         pauseOnHover
         theme="light"
       />
