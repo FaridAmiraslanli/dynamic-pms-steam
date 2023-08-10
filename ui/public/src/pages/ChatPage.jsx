@@ -49,29 +49,35 @@ function ChatPage() {
   }, [areaValue]);
 
   const sendMessage = async (message) => {
-    const apiKey = "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";
-    const url = "https://api.openai.com/v1/chat/completions";
+    // const apiKey = "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";
+    // const url = "https://api.openai.com/v1/chat/completions";
+    const url = "http://localhost:8081/send_prompt";
+    console.log("message sent")
     const options = {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        // Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: message }],
-        max_tokens: 100,
+        prompt: message,
+        namespace: "719730_Uptasia",
+        chat_history: {
+          human: [],
+          ai: [],
+        },
       }),
     };
     try {
       setDisableSend(true);
       const res = await fetch(url, options);
       const data = await res.json();
-      let obj = {
-        content: data.choices[0].message.content,
-        who: "bot",
-      };
-      setMessages((prev) => [...prev, obj]);
+      console.log(data)
+      // let obj = {
+      //   content: data.choices[0].message.content,
+      //   who: "bot",
+      // };
+      // setMessages((prev) => [...prev, obj]);
       setDisableSend(false);
     } catch (err) {
       console.error(err);

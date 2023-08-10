@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-// css 
+// css
 import {
   Box,
   Button,
@@ -15,19 +15,18 @@ import styled from "styled-components";
 
 // icons
 import { LiaCoinsSolid } from "react-icons/lia";
-import {AiOutlinePlus} from "react-icons/ai"
+import { AiOutlinePlus } from "react-icons/ai";
 
-
+import { nanoid } from "nanoid";
 import ResearchModal from "../components/modal/ResearchModal";
 import { useNavigate } from "react-router-dom";
 import { researchStore } from "../store/researchStore";
 
-
 const Research = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const readyResearches = researchStore((state) => state.readyResearches);
   const [researchTabValue, setResearchTabValue] = useState("ready");
-  const [modalOpen, setModalOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false);
   const [researchInputValue, setResearchInputValue] = useState("");
   const handleTabChange = (event, newValue) => {
     setResearchTabValue(newValue);
@@ -71,7 +70,11 @@ const Research = () => {
               alignItems: "center",
               "& .MuiTabs-flexContainer": { justifyContent: "space-between" },
               "& .MuiTabs-indicator": { display: "none" },
-              "& .MuiTab-root": { color: "#8670FF", opacity: "1", fontSize: "20px" },
+              "& .MuiTab-root": {
+                color: "#8670FF",
+                opacity: "1",
+                fontSize: "20px",
+              },
               "& .Mui-selected": { color: "white" },
             }}
           >
@@ -93,7 +96,7 @@ const Research = () => {
             <TabPanel value="ready" index={1}>
               <Stack spacing={4}>
                 {readyResearches.map((res) => (
-                  <S.ReadyResearch>
+                  <S.ReadyResearch key={nanoid()}>
                     {res}
                     <Button onClick={() => navigate("/chat")}>Open</Button>
                   </S.ReadyResearch>
@@ -186,10 +189,10 @@ const S = {
       padding: 10px 20px;
       text-transform: none;
       border-radius: 4px;
-      transition: .3s;
+      transition: 0.3s;
 
       &:hover {
-        background-color: #5e47e6
+        background-color: #5e47e6;
       }
     }
   `,

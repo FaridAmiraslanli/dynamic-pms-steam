@@ -31,7 +31,7 @@ export default function Pricing() {
       title: "Basic",
       credits: "150 credit",
       subheader: "150 Credit",
-      price: "0",
+      price: "20",
       description: [
         "10 users included",
         "2 GB of storage",
@@ -43,9 +43,9 @@ export default function Pricing() {
     },
     {
       title: "Premium",
-      credits: "150 credit",
+      credits: "500 credit",
       subheader: "500 Credit",
-      price: "15",
+      price: "40",
       description: [
         "20 users included",
         "10 GB of storage",
@@ -57,8 +57,9 @@ export default function Pricing() {
     },
     {
       title: "Platinum",
+      credits: "1500 credit",
       subheader: "1500 Credit",
-      price: "30",
+      price: "90",
       description: [
         "50 users included",
         "30 GB of storage",

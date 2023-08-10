@@ -52,7 +52,7 @@ app.use(
 
 // const socketIO = require("socket.io");
 // const { io } = require("socket.io-client");
-// const host = "http://192.168.50.112:5000";
+// const host = "http://192.168.50.129:5000";
 // const socket = io(host);
 // socket.on("connect", () => {
 //   const session_id = socket.id;
@@ -126,7 +126,7 @@ app.post("/update_data", async (req, res) => {
     // }
 
     const res = await axios
-      .post("http://192.168.50.112:5000/update_data", oldGameInfo)
+      .post("http://192.168.50.129:5000/update_data", oldGameInfo)
       .then((response) => {
         console.log(response);
       })
@@ -157,7 +157,7 @@ app.post("/update_data", async (req, res) => {
 });
 
 app.post("/send_prompt", async (req, res) => {
-  const { session_id, prompt, chat_history, namespace } = req.body;
+  const { prompt, chat_history, namespace } = req.body;
   try {
     console.log(req.body);
 
@@ -174,7 +174,7 @@ app.post("/send_prompt", async (req, res) => {
       task_id: data.task_id;
       answer: data.answer;
       dataSocket = data;
-      frontendSocket.emit(send_prompt_result, data.answer);
+      // frontendSocket.emit(send_prompt_result, data.answer);
       console.log("[send_prompt_result] data got: " + JSON.stringify(data));
     });
 
@@ -209,13 +209,13 @@ app.post("/app_connect", (req, res) => {
   // const socketId = req.query['socket'];
   const { ...rest } = req.body;
 
-  console.log(req.body);
+  // console.log(req.body);
 });
 
 app.post("/user/create", User.create);
 
 app.post("/upload_url", async (req, res) => {
-  const { session_id, game_url, user_id, ...rest } = req.body;
+  const { game_url, user_id, ...rest } = req.body;
   try {
     if (game_url) {
       const inputString = game_url;
@@ -226,18 +226,13 @@ app.post("/upload_url", async (req, res) => {
     }
     //socket
     let saveObj;
+
     socket.on("upload_url_result", async function (data) {
       console.log(data);
-      saveObj = {
-        user_id,
-        gameId,
-        gameName,
-        task_id: data.task_id,
-        display_name: data.display_name,
-        namespace: data.namespace,
-        new_date: data.new_date,
-        new_timestamp: data.new_timestamp,
-      };
+
+      findAndEditDBObject(); /// update saveObj
+
+      console.log(saveObj);
 
       const game = new GameInfo(saveObj);
       await game.save();
@@ -256,16 +251,28 @@ app.post("/upload_url", async (req, res) => {
       game_url: game_url,
     };
 
-    const res = await axios
-      .post("http://192.168.50.112:5000/upload_url", gameInfo)
+    await axios
+      .post("http://192.168.50.129:5000/upload_url", gameInfo)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error.message);
       });
 
-    res.status(200).json({ success: true, data: game });
+    saveObj = {
+      user_id,
+      gameId,
+      gameName,
+      task_id: null,
+      display_name: null,
+      namespace: null,
+      new_date: null,
+      new_timestamp: null,
+    };
+    uploadEmptyObjectToDB(); //save saveObj
+
+    res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -322,7 +329,7 @@ app.post(`/get_database`, async (req, res) => {
     // });
 
     // await axios
-    //   .post("http://192.168.50.112:5000/get_database", session_id)
+    //   .post("http://192.168.50.129:5000/get_database", session_id)
     //   .then((response) => {
     //     console.log(response);
     //   })
@@ -339,8 +346,8 @@ app.post(`/get_database`, async (req, res) => {
   }
 });
 
-server.listen(8080, () => {
-  console.log("Server is running on port 8080");
+server.listen(8081, () => {
+  console.log("Server is running on http://localhost:8081");
 });
 connect();
 
