@@ -267,9 +267,6 @@ app.post("/upload_url", async (req, res) => {
       console.log("[upload_url_result] data got: " + JSON.stringify(data));
     });
 
-    // testSocket(obj.upload_url_result);
-    //socket
-
     let gameInfo = {
       session_id: socket.id,
       game_url: game_url,
@@ -286,7 +283,7 @@ app.post("/upload_url", async (req, res) => {
 
     // uploadEmptyObjectToDB(); //save saveObj
 
-    res.status(200).json({ success: true, data: gameTest });
+    return res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -303,11 +300,24 @@ app.post("/upload_url", async (req, res) => {
   //   new_timestamp: 1688173233,
   // });
 });
-app.get("/refresh", async(req, res)=>{
-  const { user_id, game_id } = req.body
-const gameInfo = await GameInfo.findById({ user_id })
+app.get("/refresh", async (req, res) => {
+  const { user_id, game_id } = req.body;
+  try {
+    const user = await User.findById({ _id: user_id });
+    const gameInfo = await GameInfo.findById({ _id: user_id });
 
-})
+
+    console.log(gameInfo);
+    let draft = {
+      name: gameInfo.display_name,
+      namespace: gameInfo.namespace
+    }
+
+    res.status(200).json({ draft });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 app.post(`/get_database`, async (req, res) => {
   const { session_id, ...rest } = req.body;
