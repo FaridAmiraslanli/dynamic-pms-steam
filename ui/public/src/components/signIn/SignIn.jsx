@@ -72,7 +72,8 @@ export default function SignIn() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-          }}>
+          }}
+        >
           <Typography component="h1" variant="h5" color="white">
             <Title text={"Welcome back"} />
           </Typography>
@@ -80,12 +81,15 @@ export default function SignIn() {
             component="form"
             noValidate
             onSubmit={handleSubmit(handleLoginApi)}
-            sx={{mt: 3}}>
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <FormLabel component="legend" sx={{color:"white"}}>Email</FormLabel>
+                <FormLabel component="legend" sx={{ color: "white" }}>
+                  Email
+                </FormLabel>
                 <OutlinedInput
-                sx={{backgroundColor:"rgba(248, 250, 239, 1)" }}
+                  sx={{ backgroundColor: "rgba(248, 250, 239, 1)" }}
                   variant="standard"
                   required
                   fullWidth
@@ -107,7 +111,7 @@ export default function SignIn() {
               </Grid>
               <Grid item xs={12}>
                 <Password
-                  sx={{mb: 2}}
+                  sx={{ mb: 2 }}
                   // helperText="helper text" --- doesnt work
                   variant="standard"
                   register={register}
@@ -120,11 +124,13 @@ export default function SignIn() {
                   display: "flex",
                   justifyContent: "flex-end",
                   width: "100%",
-                }}>
+                }}
+              >
                 <Link
                   to="/forget"
                   variant="body2"
-                  sx={{color: "#62B273", textDecoration: "none"}}>
+                  sx={{ color: "#62B273", textDecoration: "none" }}
+                >
                   Forgot password
                 </Link>
               </Grid>
@@ -138,32 +144,34 @@ export default function SignIn() {
                 {/* </Link> */}
               </Grid>
             </Grid>
-            <Or item sx={{mt: 3}} />
+            <Or item sx={{ mt: 3 }} />
             <Stack
               direction="row"
               spacing={2}
               justifyContent="center"
-              alignItems="center">
+              alignItems="center"
+            >
               <IconBtn icon="facebook" />
               <IconBtn icon="google" />
               <IconBtn icon="apple" />
             </Stack>
             <Grid container alignItems="center" justifyContent="center">
               <Grid item>
-                <Link
-                  to="#"
-                  // variant="body2"
-                  sx={{textDecoration: "none", color: "#000"}}>
-                  Already have an account?
-                </Link>
+                <Typography
+                  variant="span"
+                  sx={{ textDecoration: "none", color: "white" }}
+                >
+                  Already have an account? {" "}
+                </Typography>
                 <Link
                   to="/register"
                   // variant="body2"
                   sx={{
-                    color: "#62B273",
+                    color: "#8670FF",
                     pl: "10px",
                     textDecoration: "none",
-                  }}>
+                  }}
+                >
                   Sign up
                 </Link>
               </Grid>

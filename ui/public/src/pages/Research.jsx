@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-// css 
+// css
 import {
   Box,
   Button,
@@ -15,35 +15,18 @@ import styled from "styled-components";
 
 // icons
 import { LiaCoinsSolid } from "react-icons/lia";
-import {AiOutlinePlus} from "react-icons/ai"
+import { AiOutlinePlus } from "react-icons/ai";
+
+import { nanoid } from "nanoid";
 import ResearchModal from "../components/modal/ResearchModal";
 import { useNavigate } from "react-router-dom";
-
-
-// function TabPanel(props) {
-//   const { children, value, index, ...other } = props;
-
-//   return (
-//     <div
-//       role="tabpanel"
-//       hidden={value !== index}
-//       id={`full-width-tabpanel-${index}`}
-//       aria-labelledby={`full-width-tab-${index}`}
-//       {...other}
-//     >
-//       {value === index && (
-//         <Box sx={{ p: 3 }}>
-//           <Typography>{children}</Typography>
-//         </Box>
-//       )}
-//     </div>
-//   );
-// }
+import { researchStore } from "../store/researchStore";
 
 const Research = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const readyResearches = researchStore((state) => state.readyResearches);
   const [researchTabValue, setResearchTabValue] = useState("ready");
-  const [modalOpen, setModalOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false);
   const [researchInputValue, setResearchInputValue] = useState("");
   const handleTabChange = (event, newValue) => {
     setResearchTabValue(newValue);
@@ -87,12 +70,16 @@ const Research = () => {
               alignItems: "center",
               "& .MuiTabs-flexContainer": { justifyContent: "space-between" },
               "& .MuiTabs-indicator": { display: "none" },
-              "& .MuiTab-root": { color: "#8670FF", opacity: "1" },
+              "& .MuiTab-root": {
+                color: "#8670FF",
+                opacity: "1",
+                fontSize: "20px",
+              },
               "& .Mui-selected": { color: "white" },
             }}
           >
             <Tab value="progress" label="In progress" />
-            <Tab value="ready" label="Ready" />
+            <Tab value="ready" label={`Ready (${readyResearches.length})`} />
             <Tab value="all" label="All researches" />
           </TabList>
 
@@ -107,7 +94,14 @@ const Research = () => {
               Item One
             </TabPanel>
             <TabPanel value="ready" index={1}>
-              Item Two
+              <Stack spacing={4}>
+                {readyResearches.map((res) => (
+                  <S.ReadyResearch key={nanoid()}>
+                    {res}
+                    <Button onClick={() => navigate("/chat")}>Open</Button>
+                  </S.ReadyResearch>
+                ))}
+              </Stack>
             </TabPanel>
             <TabPanel value="all" index={2}>
               Item Three
@@ -176,6 +170,29 @@ const S = {
 
       &:hover {
         background-color: #e9eef3;
+      }
+    }
+  `,
+  ReadyResearch: styled(Box)`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 16px;
+
+    button {
+      background-color: #8670ff;
+      color: #271c62;
+      font-weight: 600;
+      font-size: 20px;
+      letter-spacing: 0.1%;
+      padding: 10px 20px;
+      text-transform: none;
+      border-radius: 4px;
+      transition: 0.3s;
+
+      &:hover {
+        background-color: #5e47e6;
       }
     }
   `,

@@ -12,6 +12,28 @@ import {
 import styled from "styled-components";
 
 const ResearchModal = ({ open, setOpen, value, setValue }) => {
+  const sendPromptHandler = async () => {
+    console.log("prompt sent");
+    const url = "http://localhost:8081/upload_url";
+    const options = {
+      method: "POST",
+      headers: {
+        // Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        game_url: value,
+        user_id: "64be880f715f1c0c24ddda21",
+      }),
+    };
+    try {
+      const res = await fetch(url, options);
+      const data = await res.json();
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <Dialog
       open={open}
@@ -20,16 +42,16 @@ const ResearchModal = ({ open, setOpen, value, setValue }) => {
           bgcolor: "#181B29",
           borderRadius: "8px",
           width: "920px",
-        //   height: "504px",
+          //   height: "504px",
           display: "flex",
-          padding: "20px"
+          padding: "5px 10px",
         },
       }}
     >
       <DialogTitle sx={{ color: "white", alignSelf: "center" }}>
         New Research
       </DialogTitle>
-      <DialogContent sx={{marginTop: "20px", marginBottom: "50px"}}>
+      <DialogContent sx={{ marginTop: "20px", marginBottom: "50px" }}>
         <FormLabel sx={{ color: "white" }}>URL</FormLabel>
         <OutlinedInput
           sx={{ bgcolor: "white", width: "100%" }}
@@ -37,7 +59,7 @@ const ResearchModal = ({ open, setOpen, value, setValue }) => {
           onChange={(e) => setValue(e.target.value)}
         />
       </DialogContent>
-      <DialogActions sx={{marginBottom: "30px"}}>
+      <DialogActions sx={{ marginBottom: "30px" }}>
         <S.BackBtn
           onClick={() => {
             setOpen(false);
@@ -46,7 +68,7 @@ const ResearchModal = ({ open, setOpen, value, setValue }) => {
         >
           Back
         </S.BackBtn>
-        <S.NextBtn onClick={() => null} disabled={!value}>
+        <S.NextBtn onClick={sendPromptHandler} disabled={!value}>
           Next
         </S.NextBtn>
       </DialogActions>

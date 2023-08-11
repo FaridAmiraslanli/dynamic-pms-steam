@@ -1,177 +1,199 @@
-import * as React from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import GlobalStyles from '@mui/material/GlobalStyles';
-import Container from '@mui/material/Container'; 
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import Grid from '@mui/material/Grid';
-import { Button, Stack } from "@mui/material";
-import './pricing.scss'
-
-
-
-const tiers = [
-  {
-    title: 'Basic',
-    price: '20',
-    description: [
-      '150 credit',
-    ],
-    buttonText: 'Buy',
-    buttonVariant: 'contained',
-  },
-  {
-    title: 'Premium',
-    subheader: 'Best Deal',
-    price: '40',
-    description: [
-      'Take 500 Credit',
-    ],
-    buttonText: 'Buy',
-    buttonVariant: 'contained',
-  },
-  {
-    title: 'Platinum',
-    price: '90',
-    description: [
-      'Take 1500 Credit',
-    ],
-    buttonText: 'Buy',
-    buttonVariant: 'contained',
-  },
-];
-const footers = [
-  {
-    title: 'Company',
-    description: ['Team', 'History', 'Contact us', 'Locations'],
-  },
-  {
-    title: 'Features',
-    description: [
-      'Cool stuff',
-      'Random feature',
-      'Team feature',
-      'Developer stuff',
-      'Another one',
-    ],
-  },
-  {
-    title: 'Resources',
-    description: ['Resource', 'Resource name', 'Another resource', 'Final resource'],
-  },
-  {
-    title: 'Legal',
-    description: ['Privacy policy', 'Terms of use'],
-  },
-];
+import React, { useState } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import CssBaseline from "@mui/material/CssBaseline";
+import Grid from "@mui/material/Grid";
+import StarIcon from "@mui/icons-material/StarBorder";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import GlobalStyles from "@mui/material/GlobalStyles";
+import Container from "@mui/material/Container";
+import Star from "../../assets/sass/Icons/Star.jsx";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useNavigate } from "react-router-dom";
+import {IoIosArrowBack} from "react-icons/io"
+import styled from "styled-components";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Pricing() {
+  const navigate = useNavigate();
+  const [tiers, setTiers] = useState([
+    {
+      title: "Basic",
+      credits: "150 credit",
+      subheader: "150 Credit",
+      price: "20",
+      description: [
+        "10 users included",
+        "2 GB of storage",
+        "Help center access",
+        "Email support",
+      ],
+      buttonText: "Buy Credit",
+      buttonVariant: "outlined",
+    },
+    {
+      title: "Premium",
+      credits: "500 credit",
+      subheader: "500 Credit",
+      price: "40",
+      description: [
+        "20 users included",
+        "10 GB of storage",
+        "Help center access",
+        "Priority email support",
+      ],
+      buttonText: "Buy Credit",
+      buttonVariant: "contained",
+    },
+    {
+      title: "Platinum",
+      credits: "1500 credit",
+      subheader: "1500 Credit",
+      price: "90",
+      description: [
+        "50 users included",
+        "30 GB of storage",
+        "Help center access",
+        "Phone & email support",
+      ],
+      buttonText: "Buy Credit",
+      buttonVariant: "outlined",
+    },
+  ]);
+
+  const handlePriceClick = (tierPrice) => {
+    navigate("/payment", { state: { paymentAmount: Number(tierPrice) } });
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
-      <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
+      <S.BackBtn onClick={() => navigate("/research")} sx={{position: "absolute"}}>
+        <IoIosArrowBack />
+      </S.BackBtn>
+      <GlobalStyles
+        styles={{ ul: { margin: 0, padding: 0, listStyle: "none" } }}
+      />
       <CssBaseline />
-   
+      {/* <AppBar
+        position="static"
+        color="default"
+        elevation={0}
+        sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+      >
+     
+      </AppBar> */}
       {/* Hero unit */}
-      
-      <Box>
+      <Container
+        disableGutters
+        maxWidth="md"
+        component="main"
+        sx={{ pt: 8, pb: 6 }}
+      >
         <Typography
           component="h1"
-          variant="h1"
+          variant="h2"
           align="center"
-          color="#FFFFFF"
+          color="text.primary"
+          fontSize="32px"
           gutterBottom
-          bgcolor='#695B5B'
-          width='469px'
-          height='80px'
-          display='flex'
-          justifyContent='center'
-          alignItems='center'
-          fontSize='24px'
-         
+          sx={{ color: "#fff" }}
         >
-          Credit Packs
+          Credit packs
         </Typography>
-        </Box>
-
-
-
-        
-
-
-
-      
-      
-
-      <Container  /*className="sabina"*/ maxWidth='xl' /*component="main"*/>
-        <Grid container spacing={5} /*alignItems="flex-end"*/>
-          {tiers.map((tier) => (
+      </Container>
+      {/* End hero unit */}
+      <Container maxWidth="md" component="main">
+        <Grid container spacing={3} alignItems="center">
+          {tiers.map((tier, ind) => (
             // Enterprise card is full width at sm breakpoint
             <Grid
               item
               key={tier.title}
               xs={12}
-              sm={tier.title === 'Enterprise' ? 12 : 6}
+              sm={tier.title === "Enterprise"}
               md={4}
             >
-              <Card sx={{bgcolor: '#A8A8A8'}}>
+              <Card
+                data-id={tier.title}
+                sx={{
+                  bgcolor: "#181B29",
+                  height: ind === 1 ? "460px" : "430px",
+                  borderRadius: "24px",
+                  width: "280px",
+                  boxShadow: 2,
+                  backgroundColor: ind === 1 ? "#5863D9" : "#181B29",
+                }}
+              >
                 <CardHeader
                   title={tier.title}
                   subheader={tier.subheader}
-                  
-                  // titleTypographyProps={{ align: 'center' }}
-                  // subheaderTypographyProps={{
-                  //   align: 'center'
-                  // }}
-                  //sx={{
-    
-                    // backgroundColor: (theme) =>
-                    //   theme.palette.mode === 'light'
-                    //     ? theme.palette.grey[200]
-                    //     : theme.palette.grey[700],
-                  //}}
+                  titleTypographyProps={{ align: "center" }}
+                  action={tier.title === "Pro"}
+                  subheaderTypographyProps={{
+                    align: "center",
+                    color: "#fff",
+                  }}
+                  sx={{
+                    bgcolor: "#181B29",
+                    color: "#fff",
+                    backgroundColor: ind === 1 && "#5863D9",
+                  }}
                 />
-                <CardContent >
+                <CardContent>
                   <Box
-                  
                     sx={{
-                      color:'#000000',
-                      // display: 'flex',
-                      // justifyContent: 'center',
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "baseline",
                       mb: 2,
-                    height:'200px'
                     }}
                   >
-                 
-                 <ul>
+                    <Typography
+                      component="h2"
+                      variant="h3"
+                      sx={{ color: "#fff" }}
+                    >
+                      ${tier.price}
+                    </Typography>
+                  </Box>
+                  <ul>
                     {tier.description.map((line) => (
                       <Typography
-                      color='#000000'
                         component="li"
                         variant="subtitle1"
-                        // align="center"
+                        align="start"
                         key={line}
+                        sx={{ color: "#fff", display: "flex", gap: "10px" }}
                       >
-                        {line}
+                        {/* <Star /> */}
+                        <Star /> {line}
                       </Typography>
                     ))}
                   </ul>
-                  </Box>
-                    <Typography component="h2" variant="h3" color="#000000">
-                      ${tier.price}
-                    </Typography>
-                  
-                
                 </CardContent>
-                <CardActions>
-                  <Button variant="contained" sx={{width: '90%', height:"50px", bgcolor:'#9EFF23', color: '#000000', margin: 'auto', marginBottom: "30px"}} >
+                <CardActions sx={{ height: "110px", justifyContent: "center" }}>
+                  <Button
+                    fullWidth
+                    onClick={() => handlePriceClick(tier.price)}
+                    variant={tier.buttonVariant}
+                    sx={{
+                      borderRadius: "32px",
+                      width: "85%",
+                      height: "40px",
+                      color: "#271C62",
+                      backgroundColor: ind == 1 ? "white" : "#8670FF",
+                    }}
+                  >
                     {tier.buttonText}
                   </Button>
                 </CardActions>
@@ -180,7 +202,24 @@ export default function Pricing() {
           ))}
         </Grid>
       </Container>
-      
+      {/* Footer */}
+      {/* End footer */}
     </ThemeProvider>
   );
+}
+
+const S = {
+  BackBtn: styled(Button)`
+    &&&{
+      background-color: transparent;
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      
+      svg {
+        font-size: 40px;
+        color: white
+      }
+    }
+  `
 }

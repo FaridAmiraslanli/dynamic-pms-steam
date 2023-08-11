@@ -14,10 +14,13 @@ import { todaysDate } from "../utils/todaysDate";
 import { delay } from "../utils/delay";
 import CopyToClipboard from "../components/copy/CopyToClipboard";
 import { useAnimate } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import ChatTemplate from "../components/chatTemplate/ChatTemplate";
 
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
 
 function ChatPage() {
+  const navigate = useNavigate()
   const [areaValue, setAreaValue] = useState("");
   const [disableSend, setDisableSend] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -25,7 +28,7 @@ function ChatPage() {
   const [animationParent] = useAutoAnimate({ duration: 400 });
   const textAreaRef = useRef(null);
   const chatEndRef = useRef(null);
-  const [chats, setChats] = useState([])
+  const [chatHistories, setChatHistories] = useState([])
 
   // load messages from local storage
   useEffect(() => {
@@ -47,29 +50,35 @@ function ChatPage() {
   }, [areaValue]);
 
   const sendMessage = async (message) => {
-    const apiKey = "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";
-    const url = "https://api.openai.com/v1/chat/completions";
+    // const apiKey = "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";
+    // const url = "https://api.openai.com/v1/chat/completions";
+    const url = "http://localhost:8081/send_prompt";
+    console.log("message sent")
     const options = {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        // Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: message }],
-        max_tokens: 100,
+        prompt: message,
+        namespace: "719730_Uptasia",
+        chat_history: {
+          human: [],
+          ai: [],
+        },
       }),
     };
     try {
       setDisableSend(true);
       const res = await fetch(url, options);
       const data = await res.json();
-      let obj = {
-        content: data.choices[0].message.content,
-        who: "bot",
-      };
-      setMessages((prev) => [...prev, obj]);
+      console.log(data)
+      // let obj = {
+      //   content: data.choices[0].message.content,
+      //   who: "bot",
+      // };
+      // setMessages((prev) => [...prev, obj]);
       setDisableSend(false);
     } catch (err) {
       console.error(err);
@@ -100,7 +109,7 @@ function ChatPage() {
         <S.Sidebar>
           <S.SidebarHeader>
             <S.SidebarNav>
-              <S.NavBtn>
+              <S.NavBtn onClick={() => navigate("/research")}>
                 <IoIosArrowBack />
               </S.NavBtn>
               <S.NavBtn
@@ -112,7 +121,13 @@ function ChatPage() {
                 <TbLayoutSidebarLeftCollapse />
               </S.NavBtn>
             </S.SidebarNav>
-            <ActionBtn text="New Request" radius="8" w="281" h="56" color="white"  />
+            <ActionBtn
+              text="New Request"
+              radius="8"
+              w="281"
+              h="56"
+              color="white"
+            />
           </S.SidebarHeader>
           <S.SidebarMain></S.SidebarMain>
         </S.Sidebar>
@@ -124,6 +139,8 @@ function ChatPage() {
             <TbLayoutSidebarLeftExpand />
           </S.NavBtn>
         )}
+        <ChatTemplate />
+
         <S.MessagesContainer>
           {messages.map((msg) => (
             <S.Message key={nanoid()} who={msg.who}>

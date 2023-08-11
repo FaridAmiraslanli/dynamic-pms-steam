@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 // css
 import "./assets/sass/globals.scss";
-import "./App.css";
+// import "./App.css";
 
 // pages
 import Login from "@pages/Login";
@@ -18,7 +18,7 @@ import CreditPacks from "./pages/CreditPacks";
 import NewResearchesCost from "./components/newreseacrhes-cost/newresearches-cost";
 import NewResearches from "./components/newresearches/newresearches";
 import DemoResearches from "./components/demo-researches/demoresearches";
-import Pricing2 from "./components/pricingPage/Pricing2";
+import Pricing from "./components/pricingPage/Pricing";
 import ChatPage from "./pages/ChatPage";
 import { userStore } from "./store/userStore";
 import { AnimatePresence } from "framer-motion";
@@ -61,7 +61,7 @@ const App = () => {
           <Route path="/research" element={<Research />} />
           <Route path="/researchcost" element={<NewResearchesCost />} />
           <Route path="/demoresearch" element={<DemoResearches />} />
-          <Route path="/pricing" element={<Pricing2 />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route
             path="/payment"
             element={<Payment stripePromise={stripePromise} />}
