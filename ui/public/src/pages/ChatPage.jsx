@@ -15,6 +15,7 @@ import { delay } from "../utils/delay";
 import CopyToClipboard from "../components/copy/CopyToClipboard";
 import { useAnimate } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import ChatTemplate from "../components/chatTemplate/ChatTemplate";
 
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
 
@@ -27,7 +28,7 @@ function ChatPage() {
   const [animationParent] = useAutoAnimate({ duration: 400 });
   const textAreaRef = useRef(null);
   const chatEndRef = useRef(null);
-  const [chats, setChats] = useState([])
+  const [chatHistories, setChatHistories] = useState([])
 
   // load messages from local storage
   useEffect(() => {
@@ -120,7 +121,13 @@ function ChatPage() {
                 <TbLayoutSidebarLeftCollapse />
               </S.NavBtn>
             </S.SidebarNav>
-            <ActionBtn text="New Request" radius="8" w="281" h="56" color="white"  />
+            <ActionBtn
+              text="New Request"
+              radius="8"
+              w="281"
+              h="56"
+              color="white"
+            />
           </S.SidebarHeader>
           <S.SidebarMain></S.SidebarMain>
         </S.Sidebar>
@@ -132,6 +139,8 @@ function ChatPage() {
             <TbLayoutSidebarLeftExpand />
           </S.NavBtn>
         )}
+        <ChatTemplate />
+
         <S.MessagesContainer>
           {messages.map((msg) => (
             <S.Message key={nanoid()} who={msg.who}>

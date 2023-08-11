@@ -228,21 +228,45 @@ app.post("/upload_url", async (req, res) => {
     let saveObj;
 
     socket.on("upload_url_result", async function (data) {
-      console.log(data);
+      console.log("dataZRG: ", data);
+      // findAndEditDBObject(); /// update saveObj
+      saveObj = {
+        user_id,
+        gameId,
+        gameName,
+        task_id: null,
+        display_name: null,
+        namespace: null,
+        new_date: null,
+        new_timestamp: null,
+      };
+      function findUpdateObjsctDb(microData) {
+        saveObj = {
+          user_id,
+          gameId,
+          gameName,
+          task_id: microData.task_id,
+          display_name: microData.display_name,
+          namespace: microData.namespace,
+          new_date: microData.new_date,
+          new_timestamp: microData.new_timestamp,
+        };
 
-      findAndEditDBObject(); /// update saveObj
+        const game = new GameInfo(saveObj);
+        return game;
+      }
+      const gameTest = await findUpdateObjsctDb(data);
+      await gameTest.save();
 
-      console.log(saveObj);
-
-      const game = new GameInfo(saveObj);
-      await game.save();
-
-      const user = await User.findById({ _id: game.user_id });
-      user.gameInfo.push(game);
+      const user = await User.findById({ _id: gameTest.user_id });
+      user.gameInfo.push(gameTest);
       await user.save();
+
+      // console.log(saveObj);
 
       console.log("[upload_url_result] data got: " + JSON.stringify(data));
     });
+
     // testSocket(obj.upload_url_result);
     //socket
 
@@ -260,19 +284,9 @@ app.post("/upload_url", async (req, res) => {
         console.log(error.message);
       });
 
-    saveObj = {
-      user_id,
-      gameId,
-      gameName,
-      task_id: null,
-      display_name: null,
-      namespace: null,
-      new_date: null,
-      new_timestamp: null,
-    };
-    uploadEmptyObjectToDB(); //save saveObj
+    // uploadEmptyObjectToDB(); //save saveObj
 
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, data: gameTest });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -289,6 +303,11 @@ app.post("/upload_url", async (req, res) => {
   //   new_timestamp: 1688173233,
   // });
 });
+app.get("/refresh", async(req, res)=>{
+  const { user_id, game_id } = req.body
+const gameInfo = await GameInfo.findById({ user_id })
+
+})
 
 app.post(`/get_database`, async (req, res) => {
   const { session_id, ...rest } = req.body;
