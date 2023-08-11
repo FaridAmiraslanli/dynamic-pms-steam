@@ -16,6 +16,7 @@ import styled from "styled-components";
 // icons
 import { LiaCoinsSolid } from "react-icons/lia";
 import { AiOutlinePlus } from "react-icons/ai";
+import { FiRefreshCcw } from "react-icons/fi";
 
 import { nanoid } from "nanoid";
 import ResearchModal from "../components/modal/ResearchModal";
@@ -30,6 +31,27 @@ const Research = () => {
   const [researchInputValue, setResearchInputValue] = useState("");
   const handleTabChange = (event, newValue) => {
     setResearchTabValue(newValue);
+  };
+  const refreshData = async () => {
+    console.log("refresh data");
+    const url = "http://localhost:8081/refresh";
+    const options = {
+      method: "POST",
+      headers: {
+        // Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: "64be880f715f1c0c24ddda21",
+      }),
+    };
+    try {
+      const res = await fetch(url, options);
+      const data = await res.json();
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    }
   };
   return (
     <Box
@@ -82,6 +104,23 @@ const Research = () => {
             <Tab value="ready" label={`Ready (${readyResearches.length})`} />
             <Tab value="all" label="All researches" />
           </TabList>
+
+          <Button
+            onClick={refreshData}
+            sx={{
+              bgcolor: "lightblue",
+              color: "#111",
+              marginTop: "10px",
+              height: "50px",
+              width: "50px",
+              fontSize: "1.4rem",
+              "&:hover": {
+                bgcolor: "red"
+              }
+            }}
+          >
+            <FiRefreshCcw />
+          </Button>
 
           <Box
             sx={{

@@ -3,7 +3,14 @@ import React from "react";
 import { FiArrowDownRight } from "react-icons/fi";
 import styled from "styled-components";
 
-const ChatTemplate = () => {
+const ChatTemplate = ({sendMessage}) => {
+  const templateQuestions = [
+    `What is Kratos' main objective in the "God of War" series?`,
+    `What are the locations in the "God of War" games and how are these
+    environments depicted?`,
+    `What are the locations in the "God of War" games and how are these
+    environments depicted?`,
+  ];
   return (
     <Box
       sx={{
@@ -22,26 +29,12 @@ const ChatTemplate = () => {
         Example
       </Typography>
       <Stack direction="row" justifyContent="space-between" gap="12px">
-        <S.Template>
-          <Typography component="p">
-            What is Kratos' main objective in the "God of War" series?
-          </Typography>
-          <FiArrowDownRight />
-        </S.Template>
-        <S.Template>
-          <Typography component="p">
-            What are the locations in the "God of War" games and how are these
-            environments depicted?
-          </Typography>
-          <FiArrowDownRight />
-        </S.Template>
-        <S.Template>
-          <Typography component="p">
-            What are the locations in the "God of War" games and how are these
-            environments depicted?
-          </Typography>
-          <FiArrowDownRight />
-        </S.Template>
+        {templateQuestions.map((ques) => (
+          <S.Template onClick={() => sendMessage(ques)}>
+            <Typography component="p">{ques}</Typography>
+            <FiArrowDownRight />
+          </S.Template>
+        ))}
       </Stack>
     </Box>
   );
@@ -49,7 +42,7 @@ const ChatTemplate = () => {
 
 const S = {
   Template: styled(Box)`
-  max-width: 345px;
+    max-width: 345px;
     background-color: #8670ff;
     border-radius: 16px;
     padding: 16px;

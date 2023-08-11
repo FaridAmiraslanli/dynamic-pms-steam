@@ -16,6 +16,7 @@ import CopyToClipboard from "../components/copy/CopyToClipboard";
 import { useAnimate } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import ChatTemplate from "../components/chatTemplate/ChatTemplate";
+import { DraftsTwoTone } from "@mui/icons-material";
 
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
 
@@ -23,7 +24,7 @@ function ChatPage() {
   const navigate = useNavigate()
   const [areaValue, setAreaValue] = useState("");
   const [disableSend, setDisableSend] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([{content: "sd", role: "human"}, {content: "ai", role: "ai"}]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [animationParent] = useAutoAnimate({ duration: 400 });
   const textAreaRef = useRef(null);
@@ -31,16 +32,17 @@ function ChatPage() {
   const [chatHistories, setChatHistories] = useState([])
 
   // load messages from local storage
-  useEffect(() => {
-    let lsMsgs = localStorage.getItem("ls-msgs");
-    lsMsgs !== null && setMessages(JSON.parse(lsMsgs));
-    window.scrollTo(0, document.body.scrollHeight);
-  }, []);
+  // useEffect(() => {
+  //   let lsMsgs = localStorage.getItem("ls-msgs");
+  //   lsMsgs !== null && setMessages(JSON.parse(lsMsgs));
+  //   window.scrollTo(0, document.body.scrollHeight);
+  // }, []);
 
   // save messages to local storage
   useEffect(() => {
-    localStorage.setItem("ls-msgs", JSON.stringify(messages));
-    chatEndRef.current?.scrollIntoView();
+    // localStorage.setItem("ls-msgs", JSON.stringify(messages));
+    // chatEndRef.current?.scrollIntoView();
+    console.log(messages)
   }, [messages]);
 
   // textarea height
@@ -50,35 +52,34 @@ function ChatPage() {
   }, [areaValue]);
 
   const sendMessage = async (message) => {
-    // const apiKey = "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";
-    // const url = "https://api.openai.com/v1/chat/completions";
     const url = "http://localhost:8081/send_prompt";
     console.log("message sent")
+    let draft = [...messages]
+    draft.push({content: message, role: "human"})
+    setMessages(DraftsTwoTone)
     const options = {
       method: "POST",
       headers: {
-        // Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         prompt: message,
         namespace: "719730_Uptasia",
         chat_history: {
-          human: [],
-          ai: [],
+          human: [messages.filter((mes) => mes.role === "human")],
+          ai: [messages.filter((mes) => mes.role === "ai")],
         },
       }),
     };
     try {
       setDisableSend(true);
+      
       const res = await fetch(url, options);
       const data = await res.json();
       console.log(data)
-      // let obj = {
-      //   content: data.choices[0].message.content,
-      //   who: "bot",
-      // };
-      // setMessages((prev) => [...prev, obj]);
+      let draft = [...messages]
+      draft.push({role: "ai", content: data.answer})
+      setMessages(draft)
       setDisableSend(false);
     } catch (err) {
       console.error(err);
@@ -87,7 +88,7 @@ function ChatPage() {
 
   function addMessage() {
     if (areaValue.trim() !== "") {
-      let obj = { content: areaValue, who: "user" };
+      let obj = { content: areaValue, who: "human" };
       setMessages((prev) => [...prev, obj]);
       sendMessage(areaValue);
       setAreaValue("");
@@ -139,16 +140,19 @@ function ChatPage() {
             <TbLayoutSidebarLeftExpand />
           </S.NavBtn>
         )}
-        <ChatTemplate />
-
-        <S.MessagesContainer>
-          {messages.map((msg) => (
-            <S.Message key={nanoid()} who={msg.who}>
+        {!messages ? (
+          <ChatTemplate sendMessage={sendMessage} />
+        ) : (
+          <S.MessagesContainer>
+            {messages.map((msg) => (
+            <S.Message key={nanoid()} who={msg.role}>
               <p>{msg.content}</p>
-              {msg.who == "bot" && <CopyToClipboard text={msg.content} />}
+              {msg.role == "ai" && <CopyToClipboard text={msg.content} />}
             </S.Message>
           ))}
-        </S.MessagesContainer>
+          </S.MessagesContainer>
+        )}
+
         <S.Prompt>
           <textarea
             autoFocus
