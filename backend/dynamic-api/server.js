@@ -300,18 +300,18 @@ app.post("/upload_url", async (req, res) => {
   //   new_timestamp: 1688173233,
   // });
 });
-app.get("/refresh", async (req, res) => {
+app.post("/refresh", async (req, res) => {
   const { user_id, game_id } = req.body;
   try {
     const user = await User.findById({ _id: user_id });
     const gameInfo = await GameInfo.findById({ _id: user_id });
 
-
     console.log(gameInfo);
     let draft = {
       name: gameInfo.display_name,
-      namespace: gameInfo.namespace
-    }
+      namespace: gameInfo.namespace,
+    };
+    console.log(draft);
 
     res.status(200).json({ draft });
   } catch (error) {

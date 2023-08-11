@@ -55,8 +55,8 @@ const App = () => {
     <AnimatePresence>
       {authKey ? (
         <Routes location={location} key={location.pathname}>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
+          <Route exact path="/" element={<Research />} />
+          <Route path="/home" element={<Research />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/research" element={<Research />} />
           <Route path="/researchcost" element={<NewResearchesCost />} />

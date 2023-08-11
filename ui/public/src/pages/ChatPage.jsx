@@ -21,28 +21,31 @@ import { DraftsTwoTone } from "@mui/icons-material";
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
 
 function ChatPage() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [areaValue, setAreaValue] = useState("");
   const [disableSend, setDisableSend] = useState(false);
-  const [messages, setMessages] = useState([{content: "sd", role: "human"}, {content: "ai", role: "ai"}]);
+  const [messages, setMessages] = useState([
+    // { content: "salam ayqiz", role: "human" },
+    // { content: "salam saqqiz", role: "ai" },
+  ]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [animationParent] = useAutoAnimate({ duration: 400 });
   const textAreaRef = useRef(null);
   const chatEndRef = useRef(null);
-  const [chatHistories, setChatHistories] = useState([])
+  const [chatHistories, setChatHistories] = useState([]);
 
   // load messages from local storage
-  // useEffect(() => {
-  //   let lsMsgs = localStorage.getItem("ls-msgs");
-  //   lsMsgs !== null && setMessages(JSON.parse(lsMsgs));
-  //   window.scrollTo(0, document.body.scrollHeight);
-  // }, []);
+  useEffect(() => {
+    let lsMsgs = localStorage.getItem("ls-msgs");
+    lsMsgs !== null && setMessages(JSON.parse(lsMsgs));
+    window.scrollTo(0, document.body.scrollHeight);
+  }, []);
 
   // save messages to local storage
   useEffect(() => {
-    // localStorage.setItem("ls-msgs", JSON.stringify(messages));
-    // chatEndRef.current?.scrollIntoView();
-    console.log(messages)
+    localStorage.setItem("ls-msgs", JSON.stringify(messages));
+    chatEndRef.current?.scrollIntoView();
+    console.log(messages);
   }, [messages]);
 
   // textarea height
@@ -53,10 +56,8 @@ function ChatPage() {
 
   const sendMessage = async (message) => {
     const url = "http://localhost:8081/send_prompt";
-    console.log("message sent")
-    let draft = [...messages]
-    draft.push({content: message, role: "human"})
-    setMessages(DraftsTwoTone)
+    console.log("message sent");
+    setMessages((prev) => [...prev, { content: message, role: "human" }]);
     const options = {
       method: "POST",
       headers: {
@@ -73,13 +74,11 @@ function ChatPage() {
     };
     try {
       setDisableSend(true);
-      
+
       const res = await fetch(url, options);
       const data = await res.json();
-      console.log(data)
-      let draft = [...messages]
-      draft.push({role: "ai", content: data.answer})
-      setMessages(draft)
+      console.log(data);
+      setMessages((prev) => [...prev, { content: data.answer, role: "ai" }]);
       setDisableSend(false);
     } catch (err) {
       console.error(err);
@@ -88,8 +87,6 @@ function ChatPage() {
 
   function addMessage() {
     if (areaValue.trim() !== "") {
-      let obj = { content: areaValue, who: "human" };
-      setMessages((prev) => [...prev, obj]);
       sendMessage(areaValue);
       setAreaValue("");
     }
@@ -140,16 +137,16 @@ function ChatPage() {
             <TbLayoutSidebarLeftExpand />
           </S.NavBtn>
         )}
-        {!messages ? (
+        {messages.length === 0 ? (
           <ChatTemplate sendMessage={sendMessage} />
         ) : (
           <S.MessagesContainer>
             {messages.map((msg) => (
-            <S.Message key={nanoid()} who={msg.role}>
-              <p>{msg.content}</p>
-              {msg.role == "ai" && <CopyToClipboard text={msg.content} />}
-            </S.Message>
-          ))}
+              <S.Message key={nanoid()} who={msg.role}>
+                <p>{msg.content}</p>
+                {msg.role == "ai" && <CopyToClipboard text={msg.content} />}
+              </S.Message>
+            ))}
           </S.MessagesContainer>
         )}
 
@@ -254,7 +251,7 @@ const S = {
   `,
   Message: styled.div`
     background-color: ${(props) =>
-      props.who === "user" ? "transparent" : "#181B29"};
+      props.who === "human" ? "transparent" : "#181B29"};
     color: white;
     display: flex;
     align-items: center;
@@ -273,7 +270,7 @@ const S = {
       height: 40px;
       border-radius: 8px;
       background-color: ${(props) =>
-        props.who === "user" ? "white" : "#5563DE"};
+        props.who === "human" ? "white" : "#5563DE"};
     }
   `,
   Prompt: styled.div`

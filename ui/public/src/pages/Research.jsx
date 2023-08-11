@@ -42,7 +42,7 @@ const Research = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: "64be880f715f1c0c24ddda21",
+        user_id: "64d637fbb5a649d0e6301374",
       }),
     };
     try {
@@ -115,8 +115,8 @@ const Research = () => {
               width: "50px",
               fontSize: "1.4rem",
               "&:hover": {
-                bgcolor: "red"
-              }
+                bgcolor: "red",
+              },
             }}
           >
             <FiRefreshCcw />
