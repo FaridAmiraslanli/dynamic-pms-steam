@@ -9,6 +9,7 @@ import {
   Typography,
   Tabs,
   Tab,
+  Skeleton,
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import styled from "styled-components";
@@ -26,6 +27,7 @@ import { researchStore } from "../store/researchStore";
 const Research = () => {
   const navigate = useNavigate();
   const readyResearches = researchStore((state) => state.readyResearches);
+  const progressResearches = researchStore((state) => state.progressResearches);
   const [researchTabValue, setResearchTabValue] = useState("ready");
   const [modalOpen, setModalOpen] = useState(false);
   const [researchInputValue, setResearchInputValue] = useState("");
@@ -38,7 +40,6 @@ const Research = () => {
     const options = {
       method: "POST",
       headers: {
-        // Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -100,7 +101,10 @@ const Research = () => {
               "& .Mui-selected": { color: "white" },
             }}
           >
-            <Tab value="progress" label="In progress" />
+            <Tab
+              value="progress"
+              label={`In progress  (${progressResearches.length})`}
+            />
             <Tab value="ready" label={`Ready (${readyResearches.length})`} />
             <Tab value="all" label="All researches" />
           </TabList>
@@ -115,7 +119,7 @@ const Research = () => {
               width: "50px",
               fontSize: "1.4rem",
               "&:hover": {
-                bgcolor: "red",
+                bgcolor: "blue",
               },
             }}
           >
@@ -130,13 +134,24 @@ const Research = () => {
             }}
           >
             <TabPanel value="progress" index={0}>
-              Item One
+              <Stack spacing={4}>
+                {progressResearches.map((res) => (
+                  <S.ProgressResearch key={nanoid()}>
+                    <Typography component="p">{res}</Typography>
+                    <Skeleton
+                      variant="text"
+                      sx={{ fontSize: "1rem" }}
+                      width={300}
+                    />
+                  </S.ProgressResearch>
+                ))}
+              </Stack>
             </TabPanel>
             <TabPanel value="ready" index={1}>
               <Stack spacing={4}>
                 {readyResearches.map((res) => (
                   <S.ReadyResearch key={nanoid()}>
-                    {res}
+                    <Typography component="p">{res}</Typography>
                     <Button onClick={() => navigate("/chat")}>Open</Button>
                   </S.ReadyResearch>
                 ))}
@@ -166,6 +181,7 @@ const Research = () => {
         setOpen={setModalOpen}
         value={researchInputValue}
         setValue={setResearchInputValue}
+        setResearchTabValue={setResearchTabValue}
       />
     </Box>
   );
@@ -211,6 +227,13 @@ const S = {
         background-color: #e9eef3;
       }
     }
+  `,
+  ProgressResearch: styled(Box)`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 16px;
   `,
   ReadyResearch: styled(Box)`
     display: flex;

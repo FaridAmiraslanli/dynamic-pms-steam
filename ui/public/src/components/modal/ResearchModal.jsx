@@ -10,8 +10,23 @@ import {
   Stack,
 } from "@mui/material";
 import styled from "styled-components";
+import { researchStore } from "../../store/researchStore";
 
-const ResearchModal = ({ open, setOpen, value, setValue }) => {
+const ResearchModal = ({
+  open,
+  setOpen,
+  value,
+  setValue,
+  setResearchTabValue,
+}) => {
+  const setReadyResearches = researchStore((state) => state.setReadyResearches);
+  const setProgressResearches = researchStore(
+    (state) => state.setProgressResearches
+  );
+  const removeProgressResearch = researchStore(
+    (state) => state.removeProgressResearch
+  );
+
   const sendPromptHandler = async () => {
     console.log("prompt sent");
     const url = "http://localhost:8081/upload_url";
@@ -26,12 +41,19 @@ const ResearchModal = ({ open, setOpen, value, setValue }) => {
         user_id: "64be880f715f1c0c24ddda21",
       }),
     };
+    setOpen(false);
+    setResearchTabValue("progress")
     try {
+      setProgressResearches(value);
       const res = await fetch(url, options);
       const data = await res.json();
+      removeProgressResearch(value);
+      setReadyResearches(value);
+      setResearchTabValue("ready");
       console.log(data);
     } catch (err) {
       console.error(err);
+      setResearchTabValue("ready");
     }
   };
   return (

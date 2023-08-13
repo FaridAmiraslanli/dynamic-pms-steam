@@ -1,4 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
+import { nanoid } from "nanoid";
 import React from "react";
 import { FiArrowDownRight } from "react-icons/fi";
 import styled from "styled-components";
@@ -30,7 +31,7 @@ const ChatTemplate = ({sendMessage}) => {
       </Typography>
       <Stack direction="row" justifyContent="space-between" gap="12px">
         {templateQuestions.map((ques) => (
-          <S.Template onClick={() => sendMessage(ques)}>
+          <S.Template key={nanoid()} onClick={() => sendMessage(ques)}>
             <Typography component="p">{ques}</Typography>
             <FiArrowDownRight />
           </S.Template>
