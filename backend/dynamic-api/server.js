@@ -208,8 +208,6 @@ app.post("/send_prompt", async (req, res) => {
 app.post("/app_connect", (req, res) => {
   // const socketId = req.query['socket'];
   const { ...rest } = req.body;
-
-  // console.log(req.body);
 });
 
 app.post("/user/create", User.create);
@@ -224,11 +222,15 @@ app.post("/upload_url", async (req, res) => {
       var gameId = match[1];
       var gameName = match[2];
     }
+    const gameFind = GameInfo.findOne({ gameName: req.body.gameName });
+    if (gameFind.gameName) {
+      res.status(200).end({ message: "This is alrady available" });
+    }
+
     //socket
     let saveObj;
 
     socket.on("upload_url_result", async function (data) {
-      console.log("dataZRG: ", data);
       // findAndEditDBObject(); /// update saveObj
       saveObj = {
         user_id,
@@ -283,32 +285,20 @@ app.post("/upload_url", async (req, res) => {
 
     // uploadEmptyObjectToDB(); //save saveObj
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, gameName, gameId });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-
-  // Upload the game URL for review analysis
-  // ...
-
-  // Emit the game information through the WebSocket
-  // socket.to(session_id).on("upload_url_result", {
-  //   task_id: generateTaskID(),
-  //   display_name: "Master of Orion 1",
-  //   namespace: "410970_Master_of_Orion_1",
-  //   new_date: "2023-07-04",
-  //   new_timestamp: 1688173233,
-  // });
 });
 app.post("/refresh", async (req, res) => {
-  const { user_id, game_id } = req.body;
+  const { user_id, game_id, gameName, gameId } = req.body;
   try {
-    const user = await User.findById({ _id: user_id });
-    const gameInfo = await GameInfo.findById({ _id: user_id });
+    const gameInfo = await GameInfo.findOne({ gameName });
 
     console.log(gameInfo);
+
     let draft = {
-      name: gameInfo.display_name,
+      name: gameInfo.gameName,
       namespace: gameInfo.namespace,
     };
     console.log(draft);

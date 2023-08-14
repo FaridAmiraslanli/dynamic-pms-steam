@@ -66,7 +66,7 @@ app.get("/create-payment-intent", async (req, res) => {
 
     // Send publishable key and PaymentIntent details to client
     res.json({
-      amount,
+      amount: paymentIntent.amount,
       clientSecret: paymentIntent.client_secret,
     });
   } catch (e) {
