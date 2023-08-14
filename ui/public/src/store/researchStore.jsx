@@ -5,7 +5,6 @@ export const researchStore = create((set) => ({
     "Apex Legends",
     "God of War",
     "CS:GO",
-    "https://store.steampowered.com/app/717640/Reigns_Her_Majesty/",
   ],
   setReadyResearches: (newResearch) =>
     set((state) => ({

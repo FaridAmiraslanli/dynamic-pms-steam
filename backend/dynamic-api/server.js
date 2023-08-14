@@ -224,6 +224,7 @@ app.post("/upload_url", async (req, res) => {
       var gameId = match[1];
       var gameName = match[2];
     }
+
     //socket
     let saveObj;
 
@@ -283,7 +284,7 @@ app.post("/upload_url", async (req, res) => {
 
     // uploadEmptyObjectToDB(); //save saveObj
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, gameName, gameId });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -301,7 +302,9 @@ app.post("/upload_url", async (req, res) => {
   // });
 });
 app.post("/refresh", async (req, res) => {
-  const { user_id, game_id } = req.body;
+  const { user_id, gameId, gameName } = req.body;
+  console.log("gameId", gameId);
+  console.log("gameName", gameName);
   try {
     const user = await User.findById({ _id: user_id });
     const gameInfo = await GameInfo.findById({ _id: user_id });

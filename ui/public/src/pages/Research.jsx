@@ -23,6 +23,8 @@ import { nanoid } from "nanoid";
 import ResearchModal from "../components/modal/ResearchModal";
 import { useNavigate } from "react-router-dom";
 import { researchStore } from "../store/researchStore";
+import gameNameRegex from "../utils/gameNameRegex";
+import SuccessPaymentModal from "../components/modal/SuccessPaymentModal";
 
 const Research = () => {
   const navigate = useNavigate();
@@ -44,6 +46,8 @@ const Research = () => {
       },
       body: JSON.stringify({
         user_id: "64d637fbb5a649d0e6301374",
+        gameId: gameNameRegex(researchInputValue)[0],
+        gameName: gameNameRegex(researchInputValue)[1],
       }),
     };
     try {
@@ -57,7 +61,7 @@ const Research = () => {
   return (
     <Box
       sx={{
-        width: "100vw",
+        // width: "100vw",
         padding: "24px",
         overflow: "hidden",
         margin: "0px",
@@ -104,13 +108,20 @@ const Research = () => {
             <Tab
               value="progress"
               label={`In progress  (${progressResearches.length})`}
+              disabled={progressResearches.length === 0}
             />
             <Tab value="ready" label={`Ready (${readyResearches.length})`} />
-            <Tab value="all" label="All researches" />
+            <Tab
+              value="all"
+              label={`All researches (${
+                progressResearches.length + readyResearches.length
+              })`}
+            />
           </TabList>
 
           <Button
             onClick={refreshData}
+            disabled
             sx={{
               bgcolor: "lightblue",
               color: "#111",
@@ -127,10 +138,26 @@ const Research = () => {
           </Button>
 
           <Box
+            maxHeight="427px"
             sx={{
               bgcolor: "#787A8233",
               borderRadius: "16px",
               marginTop: "40px",
+              overflowY: "scroll",
+              scrollbarWidth: "auto",
+              scrollbarColor: "#3e4251 #ffffff",
+              "&::-webkit-scrollbar": {
+                width: "16px",
+                marginRight: "10px",
+              },
+              "&::-webkit-scrollbar-track": {
+                // background: "#ffffff",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#3e4251",
+                borderRadius: "10px",
+                // border: "3px solid #ffffff",
+              },
             }}
           >
             <TabPanel value="progress" index={0}>
@@ -158,7 +185,24 @@ const Research = () => {
               </Stack>
             </TabPanel>
             <TabPanel value="all" index={2}>
-              Item Three
+              <Stack spacing={4}>
+                {readyResearches.map((res) => (
+                  <S.ReadyResearch key={nanoid()}>
+                    <Typography component="p">{res}</Typography>
+                    <Button onClick={() => navigate("/chat")}>Open</Button>
+                  </S.ReadyResearch>
+                ))}
+                {progressResearches.map((res) => (
+                  <S.ProgressResearch key={nanoid()}>
+                    <Typography component="p">{res}</Typography>
+                    <Skeleton
+                      variant="text"
+                      sx={{ fontSize: "1rem" }}
+                      width={300}
+                    />
+                  </S.ProgressResearch>
+                ))}
+              </Stack>
             </TabPanel>
           </Box>
         </TabContext>
@@ -183,6 +227,7 @@ const Research = () => {
         setValue={setResearchInputValue}
         setResearchTabValue={setResearchTabValue}
       />
+      <SuccessPaymentModal />
     </Box>
   );
 };

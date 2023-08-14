@@ -48,7 +48,7 @@ app.get("/config", (req, res) => {
 
 app.get("/create-payment-intent", async (req, res) => {
   console.log("requestParams", req.params);
-  console.log("requestQuerry", req.query);
+  console.log("requestQuery", req.query);
 
   // Create a PaymentIntent with the amount, currency, and a payment method type.
   //
@@ -57,8 +57,10 @@ app.get("/create-payment-intent", async (req, res) => {
   // [0] https://stripe.com/docs/api/payment_intents/create
   try {
     const price = Number(req.query.amount) * 100;
+    console.log("price", price);
+
     const paymentIntent = await stripe.paymentIntents.create({
-      currency: "USD",
+      currency: "usd",
       amount: price,
       // amount: 5000,
       automatic_payment_methods: { enabled: true },
@@ -66,11 +68,12 @@ app.get("/create-payment-intent", async (req, res) => {
 
     // Send publishable key and PaymentIntent details to client
     res.json({
-      amount,
+      amount: paymentIntent.amount,
       clientSecret: paymentIntent.client_secret,
     });
   } catch (e) {
-    return res.status(400).send({
+    console.log(e);
+    return res.json({
       error: {
         message: e.message,
       },
