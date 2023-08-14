@@ -8,7 +8,7 @@ function Completion(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate("/home")
+    // navigate("/home")
     if (!stripePromise) return;
 
     stripePromise.then(async (stripe) => {

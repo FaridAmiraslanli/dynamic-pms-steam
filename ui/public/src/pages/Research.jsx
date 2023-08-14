@@ -164,7 +164,9 @@ const Research = () => {
               <Stack spacing={4}>
                 {progressResearches.map((res) => (
                   <S.ProgressResearch key={nanoid()}>
-                    <Typography component="p">{res}</Typography>
+                    <Typography component="p" fontSize="20px">
+                      {res}
+                    </Typography>
                     <Skeleton
                       variant="text"
                       sx={{ fontSize: "1rem" }}
@@ -178,7 +180,9 @@ const Research = () => {
               <Stack spacing={4}>
                 {readyResearches.map((res) => (
                   <S.ReadyResearch key={nanoid()}>
-                    <Typography component="p">{res}</Typography>
+                    <Typography component="p" fontSize="20px">
+                      {res}
+                    </Typography>
                     <Button onClick={() => navigate("/chat")}>Open</Button>
                   </S.ReadyResearch>
                 ))}
@@ -188,13 +192,17 @@ const Research = () => {
               <Stack spacing={4}>
                 {readyResearches.map((res) => (
                   <S.ReadyResearch key={nanoid()}>
-                    <Typography component="p">{res}</Typography>
+                    <Typography component="p" fontSize="20px">
+                      {res}
+                    </Typography>
                     <Button onClick={() => navigate("/chat")}>Open</Button>
                   </S.ReadyResearch>
                 ))}
                 {progressResearches.map((res) => (
                   <S.ProgressResearch key={nanoid()}>
-                    <Typography component="p">{res}</Typography>
+                    <Typography component="p" fontSize="20px">
+                      {res}
+                    </Typography>
                     <Skeleton
                       variant="text"
                       sx={{ fontSize: "1rem" }}
@@ -285,7 +293,6 @@ const S = {
     justify-content: space-between;
     align-items: center;
     color: white;
-    font-size: 16px;
 
     button {
       background-color: #8670ff;
