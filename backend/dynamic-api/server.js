@@ -9,24 +9,9 @@ const socket = require("./utils/socket");
 const User = require("./model/userModel");
 const GameInfo = require("./model/gameModel");
 const DBGame = require("./model/dbgameModel");
-const connect = require("./utils/db");
+const connectDB = require("./utils/db");
 
-// function testSocket(...param) {
-//   const [p, ...rest] = param;
-//   socket.on(p, async function (data) {
-//     console.log(data);
-//     for (const iterator of rest) {
-//       await iterator;
-//     }
-//     console.log(`${p} data got: ` + JSON.stringify(data));
-//   });
-// }
-// const obj = {
-//   update_data_result: "update_data_result",
-//   upload_url_result: "upload_url_result",
-//   send_prompt_result: "send_prompt_result",
-//   get_database_result: "get_database_result",
-// };
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -50,22 +35,8 @@ app.use(
   })
 );
 
-// const socketIO = require("socket.io");
-// const { io } = require("socket.io-client");
-// const host = "http://192.168.50.129:5000";
-// const socket = io(host);
-// socket.on("connect", () => {
-//   const session_id = socket.id;
+const HOST = "http://192.168.50.129:5000";
 
-//   // // Join the session room
-//   // socket.join(session_id);
-
-//   console.log("Client connected with session ID:", session_id);
-
-//   socket.on("disconnect", () => {
-//     console.log("Client disconnected with session ID:", session_id);
-//   });
-// });
 
 console.log("Js works");
 
@@ -126,7 +97,7 @@ app.post("/update_data", async (req, res) => {
     // }
 
     const res = await axios
-      .post("http://192.168.50.129:5000/update_data", oldGameInfo)
+      .post(`${HOST}/update_data`, oldGameInfo)
       .then((response) => {
         console.log(response);
       })
@@ -134,16 +105,6 @@ app.post("/update_data", async (req, res) => {
         console.log(error.message);
       });
 
-    //         {
-    //   "started_task_id": "7627d4f7-07d3-40d6-a7f7-df667a2dd6a2",
-    //   "started_task_name": "update_data_result"
-    // }
-
-    // Update the data for the namespace
-    // namespaceData[namespace] = {
-    //   date,
-    //   timestamp,
-    // };
 
     res.json({
       session_id,
@@ -161,14 +122,7 @@ app.post("/send_prompt", async (req, res) => {
   try {
     console.log(req.body);
 
-    // Process the prompt and chat history for review analysis
-    // ...
-
-    // Send the analysis result through the WebSocket
-    // let promptObj = {
-    //   task_id: req.body.task_id,
-    //   answer: req.body.answer,
-    // };
+    
     let dataSocket = null;
     socket.on("send_prompt_result", async function (data) {
       task_id: data.task_id;
@@ -186,7 +140,7 @@ app.post("/send_prompt", async (req, res) => {
     };
 
     await axios
-      .post("http://192.168.50.129:5000/send_prompt", promptData)
+      .post(`${HOST}/send_prompt`, promptData)
       .then((response) => {
         console.log(response);
       })
@@ -275,7 +229,7 @@ app.post("/upload_url", async (req, res) => {
     };
 
     await axios
-      .post("http://192.168.50.129:5000/upload_url", gameInfo)
+      .post(`${HOST}/upload_url`, gameInfo)
       .then((response) => {
         console.log(response.data);
       })
@@ -368,14 +322,5 @@ app.post(`/get_database`, async (req, res) => {
 server.listen(8081, () => {
   console.log("Server is running on http://localhost:8081");
 });
-connect();
+connectDB();
 
-// io.listen(3030, () => {
-//   console.log("Socket connect");
-// });
-
-// socket.on("update_data_result", function (data) {
-//   // socket.broadcast.emit('update_data', data);
-
-//   console.log("[update_data_result] data got: " + JSON.stringify(data));
-// });
