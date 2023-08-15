@@ -2,7 +2,7 @@ const express = require("express");
 
 const socketIO = require("socket.io-client");
 
-const host = "http://192.168.50.129:5000";
+const host = "http://192.168.50.166:5000";
 const socket = socketIO(host);
 
 socket.on("connect", () => {

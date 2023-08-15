@@ -29,6 +29,12 @@ import SuccessPaymentModal from "../components/modal/SuccessPaymentModal";
 const Research = () => {
   const navigate = useNavigate();
   const readyResearches = researchStore((state) => state.readyResearches);
+  const setReadyResearches = researchStore((state) => state.setReadyResearches);
+  const removeProgressResearch = researchStore(
+    (state) => state.removeProgressResearch
+  );
+  const lastResearch = researchStore((state) => state.lastResearch);
+  const setLastResearch = researchStore((state) => state.setLastResearch);
   const progressResearches = researchStore((state) => state.progressResearches);
   const [researchTabValue, setResearchTabValue] = useState("ready");
   const [modalOpen, setModalOpen] = useState(false);
@@ -46,14 +52,24 @@ const Research = () => {
       },
       body: JSON.stringify({
         user_id: "64d637fbb5a649d0e6301374",
-        gameId: gameNameRegex(researchInputValue)[0],
-        gameName: gameNameRegex(researchInputValue)[1],
+        gameId: lastResearch.gameId,
+        gameName: lastResearch.gameName,
+        // gameId: gameNameRegex(researchInputValue)[0],
+        // gameName: gameNameRegex(researchInputValue)[1],
       }),
     };
+    console.log("lastResearch", lastResearch);
     try {
       const res = await fetch(url, options);
       const data = await res.json();
       console.log(data);
+      if (data.gameObject.namespace) {
+        removeProgressResearch(data.gameObject.name);
+        setResearchTabValue("ready");
+
+        setReadyResearches(data.gameObject.name);
+        setLastResearch({});
+      }
     } catch (err) {
       console.error(err);
     }
@@ -121,7 +137,7 @@ const Research = () => {
 
           <Button
             onClick={refreshData}
-            disabled
+            // disabled
             sx={{
               bgcolor: "lightblue",
               color: "#111",
@@ -178,7 +194,7 @@ const Research = () => {
             </TabPanel>
             <TabPanel value="ready" index={1}>
               <Stack spacing={4}>
-                {readyResearches.map((res) => (
+                {readyResearches.map((res, ind) => (
                   <S.ReadyResearch key={nanoid()}>
                     <Typography component="p" fontSize="20px">
                       {res}

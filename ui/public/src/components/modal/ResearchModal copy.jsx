@@ -21,7 +21,6 @@ const ResearchModal = ({
   setResearchTabValue,
 }) => {
   const readyResearches = researchStore((state) => state.readyResearches);
-  const progressResearches = researchStore((state) => state.progressResearches);
   const setReadyResearches = researchStore((state) => state.setReadyResearches);
   const setProgressResearches = researchStore(
     (state) => state.setProgressResearches
@@ -31,38 +30,38 @@ const ResearchModal = ({
       );
       const setLastResearch = researchStore((state) => state.setLastResearch);
       
-  const sendPromptHandler = async () => {
-      const url = "http://localhost:8081/upload_url";
-      const options = {
-        method: "POST",
-        headers: {
-          // Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          game_url: value,
-          user_id: "64be880f715f1c0c24ddda21",
-        }),
-    };
-    setOpen(false);
-    if (progressResearches.length === 0) {
-       setResearchTabValue("progress");
-       try {
-         setProgressResearches(gameNameRegex(value)[1]);
-         const res = await fetch(url, options);
-         const data = await res.json();
-         // removeProgressResearch(gameNameRegex(value)[1]);
-         // setReadyResearches(gameNameRegex(value)[1]);
-         console.log("gamefdata", data);
-          console.log("prompt sent");
-         setLastResearch({ gameId: data.gameId, gameName: data.gameName });
-       } catch (err) {
-         console.error(err);
-         setResearchTabValue("ready");
-       }
-    } 
-   
-  };
+ const sendPromptHandler = async () => {
+   console.log("prompt sent");
+   const url = "http://localhost:8081/upload_url";
+   const options = {
+     method: "POST",
+     headers: {
+       "Content-Type": "application/json",
+     },
+     body: JSON.stringify({
+       game_url: value,
+       user_id: "64be880f715f1c0c24ddda21",
+     }),
+   };
+   let draftVal = value;
+   setValue("");
+   setOpen(false);
+   setResearchTabValue("progress");
+   try {
+     setProgressResearches(gameNameRegex(draftVal)[1]);
+     const res = await fetch(url, options);
+     const data = await res.json();
+  
+     removeProgressResearch(gameNameRegex(draftVal)[1]);
+     addReadyResearches(gameNameRegex(draftVal)[1]);
+
+
+     setResearchTabValue("ready");
+   } catch (err) {
+     console.error(err);
+     setResearchTabValue("ready");
+   }
+ };
   return (
     <Dialog
       open={open}

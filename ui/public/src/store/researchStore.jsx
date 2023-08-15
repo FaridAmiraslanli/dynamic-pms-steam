@@ -1,11 +1,7 @@
 import { create } from "zustand";
 
 export const researchStore = create((set) => ({
-  readyResearches: [
-    "Apex Legends",
-    "God of War",
-    "CS:GO",
-  ],
+  readyResearches: ["Apex Legends", "God of War", "CS:GO"],
   setReadyResearches: (newResearch) =>
     set((state) => ({
       readyResearches: [...state.readyResearches, newResearch],
@@ -21,4 +17,9 @@ export const researchStore = create((set) => ({
         (res) => res !== research
       ),
     })),
+  lastResearch: {},
+  setLastResearch: (research) =>
+    set((state) => ({ lastResearch: { ...research } })),
+  // resetLastResearch: () =>
+  //   set((state) => ({ lastResearch: {  } })),
 }));

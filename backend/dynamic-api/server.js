@@ -132,8 +132,9 @@ app.post("/send_prompt", async (req, res) => {
       session_id: socket.id,
       prompt,
       chat_history,
-      namespace,
+      namespace: "410970_Master_of_Orion_1",
     };
+    console.log("promtData", promptData);
 
     await axios
       .post(`${HOST}/send_prompt`, promptData)
@@ -175,90 +176,132 @@ app.post("/upload_url", async (req, res) => {
 
     const gameFind = await GameInfo.findOne({ gameId });
     if (gameFind) {
-      console.log("gameFindName", gameFind.gameName);
       res.status(200).json({ message: "This is alrady available" });
       return;
     }
 
     //socket
     let saveObj;
-
     socket.on("upload_url_result", async function (data) {
-      // findAndEditDBObject(); /// update saveObj
       saveObj = {
         user_id,
         gameId,
         gameName,
-        task_id: null,
-        display_name: null,
-        namespace: null,
-        new_date: null,
-        new_timestamp: null,
+        task_id: data.task_id,
+        display_name: data.display_name,
+        namespace: data.namespace,
+        new_date: data.new_date,
+        new_timestamp: data.new_timestamp,
       };
-      function findUpdateObjsctDb(microData) {
-        saveObj = {
-          user_id,
-          gameId,
-          gameName,
-          task_id: microData.task_id,
-          display_name: microData.display_name,
-          namespace: microData.namespace,
-          new_date: microData.new_date,
-          new_timestamp: microData.new_timestamp,
-        };
 
+      try {
         const game = new GameInfo(saveObj);
-        return game;
+        await game.save();
+
+        const user = await User.findById({ _id: game.user_id });
+        user.gameInfo.push(game);
+        await user.save();
+      } catch (error) {
+        console.log("game and user save error: ", error);
       }
-      const gameTest = await findUpdateObjsctDb(data);
-      await gameTest.save();
 
-      const user = await User.findById({ _id: gameTest.user_id });
-      user.gameInfo.push(gameTest);
-      await user.save();
-
-      // console.log(saveObj);
-
-      console.log("[upload_url_result] data got: " + JSON.stringify(data));
+      console.log("[upload_url_result] data get: " + JSON.stringify(data));
     });
+
+    // socket.on("upload_url_result", async function (data) {
+    //   // findAndEditDBObject(); /// update saveObj
+    //   // saveObj = {
+    //   //   user_id,
+    //   //   gameId,
+    //   //   gameName,
+    //   //   task_id: null,
+    //   //   display_name: null,
+    //   //   namespace: null,
+    //   //   new_date: null,
+    //   //   new_timestamp: null,
+    //   // };
+    //   // function findUpdateObjsctDb(microData) {
+    //     saveObj = {
+    //       user_id,
+    //       gameId,
+    //       gameName,
+    //       task_id: microData.task_id,
+    //       display_name: microData.display_name,
+    //       namespace: microData.namespace,
+    //       new_date: microData.new_date,
+    //       new_timestamp: microData.new_timestamp,
+    //     };
+
+    //     const game = new GameInfo(saveObj);
+    //     return game;
+    //   // }
+    //   const gameTest = await findUpdateObjsctDb(data);
+    //   await gameTest.save();
+
+    //   const user = await User.findById({ _id: gameTest.user_id });
+    //   user.gameInfo.push(gameTest);
+    //   await user.save();
+
+    //   // console.log(saveObj);
+
+    //   console.log("[upload_url_result] data got: " + JSON.stringify(data));
+    // });
 
     let gameInfo = {
       session_id: socket.id,
       game_url: game_url,
     };
 
-    await axios
-      .post(`${HOST}/upload_url`, gameInfo)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    axios.post(`${HOST}/upload_url`, gameInfo).catch((error) => {
+      console.log("upload_url POST error: ", error.message);
+    });
+
+    // await axios
+    //   .post(`${HOST}/upload_url`, gameInfo)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error.message);
+    //   });
 
     // uploadEmptyObjectToDB(); //save saveObj
 
-    return res
-      .status(200)
-      .json({ success: true, gameName, namespace: saveObj.namespace });
+    res.status(200).json({ success: true, gameName, gameId });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
 app.post("/refresh", async (req, res) => {
   const { user_id, game_id, gameName, gameId } = req.body;
   try {
+    if (!gameName) {
+      res.status(400).json({ message: "Game name is not defined" });
+      return;
+    }
+
     const gameInfo = await GameInfo.findOne({ gameName });
+    console.log("gameINfo", gameInfo);
 
-    console.log(gameInfo);
+    let gameObject;
+    if (gameInfo) {
+      gameObject = {
+        name: gameInfo.gameName,
+        namespace: gameInfo.namespace,
+      };
+      res.status(200).json({ gameObject });
+    } else {
+      res.status(200).json({ message: "Your data is being prepared" });
+    }
 
-    let draft = {
-      name: gameInfo.gameName,
-      namespace: gameInfo.namespace,
-    };
-    console.log(draft);
+    // let draft = {
+    //   name: gameInfo.gameName,
+    //   namespace: gameInfo.namespace,
+    // };
+    // console.log(draft);
 
-    res.status(200).json({ draft });
+    // res.status(200).json({ gameObject });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
