@@ -34,7 +34,7 @@ app.use(
   })
 );
 
-const HOST = "http://192.168.50.129:5000";
+const HOST = "http://192.168.50.166:5000";
 
 console.log("Js works");
 
@@ -172,9 +172,12 @@ app.post("/upload_url", async (req, res) => {
       var gameId = match[1];
       var gameName = match[2];
     }
-    const gameFind = GameInfo.findOne({ gameName: req.body.gameName });
-    if (gameFind.gameName) {
-      res.status(200).end({ message: "This is alrady available" });
+
+    const gameFind = await GameInfo.findOne({ gameId });
+    if (gameFind) {
+      console.log("gameFindName", gameFind.gameName);
+      res.status(200).json({ message: "This is alrady available" });
+      return;
     }
 
     //socket
@@ -235,7 +238,9 @@ app.post("/upload_url", async (req, res) => {
 
     // uploadEmptyObjectToDB(); //save saveObj
 
-    return res.status(200).json({ success: true, gameName, gameId });
+    return res
+      .status(200)
+      .json({ success: true, gameName, namespace: saveObj.namespace });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
