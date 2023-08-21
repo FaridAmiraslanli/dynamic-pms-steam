@@ -68,27 +68,31 @@ const ResearchModal = ({
       open={open}
       sx={{
         "& .MuiPaper-root": {
+          maxHeight: "none",
+          maxWidth: "none",
+          margin: "0px",
           bgcolor: "#181B29",
           borderRadius: "8px",
           width: "920px",
-          //   height: "504px",
+          height: "504px",
           display: "flex",
-          padding: "5px 10px",
+          padding: "64px 24px 40px 24px"
+          
         },
       }}
     >
-      <DialogTitle sx={{ color: "white", alignSelf: "center" }}>
-        New Research
+      <DialogTitle sx={{ color: "white", alignSelf: "center", fontFamily: "friendsRegular", fontSize: "32px" }}>
+        New research
       </DialogTitle>
-      <DialogContent sx={{ marginTop: "20px", marginBottom: "50px" }}>
-        <FormLabel sx={{ color: "white" }}>URL</FormLabel>
+      <DialogContent sx={{ marginTop: "50px", marginBottom: "60px" }}>
+        <FormLabel sx={{ color: "white", fontSize: "16px", fontFamily: "friendsNormal" }}>URL</FormLabel>
         <OutlinedInput
           sx={{ bgcolor: "white", width: "100%" }}
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
       </DialogContent>
-      <DialogActions sx={{ marginBottom: "30px" }}>
+      <DialogActions>
         <S.BackBtn
           onClick={() => {
             setOpen(false);
@@ -108,26 +112,34 @@ const ResearchModal = ({
 const S = {
   BackBtn: styled(Button)`
     &&& {
+      width: 200px;
+      height: 56px;
       background-color: #f3f5f7;
       color: #7b61ff;
       border-radius: 8px;
       font-size: 20px;
-      height: 56px;
-      width: 150px;
+      text-transform: none;
+      font-family: friendsSemiBold;
+
+      
+     
 
       &:hover {
-        background-color: #c9d9ea;
+        background-color: #3D3761;
+        color:  #FFFFFF;
       }
     }
   `,
   NextBtn: styled(Button)`
     &&& {
       background-color: #8670ff;
-      color: #271c62;
+      color: #FFFFFF;
       border-radius: 8px;
       font-size: 20px;
+      width: 200px;
       height: 56px;
-      width: 150px;
+      text-transform: none;
+      font-family: friendsSemiBold;
 
       &:disabled {
         background-color: #c2c2c2;
@@ -135,8 +147,8 @@ const S = {
       }
 
       &:hover {
-        background-color: #6850ee;
-        color: #271c62;
+        background-color: #9785ff;
+        border: 1px solid #f3f5f7;
       }
     }
   `,

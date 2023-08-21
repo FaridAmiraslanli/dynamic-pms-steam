@@ -1,0 +1,69 @@
+@font-face {
+  font-family: friendsBlack;
+  src: url(./Friends-Black.ttf);
+}
+@font-face {
+  font-family: friendsBlackItalic;
+  src: url(./Friends-BlackItalic.ttf);
+}
+
+@font-face {
+  font-family: friendsItalic;
+  src: url(./Friends-Italic.ttf);
+}
+
+@font-face {
+  font-family: friendsNormal;
+  src: url(./Friends-Normal.ttf);
+}
+
+@font-face {
+  font-family: friendsNormalItalic;
+  src: url(./Friends-NormalItalic.ttf);
+}
+
+@font-face {
+  font-family: friendsRegular;
+  src: url(./Friends-Regular.ttf);
+}
+
+@font-face {
+  font-family: friendsSemiBold;
+  src: url(./Friends-SemiBold.ttf);
+}
+
+@font-face {
+  font-family: friendsSemiBoldItalic;
+  src: url(./Friends-SemiBoldItalic.ttf);
+}
+
+@font-face {
+  font-family: friendsThin;
+  src: url(./Friends-Thin.ttf);
+}
+
+@font-face {
+  font-family: friendsThinItalic;
+  src: url(./Friends-ThinItalic.ttf);
+}
+
+@font-face {
+  font-family: friendsUltraBold;
+  src: url(./Friends-UltraBold.ttf);
+}
+
+@font-face {
+  font-family: friendsUltraBoldItalic;
+  src: url(./Friends-UltraBoldItalic.ttf);
+}
+
+@font-face {
+  font-family: friendsUltraLight;
+  src: url(./Friends-UltraLight.ttf);
+}
+
+@font-face {
+  font-family: friendsUltraLightItalic;
+  src: url(./Friends-UltraLightItalic.ttf);
+}
+

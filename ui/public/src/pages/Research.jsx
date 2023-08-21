@@ -25,6 +25,8 @@ import { useNavigate } from "react-router-dom";
 import { researchStore } from "../store/researchStore";
 import gameNameRegex from "../utils/gameNameRegex";
 import SuccessPaymentModal from "../components/modal/SuccessPaymentModal";
+import coins from "../assets/sass/Icons/Coins.svg";
+import plusPurple from "../assets/sass/Icons/PlusPurple.svg"
 
 const Research = () => {
   const navigate = useNavigate();
@@ -84,7 +86,12 @@ const Research = () => {
       }}
     >
       <Stack component="header" justifyContent="space-between" direction="row">
-        <Typography variant="h1" color="white" fontSize="48px">
+        <Typography
+          variant="h1"
+          color="white"
+          fontSize="48px"
+          fontFamily="friendsRegular"
+        >
           Logo
         </Typography>
         <S.PaymentBtn onClick={() => navigate("/pricing")}>
@@ -93,8 +100,9 @@ const Research = () => {
             direction="row"
             alignItems="center"
             justifyContent="center"
+            fontFamily= "friendsRegular"
           >
-            <LiaCoinsSolid /> 0
+            <img src={coins} /> Add balance
           </Stack>
         </S.PaymentBtn>
       </Stack>
@@ -107,6 +115,7 @@ const Research = () => {
             textColor="inherit"
             aria-label="research tabs"
             sx={{
+              padding: "0px 10px 0px 10px",
               backgroundColor: "#181B29",
               height: "52px",
               borderRadius: "16px",
@@ -117,6 +126,8 @@ const Research = () => {
                 color: "#8670FF",
                 opacity: "1",
                 fontSize: "20px",
+                fontFamily: "friendsSemiBold",
+                textTransform: "none",
               },
               "& .Mui-selected": { color: "white" },
             }}
@@ -124,18 +135,18 @@ const Research = () => {
             <Tab
               value="progress"
               label={`In progress  (${progressResearches.length})`}
-              disabled={progressResearches.length === 0}
+              // disabled={progressResearches.length === 0}
             />
             <Tab value="ready" label={`Ready (${readyResearches.length})`} />
             <Tab
               value="all"
-              label={`All researches (${
+              label={`All research (${
                 progressResearches.length + readyResearches.length
               })`}
             />
           </TabList>
 
-          <Button
+          {/* <Button
             onClick={refreshData}
             // disabled
             sx={{
@@ -151,7 +162,7 @@ const Research = () => {
             }}
           >
             <FiRefreshCcw />
-          </Button>
+          </Button> */}
 
           <Box
             maxHeight="427px"
@@ -161,9 +172,9 @@ const Research = () => {
               marginTop: "40px",
               overflowY: "scroll",
               scrollbarWidth: "auto",
-              scrollbarColor: "#3e4251 #ffffff",
+              scrollbarColor: "#3E4251 #ffffff",
               "&::-webkit-scrollbar": {
-                width: "16px",
+                width: "8px",
                 marginRight: "10px",
               },
               "&::-webkit-scrollbar-track": {
@@ -171,7 +182,7 @@ const Research = () => {
               },
               "&::-webkit-scrollbar-thumb": {
                 backgroundColor: "#3e4251",
-                borderRadius: "10px",
+                borderRadius: "24px",
                 // border: "3px solid #ffffff",
               },
             }}
@@ -196,10 +207,14 @@ const Research = () => {
               <Stack spacing={4}>
                 {readyResearches.map((res, ind) => (
                   <S.ReadyResearch key={nanoid()}>
-                    <Typography component="p" fontSize="20px">
+                    <Typography
+                      fontFamily="friendsNormal"
+                      component="p"
+                      fontSize="16px"
+                    >
                       {res}
                     </Typography>
-                    <Button onClick={() => navigate("/chat")}>Open</Button>
+                    <Button sx={{fontFamily: "friendsRegular"}} onClick={() => navigate("/chat")}>Open</Button>
                   </S.ReadyResearch>
                 ))}
               </Stack>
@@ -208,15 +223,16 @@ const Research = () => {
               <Stack spacing={4}>
                 {readyResearches.map((res) => (
                   <S.ReadyResearch key={nanoid()}>
-                    <Typography component="p" fontSize="20px">
+                    <Typography
+                    fontFamily="friendsNormal" component="p" fontSize="16px">
                       {res}
                     </Typography>
-                    <Button onClick={() => navigate("/chat")}>Open</Button>
+                    <Button sx={{fontFamily: "friendsNormal"}} onClick={() => navigate("/chat")}>Open</Button>
                   </S.ReadyResearch>
                 ))}
                 {progressResearches.map((res) => (
                   <S.ProgressResearch key={nanoid()}>
-                    <Typography component="p" fontSize="20px">
+                    <Typography component="p" fontSize="16px">
                       {res}
                     </Typography>
                     <Skeleton
@@ -239,10 +255,30 @@ const Research = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <AiOutlinePlus />
+          <img className="PlusIcon" src={plusPurple}></img>
           Add new research
         </Stack>
       </S.AddResearchBtn>
+
+      <Button
+        onClick={refreshData}
+        // disabled
+        sx={{
+          marginLeft: "20px",
+          marginBottom: "10px",
+          bgcolor: "#FFFFFF",
+          color: "#111",
+          marginTop: "10px",
+          height: "50px",
+          width: "50px",
+          fontSize: "1.4rem",
+          "&:hover": {
+            bgcolor: "blue",
+          },
+        }}
+      >
+        <FiRefreshCcw />
+      </Button>
 
       <ResearchModal
         open={modalOpen}
@@ -259,16 +295,19 @@ const Research = () => {
 const S = {
   PaymentBtn: styled(Button)`
     &&& {
+      width: 197px;
+      height: 56px;
       background-color: #8670ff;
-      color: #271c62;
+      color: #ffffff;
       border-radius: 8px;
       font-size: 20px;
-      height: 56px;
-      width: 100px;
+      text-transform: none;
+      
 
       &:hover {
-        background-color: #563cea;
-        color: #271c62;
+        background-color: #9785ff;
+        border: 1px solid #f3f5f7;
+
       }
     }
   `,
@@ -287,13 +326,9 @@ const S = {
       letter-spacing: 0.1px;
       margin-block: 20px;
 
-      svg {
-        width: 24px;
-        height: 24px;
-      }
-
       &:hover {
-        background-color: #e9eef3;
+        background-color: #3D3761;
+        color: #FFFFFF;
       }
     }
   `,
@@ -302,7 +337,7 @@ const S = {
     justify-content: space-between;
     align-items: center;
     color: white;
-    font-size: 16px;
+    font-size: 20px;
   `,
   ReadyResearch: styled(Box)`
     display: flex;
@@ -311,9 +346,10 @@ const S = {
     color: white;
 
     button {
+      width: 93px;
+      height: 40px;
       background-color: #8670ff;
-      color: #271c62;
-      font-weight: 600;
+      color: #FFFFFF;
       font-size: 20px;
       letter-spacing: 0.1%;
       padding: 10px 20px;
@@ -322,7 +358,9 @@ const S = {
       transition: 0.3s;
 
       &:hover {
-        background-color: #5e47e6;
+        background-color: #9785ff;
+        border: 1px solid #f3f5f7;
+
       }
     }
   `,

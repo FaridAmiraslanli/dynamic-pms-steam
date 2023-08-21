@@ -21,20 +21,32 @@ export default function InputAdornments({ register, errors }) {
 
   return (
     <Box>
-      <InputLabel sx={{ width: "100%", color:"white"}} htmlFor="outlined-adornment-password">
+      <InputLabel
+        sx={{
+          width: "100%",
+          color: "white",
+          fontSize: "14px",
+          fontFamily: "friendsRegular",
+        }}
+        htmlFor="outlined-adornment-password"
+      >
         Password
       </InputLabel>
       <OutlinedInput
-        sx={{ width: "100%", backgroundColor:"rgba(248, 250, 239, 1)",  borderRadius:"8px"  }}
+        sx={{
+          width: "100%",
+          backgroundColor: "rgba(248, 250, 239, 1)",
+          borderRadius: "8px",
+          fontFamily: "friendsThin",
+          fontSize: "16px",
+        }}
         id="outlined-adornment-password"
         type={showPassword ? "text" : "password"}
         error={Boolean(errors.password)}
         {...register("password", {
           minLength: 6,
           required: true,
-          validate: (val) =>
-          /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d$%^]*$/
-          .test(val),
+          validate: (val) => /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d$%^]*$/.test(val),
         })}
         endAdornment={
           <InputAdornment position="end">

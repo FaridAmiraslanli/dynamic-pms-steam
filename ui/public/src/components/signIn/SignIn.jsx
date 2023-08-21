@@ -12,21 +12,21 @@ import {
   OutlinedInput,
   // Link,
 } from "@mui/material";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
-import {Link, Navigate, useNavigate} from "react-router-dom";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 // import styled from "styled-components";
 // import { styled } from "@mui/material/styles";
 
-import {LongBtn} from "../buttons/LongBtn";
+import { LongBtn } from "../buttons/LongBtn";
 import Or from "../or/Or";
-import {IconBtn} from "../buttons/IconBtn";
+import { IconBtn } from "../buttons/IconBtn";
 import Password from "../Password";
 import Title from "../Title";
 import "../../assets/sass/mui-input-btn.scss";
-import {userStore} from "../../store/userStore";
-import {useForm} from "react-hook-form";
+import { userStore } from "../../store/userStore";
+import { useForm } from "react-hook-form";
 
-import {ToastContainer, toast} from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const defaultTheme = createTheme();
@@ -34,18 +34,18 @@ const defaultTheme = createTheme();
 export default function SignIn() {
   const navigate = useNavigate();
 
-  const setAuthKey = userStore(state => state.setAuthKey);
+  const setAuthKey = userStore((state) => state.setAuthKey);
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm();
 
   const handleLoginApi = async (formData) => {
     const url = "http://localhost:8080/auth/login";
     try {
       await Axios.post(url, formData, {
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
       }).then((res) => {
         setAuthKey(res?.data.accsessToken);
         if (res.data.accsessToken) {
@@ -81,15 +81,27 @@ export default function SignIn() {
             component="form"
             noValidate
             onSubmit={handleSubmit(handleLoginApi)}
-            sx={{ mt: 3 }}
+            sx={{ mt: 8 }}
           >
-            <Grid container spacing={2}>
+            <Grid container spacing={4}>
               <Grid item xs={12}>
-                <FormLabel component="legend" sx={{ color: "white" }}>
+                <FormLabel
+                  component="legend"
+                  sx={{
+                    color: "white",
+                    fontSize: "14px",
+                    fontFamily: "friendsRegular",
+                  }}
+                >
                   Email
                 </FormLabel>
                 <OutlinedInput
-                  sx={{ backgroundColor: "rgba(248, 250, 239, 1)" }}
+                  sx={{
+                  
+                    fontFamily: "friendsThin",
+                    fontSize: "16px",
+                    backgroundColor: "rgba(248, 250, 239, 1)",
+                  }}
                   variant="standard"
                   required
                   fullWidth
@@ -122,14 +134,15 @@ export default function SignIn() {
                 sx={{
                   mt: 1,
                   display: "flex",
-                  justifyContent: "flex-end",
+                  justifyContent: "center",
                   width: "100%",
                 }}
               >
                 <Link
                   to="/forget"
                   variant="body2"
-                  sx={{ color: "#62B273", textDecoration: "none" }}
+                  sx={{ 
+                    color: "#8670FF", textDecoration: "none" }}
                 >
                   Forgot password
                 </Link>
@@ -161,7 +174,7 @@ export default function SignIn() {
                   variant="span"
                   sx={{ textDecoration: "none", color: "white" }}
                 >
-                  Already have an account? {" "}
+                  Already have an account?{" "}
                 </Typography>
                 <Link
                   to="/register"
