@@ -17,6 +17,7 @@ import { useAnimate } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import ChatTemplate from "../components/chatTemplate/ChatTemplate";
 import { DraftsTwoTone } from "@mui/icons-material";
+import sendArrow from "../assets/sass/Icons/sendArrow.svg"
 
 // TODO - tezbazar elemek ucun mui ile elemedim. mui componentlere kecirecem
 
@@ -116,7 +117,7 @@ function ChatPage() {
                   console.log(sidebarOpen);
                 }}
               >
-                <TbLayoutSidebarLeftCollapse />
+                <TbLayoutSidebarLeftCollapse sx={{}} />
               </S.NavBtn>
             </S.SidebarNav>
             <ActionBtn
@@ -154,15 +155,15 @@ function ChatPage() {
           <textarea
             autoFocus
             ref={textAreaRef}
-            placeholder="ask me a question"
+            placeholder="Send message"
             onKeyDown={keyHandler}
             value={areaValue}
             onChange={(e) => {
               setAreaValue(e.target.value);
             }}
           />
-          <button onClick={addMessage} disabled={disableSend}>
-            <BiSend />
+          <button onClick={addMessage}>
+            <img src={sendArrow}></img>
           </button>
         </S.Prompt>
         <div ref={chatEndRef}></div>
@@ -211,12 +212,12 @@ const S = {
     background-color: transparent;
     border: 0;
     color: white;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
 
     svg {
-      width: 100%;
-      height: 100%;
+      width: 40px;
+      height: 40px;
     }
   `,
   SidebarMain: styled.div`
@@ -245,7 +246,6 @@ const S = {
   `,
   MessagesContainer: styled.div`
     flex: 1;
-    margin-bottom: 120px;
     width: 100%;
     max-width: 1000px;
   `,
@@ -262,6 +262,8 @@ const S = {
     p {
       width: 94%;
       white-space: pre-line;
+      font-size: 16px;
+      font-family: friendsNormal;
     }
 
     &::before {
@@ -274,36 +276,38 @@ const S = {
     }
   `,
   Prompt: styled.div`
+   display:flex;
+   align-items: center;
+    height: 56px;
     max-width: 1000px;
     width: 100%;
-    justify-self: flex-end;
-    position: fixed;
-    bottom: 20px;
 
     button {
       position: absolute;
-      top: 50%;
-      right: 18px;
-      transform: translateY(-50%);
+      padding-top: 5px;
+      right: 35px;
       cursor: pointer;
-      background-color: transparent;
-      border: 0;
-      font-size: 1.5rem;
+       background-color: transparent;
+      border: 0; 
+      
     }
 
     textarea {
+      font-size: 16px;
+    font-family: friendsRegular;
       width: 100%;
       /* max-width: 1000px; */
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-      min-height: 56px;
-      height: auto;
+      
       max-height: 200px;
       border-radius: 8px;
       background-color: white;
       border: 0;
       resize: none;
-      padding: 15px;
-      padding-right: 40px;
+      /* padding: 15px; */
+      padding-top: 16px;
+      padding-left: 16px;
+      /* padding-right: 40px; */
       scrollbar-width: auto;
       scrollbar-color: #131623 #ffffff;
       /* Chrome, Edge, and Safari */

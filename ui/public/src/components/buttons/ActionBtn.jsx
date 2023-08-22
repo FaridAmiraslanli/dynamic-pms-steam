@@ -22,4 +22,5 @@ const CustomCss = styled.button`
   align-items: center;
   font-size: 16px;
   line-height: 16px;
+  font-family: friendsRegular;
 `;
