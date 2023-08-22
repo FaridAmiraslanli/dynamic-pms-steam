@@ -137,13 +137,20 @@ const Research = () => {
               label={`In progress  (${progressResearches.length})`}
               // disabled={progressResearches.length === 0}
             />
-            <Tab value="ready" label={`Ready (${readyResearches.length})`} />
+            <Tab value="ready" label={`Ready (${0})`} />
             <Tab
               value="all"
               label={`All research (${
                 progressResearches.length + readyResearches.length
               })`}
             />
+            <Tab
+              value="Fix"
+              label={`Fix research (${
+                readyResearches.length
+              })`}
+            />
+            
           </TabList>
 
           {/* <Button
@@ -227,7 +234,7 @@ const Research = () => {
                     fontFamily="friendsNormal" component="p" fontSize="16px">
                       {res}
                     </Typography>
-                    <Button sx={{fontFamily: "friendsNormal"}} onClick={() => navigate("/chat")}>Open</Button>
+                    <Button sx={{fontFamily: "friendsRegular"}} onClick={() => navigate("/chat")}>Open</Button>
                   </S.ReadyResearch>
                 ))}
                 {progressResearches.map((res) => (
@@ -241,6 +248,22 @@ const Research = () => {
                       width={300}
                     />
                   </S.ProgressResearch>
+                ))}
+              </Stack>
+            </TabPanel>
+            <TabPanel value="fix" index={3}>
+              <Stack spacing={4}>
+                {readyResearches.map((res, ind) => (
+                  <S.ReadyResearch key={nanoid()}>
+                    <Typography
+                      fontFamily="friendsNormal"
+                      component="p"
+                      fontSize="16px"
+                    >
+                      {res}
+                    </Typography>
+                    <Button sx={{fontFamily: "friendsRegular"}} onClick={() => navigate("/chat")}>Open</Button>
+                  </S.ReadyResearch>
                 ))}
               </Stack>
             </TabPanel>
