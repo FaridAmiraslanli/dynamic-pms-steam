@@ -6,6 +6,7 @@ const cors = require("cors");
 const app = express();
 
 const socket = require("./utils/socket");
+const socketFront = require('./utils/socket-front')
 const User = require("./model/userModel");
 const GameInfo = require("./model/gameModel");
 const DBGame = require("./model/dbgameModel");
@@ -34,7 +35,7 @@ app.use(
   })
 );
 
-const HOST = "http://192.168.50.166:5000";
+
 
 console.log("Js works");
 
@@ -44,6 +45,7 @@ const server = http.createServer(app);
 const namespaceData = {};
 
 app.post("/update_data", async (req, res) => {
+ 
   const { session_id, user_id, namespace, new_date, new_timestamp } = req.body;
   try {
     const Game = await GameInfo.find({ namespace });
@@ -183,6 +185,7 @@ app.post("/upload_url", async (req, res) => {
     //socket
     let saveObj;
     socket.on("upload_url_result", async function (data) {
+      console.log("upload_url_result recieved");
       saveObj = {
         user_id,
         gameId,
@@ -193,19 +196,40 @@ app.post("/upload_url", async (req, res) => {
         new_date: data.new_date,
         new_timestamp: data.new_timestamp,
       };
-
+      console.log("saveObj", saveObj);
+      // io.emit("upload_url_result_frontend", data);
       try {
         const game = new GameInfo(saveObj);
         await game.save();
-
-        const user = await User.findById({ _id: game.user_id });
-        user.gameInfo.push(game);
-        await user.save();
+        //const user = await User.findById({ _id: game.user_id });
+        //user.gameInfo.push(game);
+        //await user.save();
       } catch (error) {
         console.log("game and user save error: ", error);
       }
-
       console.log("[upload_url_result] data get: " + JSON.stringify(data));
+            //new
+      //  socket.emit("upload_url_result_frontend",async () =>{
+        // const { user_id } = req.body;
+        try {
+          const userGames = await GameInfo.find({ user_id }); // Assuming user_id is a property in your GameInfo schema
+          // console.log("userGames", userGames);
+          if (userGames.length > 0) {
+            const gameObjects = userGames.map(gameInfo => ({
+              name: gameInfo.gameName,
+              namespace: gameInfo.namespace,
+            }));
+            // res.status(200).json({ gameObjects });
+            // res.status(200).json({ gameObjects });
+          socketFront.emit("upload_url_result_frontend", ({ gameObjects }));
+          console.log(gameObjects);
+          } else {
+            res.status(404).json({ message: "No games found for the user" });
+          }
+        } catch (error) {
+          res.status(500).json({ message: error.message });
+        }
+      //new
     });
 
     // socket.on("upload_url_result", async function (data) {

@@ -20,11 +20,14 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useNavigate } from "react-router-dom";
 import {IoIosArrowBack} from "react-icons/io"
 import styled from "styled-components";
+import { creditStore } from "../../store/creditStore.jsx";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Pricing() {
+  const addCredits = creditStore(state => state.addCredits)
+  // const spendCredits = creditStore(state => state.spendCredits)
   const navigate = useNavigate();
   const [tiers, setTiers] = useState([
     {
@@ -72,7 +75,9 @@ export default function Pricing() {
   ]);
 
   const handlePriceClick = (tierPrice) => {
-    navigate("/payment", { state: { paymentAmount: Number(tierPrice) } });
+    // navigate("/payment", { state: { paymentAmount: Number(tierPrice) } });
+    navigate("/research");
+    addCredits(parseInt(tierPrice))
   };
 
   return (
@@ -184,7 +189,8 @@ export default function Pricing() {
                 <CardActions sx={{ height: "110px", justifyContent: "center" }}>
                   <Button
                     fullWidth
-                    onClick={() => handlePriceClick(tier.price)}
+                    // onClick={() => handlePriceClick(tier.price)}
+                    onClick={() => handlePriceClick(tier.credits)}
                     variant={tier.buttonVariant}
                     sx={{
                       borderRadius: "32px",

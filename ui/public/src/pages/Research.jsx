@@ -26,11 +26,14 @@ import { researchStore } from "../store/researchStore";
 import gameNameRegex from "../utils/gameNameRegex";
 import SuccessPaymentModal from "../components/modal/SuccessPaymentModal";
 import coins from "../assets/sass/Icons/Coins.svg";
-import plusPurple from "../assets/sass/Icons/PlusPurple.svg"
+import plusPurple from "../assets/sass/Icons/PlusPurple.svg";
+import { io } from "socket.io-client";
+import { creditStore } from "../store/creditStore";
 
 const Research = () => {
   const navigate = useNavigate();
   const readyResearches = researchStore((state) => state.readyResearches);
+  const credits = creditStore(state => state.credits)
   const setReadyResearches = researchStore((state) => state.setReadyResearches);
   const removeProgressResearch = researchStore(
     (state) => state.removeProgressResearch
@@ -76,6 +79,33 @@ const Research = () => {
       console.error(err);
     }
   };
+
+  const socket = io("http://localhost:3030");
+  // socket.on("upload_url_result_frontend", (data) => {
+  //   console.log("connected");
+  // });
+  socket.on("connection", (socket) => {
+    console.log("Front connected");
+
+    // socket.on("event", (data) => {
+    //   console.log("event_listen", data);
+    // });
+    // socket.emit("data", (data) => {
+    //   data = {
+    //     name: "Sabina",
+    //     age: 21,
+    //   };
+    //   console.log("data_SET", data);
+    // });
+  });
+  socket.emit("data", (data) => {
+    data = {
+      name: "Sabina",
+      age: 21,
+    };
+    console.log("data_SET", data);
+  });
+
   return (
     <Box
       sx={{
@@ -100,9 +130,10 @@ const Research = () => {
             direction="row"
             alignItems="center"
             justifyContent="center"
-            fontFamily= "friendsRegular"
+            fontFamily="friendsRegular"
           >
-            <img src={coins} /> Add balance
+            <img src={coins} />
+             <Typography>{credits === 0 ? "Add Balance" : credits}</Typography>
           </Stack>
         </S.PaymentBtn>
       </Stack>
@@ -137,20 +168,17 @@ const Research = () => {
               label={`In progress  (${progressResearches.length})`}
               // disabled={progressResearches.length === 0}
             />
-            <Tab value="ready" label={`Ready (${0})`} />
+            <Tab value="ready" label={`Ready (${readyResearches.length})`} />
             <Tab
               value="all"
               label={`All research (${
                 progressResearches.length + readyResearches.length
               })`}
             />
-            <Tab
+            {/* <Tab
               value="Fix"
-              label={`Fix research (${
-                readyResearches.length
-              })`}
-            />
-            
+              label={`Fix research (${readyResearches.length})`}
+            /> */}
           </TabList>
 
           {/* <Button
@@ -221,7 +249,15 @@ const Research = () => {
                     >
                       {res}
                     </Typography>
-                    <Button sx={{fontFamily: "friendsRegular"}} onClick={() => navigate("/chat")}>Open</Button>
+                    <Button
+                      sx={{ fontFamily: "friendsRegular" }}
+                      onClick={() => {
+                        // spendCredits(20)
+                        navigate("/chat");
+                      }}
+                    >
+                      Open
+                    </Button>
                   </S.ReadyResearch>
                 ))}
               </Stack>
@@ -231,10 +267,18 @@ const Research = () => {
                 {readyResearches.map((res) => (
                   <S.ReadyResearch key={nanoid()}>
                     <Typography
-                    fontFamily="friendsNormal" component="p" fontSize="16px">
+                      fontFamily="friendsNormal"
+                      component="p"
+                      fontSize="16px"
+                    >
                       {res}
                     </Typography>
-                    <Button sx={{fontFamily: "friendsRegular"}} onClick={() => navigate("/chat")}>Open</Button>
+                    <Button
+                      sx={{ fontFamily: "friendsRegular" }}
+                      onClick={() => navigate("/chat")}
+                    >
+                      Open
+                    </Button>
                   </S.ReadyResearch>
                 ))}
                 {progressResearches.map((res) => (
@@ -251,7 +295,7 @@ const Research = () => {
                 ))}
               </Stack>
             </TabPanel>
-            <TabPanel value="fix" index={3}>
+            {/* <TabPanel value="fix" index={3}>
               <Stack spacing={4}>
                 {readyResearches.map((res, ind) => (
                   <S.ReadyResearch key={nanoid()}>
@@ -262,11 +306,16 @@ const Research = () => {
                     >
                       {res}
                     </Typography>
-                    <Button sx={{fontFamily: "friendsRegular"}} onClick={() => navigate("/chat")}>Open</Button>
+                    <Button
+                      sx={{ fontFamily: "friendsRegular" }}
+                      onClick={() => navigate("/chat")}
+                    >
+                      Open
+                    </Button>
                   </S.ReadyResearch>
                 ))}
               </Stack>
-            </TabPanel>
+            </TabPanel> */}
           </Box>
         </TabContext>
       </Box>
@@ -325,12 +374,10 @@ const S = {
       border-radius: 8px;
       font-size: 20px;
       text-transform: none;
-      
 
       &:hover {
         background-color: #9785ff;
         border: 1px solid #f3f5f7;
-
       }
     }
   `,
@@ -350,8 +397,8 @@ const S = {
       margin-block: 20px;
 
       &:hover {
-        background-color: #3D3761;
-        color: #FFFFFF;
+        background-color: #3d3761;
+        color: #ffffff;
       }
     }
   `,
@@ -372,7 +419,7 @@ const S = {
       width: 93px;
       height: 40px;
       background-color: #8670ff;
-      color: #FFFFFF;
+      color: #ffffff;
       font-size: 20px;
       letter-spacing: 0.1%;
       padding: 10px 20px;
@@ -383,7 +430,6 @@ const S = {
       &:hover {
         background-color: #9785ff;
         border: 1px solid #f3f5f7;
-
       }
     }
   `,
